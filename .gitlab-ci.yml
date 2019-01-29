@@ -1,5 +1,5 @@
 stages:
-  - stage
+  - publish
 
 # test:
 #   stage: validate
@@ -13,7 +13,7 @@ stages:
 #     - CI=true yarn test
 
 publish:
-  stage: stage
+  stage: publish
   image: node:8.11
   only:
     - master
