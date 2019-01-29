@@ -1,19 +1,8 @@
 stages:
-  - publish
-
-# test:
-#   stage: validate
-#   image: node:8.11
-#   script:
-#     - echo $TESTING_GOOGLE_SERVICE_ACCOUNT >> service-account.json
-#     - export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/service-account.json"
-#     - echo $GOOGLE_APPLICATION_CREDENTIALS
-#     - ls
-#     - yarn
-#     - CI=true yarn test
+  - stage
 
 publish:
-  stage: publish
+  stage: stage
   image: node:8.11
   only:
     - master
