@@ -164,7 +164,7 @@ export default {
             ],
             content: this.value,
             onUpdate: ({ getJSON, getHTML }) => {
-                this.$emit('input', getHTML());
+                this.$emit('update:value', getHTML());
             },
         });
     },
