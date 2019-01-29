@@ -84,12 +84,13 @@ export default {
     name: 'TextEditor',
     props: {
         value: { type: String, default: `this is the default test txt` },
-        errors: {
+        spellingMistakes: {
             type: Array,
             default: () => [
                 {
                     mispelledWord: 'txt',
-                    options: [{ id: 1, word: 'text' }, { id: 2, word: 'texting' }],
+                    options: ['text', 'texting'],
+                    /* options: [{ id: 1, word: 'text' }, { id: 2, word: 'texting' }], */
                 },
             ],
         },
@@ -170,6 +171,17 @@ export default {
     },
     beforeDestroy() {
         this.editor.destroy();
+    },
+    computed: {
+        errors() {
+            return this.spellingMistakes.map(mistake => {
+                return {
+                    mispelledWord: mistake.mispelledWord,
+                    options: mistake.options.map((word, id) => ({ id, word })),
+                };
+                /* options: [{ id: 1, word: 'text' }, { id: 2, word: 'texting' }], */
+            });
+        },
     },
     methods: {
         upHandler() {
