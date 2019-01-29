@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="editor">
+        <div class="tiptap-editor">
             <editor-menu-bar :editor="editor">
                 <div class="menubar" slot-scope="{ commands, isActive }">
                     <button
@@ -248,11 +248,7 @@ export default {
     }
 }
 
-.is-highlighted {
-    border-bottom: 3px red solid;
-}
-
-.editor {
+.tiptap-editor {
     border: 1px solid hsla(0, 0%, 4%, 0.1);
 
     .menubar {
@@ -281,6 +277,14 @@ export default {
         outline: 0;
         overflow-y: auto;
         padding: 10px;
+
+        .is-highlighted {
+            border-bottom: 3px red solid;
+        }
+
+        ul {
+            padding: 0px 40px;
+        }
     }
 }
 </style>
