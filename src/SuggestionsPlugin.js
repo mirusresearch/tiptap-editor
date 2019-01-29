@@ -154,7 +154,8 @@ export default function SuggestionsPlugin({
 
             apply(tr, prev) {
                 const { selection } = tr;
-                const next = { ...prev };
+                const next = Object.assign({}, prev);
+                // const next = { ...prev };
 
                 if (selection.from === selection.to) {
                     if (selection.from < prev.range.from || selection.from > prev.range.to) {
