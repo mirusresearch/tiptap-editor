@@ -1,8 +1,9 @@
 {
-    "name": "tiptap-editor",
+    "name": "@mirus-private/tiptap-editor",
     "version": "1.0.0",
     "description": "custom setup for the tiptap editor",
     "main": "src/index.js",
+    "repository": "https://gitlab.mirus.io/root/node_modules/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
     "scripts": {
