@@ -54,7 +54,7 @@
                     v-for="(option, index) in currentOptions"
                     :key="option.id"
                     class="error-list__item"
-                    :class="{ 'is-selected': navigatedOptionIndex === index }"
+                    :class="{ 'selected': navigatedOptionIndex === index }"
                     @click="selectOption(option)"
                 >
                     {{ option.word }}
@@ -241,7 +241,7 @@ export default {
 <style lang="scss">
 .error-list {
     .error-list__item {
-        &.is-selected,
+        &.selected,
         &:hover {
             background-color: rgba(white, 0.2);
         }
