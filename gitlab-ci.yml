@@ -1,0 +1,24 @@
+stages:
+  - stage
+
+# test:
+#   stage: validate
+#   image: node:8.11
+#   script:
+#     - echo $TESTING_GOOGLE_SERVICE_ACCOUNT >> service-account.json
+#     - export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/service-account.json"
+#     - echo $GOOGLE_APPLICATION_CREDENTIALS
+#     - ls
+#     - yarn
+#     - CI=true yarn test
+
+publish:
+  stage: stage
+  image: node:8.11
+  only:
+    - master
+  script:
+    - npm config set @mirus-private:registry https://$PRIVATE_MIRUS_NPM_REGISTRY
+    - npm config set //$PRIVATE_MIRUS_NPM_REGISTRY/:_authToken $PRIVATE_MIRUS_NPM_AUTH_TOKEN
+    - npm config set always-auth true
+    - npm publish
