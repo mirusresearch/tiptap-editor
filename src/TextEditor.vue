@@ -97,16 +97,6 @@ export default {
             navigatedOptionIndex: 0,
             insertOption: () => {},
             optionsRange: null,
-            /* spellingMistakes: [
-             *     {
-             *         mispelledWord: 'text',
-             *         options: ['text', 'texting'],
-             *     },
-             *     {
-             *         mispelledWord: 'default',
-             *         options: ['pizza', 'hotdog'],
-             *     },
-             * ], */
         };
     },
 
@@ -125,14 +115,6 @@ export default {
     },
     mounted() {
         this.currentValue = this.value;
-        setTimeout(() => {
-            this.spellingMistakes = [
-                {
-                    mispelledWord: 'default',
-                    options: ['text', 'texting'],
-                },
-            ];
-        }, 3000);
 
         this.editor = new Editor({
             extensions: [
@@ -197,6 +179,9 @@ export default {
 
     methods: {
         getWords() {
+            if (this.errors.length < 1) {
+                return [];
+            }
             return this.errors.map(err => err.mispelledWord);
         },
         upHandler() {

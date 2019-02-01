@@ -11,8 +11,13 @@ function dispatch(tr, state, view) {
 function lint(doc, position, prev, getWords) {
     const words = getWords();
     const badWordsRegex = new RegExp(`\\b(${words.join('|')})\\b`, 'ig');
+
     let highlights = [];
     let on = { active: false };
+
+    if (words.length < 1) {
+        return { highlights, on };
+    }
 
     function record(from, to, text) {
         if (position && position.pos >= from && position.pos <= to) {
