@@ -85,7 +85,7 @@ export default {
         value: { type: String, default: `this is the default test text` },
         spellingMistakes: {
             type: Array,
-            default: () => [],
+            default: () => [{ mispelledWord: 'the', options: ['too', 'pizza'] }],
         },
     },
     components: { EditorContent, EditorMenuBar },
@@ -127,6 +127,7 @@ export default {
                 new Spelling({
                     getWords: this.getWords,
                     onEnter: ({ items, range, command, virtualNode, text }) => {
+                        console.log('enter');
                         this.currentOptions =
                             this.errors.find(err => err.mispelledWord === text).options || [];
                         this.navigatedOptionIndex = 0;
@@ -135,12 +136,14 @@ export default {
                         this.insertOption = command;
                     },
                     onChange: ({ items, range, virtualNode }) => {
+                        console.log('change');
                         this.currentOptions = items;
                         this.navigatedOptionIndex = 0;
                         this.optionRange = range;
                         this.renderPopup(virtualNode);
                     },
                     onExit: () => {
+                        console.log('exit');
                         this.navigatedOptionIndex = 0;
                         this.currentOptions = null;
                         this.optionRange = null;
@@ -226,6 +229,7 @@ export default {
                 showOnInit: true,
                 arrow: true,
                 arrowType: 'round',
+                hideOnClick: false,
             });
         },
         destroyPopup() {
