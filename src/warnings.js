@@ -8,8 +8,8 @@ function dispatch(tr, state, view) {
     view.updateState(state);
 }
 
-function lint(doc, position, prev, getWords) {
-    const words = getWords();
+function lint(doc, position, prev, getErrorWords) {
+    const words = getErrorWords();
     const badWordsRegex = new RegExp(`\\b(${words.join('|')})\\b`, 'ig');
 
     let highlights = [];
@@ -52,14 +52,14 @@ function lint(doc, position, prev, getWords) {
     return { highlights, on };
 }
 
-export default class Highlight extends Node {
+export default class Warning extends Node {
     get name() {
-        return 'spelling';
+        return 'warning';
     }
 
     get defaultOptions() {
         return {
-            getWords: () => [],
+            getErrorWords: () => [],
             onChange: () => {},
             onEnter: () => {},
             onExit: () => {},
@@ -100,7 +100,7 @@ export default class Highlight extends Node {
         return [
             // underline the words
             new Plugin({
-                key: new PluginKey('spelling'),
+                key: new PluginKey('warning'),
                 view() {
                     return {
                         update: (view, prevState) => {
@@ -111,8 +111,9 @@ export default class Highlight extends Node {
                             const started = !prev.active && next.active;
                             const stopped = prev.active && !next.active;
                             const changed = !started && !stopped && prev.query !== next.query;
+
                             const handleStart = started || moved;
-                            const handleChange = changed && !moved;
+                            const handleChange = changed; //&& !moved;
                             const handleExit = stopped || moved;
 
                             // Cancel when suggestion isn't active
@@ -120,7 +121,7 @@ export default class Highlight extends Node {
                                 return;
                             }
 
-                            const state = handleExit ? prev : next;
+                            const state = handleExit && !handleChange ? prev : next;
                             const decorationNode = document.querySelector(
                                 `[data-decoration-id="${state.decorationId}"]`
                             );
@@ -178,13 +179,13 @@ export default class Highlight extends Node {
                 },
                 state: {
                     init(_, { doc }) {
-                        return lint(doc, null, {}, self.options.getWords);
+                        return lint(doc, null, {}, self.options.getErrorWords);
                     },
                     apply(tr, prev) {
                         const { selection } = tr;
                         const next = Object.assign({}, prev);
                         const position = selection.$from;
-                        return lint(tr.doc, position, prev, self.options.getWords);
+                        return lint(tr.doc, position, prev, self.options.getErrorWords);
                     },
                 },
                 props: {

@@ -48,8 +48,8 @@
         </div>
 
         <div class="error-list" :v-show="false" ref="errors">
-            <template v-if="currentOptions">
-                <b>did you mean..</b>
+            <template v-if="currentWarning">
+                <b>{{ currentWarning.message }}</b>
                 <div
                     v-for="(option, index) in currentOptions"
                     :key="option.id"
@@ -77,21 +77,32 @@ import {
     History,
     Mention,
 } from 'tiptap-extensions';
-import Spelling from './spelling.js';
+import Warning from './warnings.js';
 
 export default {
     name: 'TextEditor',
     props: {
         value: { type: String, default: `this is the default test text` },
-        spellingMistakes: {
+        warnings: {
             type: Array,
-            default: () => [{ mispelledWord: 'the', options: ['too', 'pizza'] }],
+            default: () => [
+                {
+                    value: 'the',
+                    message: 'did you mean...',
+                    options: ['too', 'pizza'],
+                },
+                {
+                    value: 'test text',
+                    message: 'cannot say that, sorry',
+                },
+            ],
         },
     },
     components: { EditorContent, EditorMenuBar },
     data() {
         return {
             editor: null,
+            currentWarning: null,
             currentOptions: null,
             currentValue: '',
             navigatedOptionIndex: 0,
@@ -102,20 +113,20 @@ export default {
 
     computed: {
         errors() {
-            if (this.spellingMistakes.length < 1) {
+            if (this.warnings.length < 1) {
                 return [];
             }
-            return this.spellingMistakes.map(mistake => {
+            return this.warnings.map(mistake => {
                 return {
-                    mispelledWord: mistake.mispelledWord,
-                    options: mistake.options.map((word, id) => ({ id, word })),
+                    value: mistake.value,
+                    message: mistake.message,
+                    options: (mistake.options || []).map((word, id) => ({ id, word })),
                 };
             });
         },
     },
     mounted() {
         this.currentValue = this.value;
-
         this.editor = new Editor({
             extensions: [
                 new Blockquote(),
@@ -124,26 +135,24 @@ export default {
                 new Bold(),
                 new Italic(),
                 new History(),
-                new Spelling({
-                    getWords: this.getWords,
-                    onEnter: ({ items, range, command, virtualNode, text }) => {
-                        console.log('enter');
-                        this.currentOptions =
-                            this.errors.find(err => err.mispelledWord === text).options || [];
+                new Warning({
+                    getErrorWords: this.getErrorWords,
+                    onEnter: ({ range, command, virtualNode, text }) => {
+                        this.currentWarning = this.errors.find(err => err.value === text);
+                        this.currentOptions = this.currentWarning.options || [];
                         this.navigatedOptionIndex = 0;
                         this.optionRange = range;
                         this.renderPopup(virtualNode);
                         this.insertOption = command;
                     },
-                    onChange: ({ items, range, virtualNode }) => {
-                        console.log('change');
-                        this.currentOptions = items;
+                    onChange: ({ range, virtualNode, text }) => {
+                        this.currentWarning = this.errors.find(err => err.value === text);
+                        this.currentOptions = this.currentWarning.options || [];
                         this.navigatedOptionIndex = 0;
                         this.optionRange = range;
                         this.renderPopup(virtualNode);
                     },
                     onExit: () => {
-                        console.log('exit');
                         this.navigatedOptionIndex = 0;
                         this.currentOptions = null;
                         this.optionRange = null;
@@ -175,17 +184,31 @@ export default {
                 this.$emit('update:value', getHTML());
             },
         });
+        tippy.setDefaults({
+            content: this.$refs.errors,
+            trigger: 'mouseenter',
+            interactive: true,
+            theme: 'dark',
+            placement: 'top-start',
+            performance: true,
+            inertia: true,
+            duration: [400, 200],
+            showOnInit: true,
+            arrow: true,
+            arrowType: 'round',
+            hideOnClick: false,
+        });
     },
     beforeDestroy() {
         this.editor.destroy();
     },
 
     methods: {
-        getWords() {
+        getErrorWords() {
             if (this.errors.length < 1) {
                 return [];
             }
-            return this.errors.map(err => err.mispelledWord);
+            return this.errors.map(err => err.value);
         },
         upHandler() {
             this.navigatedOptionIndex =
@@ -213,24 +236,9 @@ export default {
             this.editor.focus();
         },
         renderPopup(node) {
-            if (this.popup) {
-                return;
+            if (!this.popup) {
+                this.popup = tippy(node, { content: this.$refs.errors });
             }
-
-            this.popup = tippy(node, {
-                content: this.$refs.errors,
-                trigger: 'mouseenter',
-                interactive: true,
-                theme: 'dark',
-                placement: 'top-start',
-                performance: true,
-                inertia: true,
-                duration: [400, 200],
-                showOnInit: true,
-                arrow: true,
-                arrowType: 'round',
-                hideOnClick: false,
-            });
         },
         destroyPopup() {
             if (this.popup) {
@@ -240,7 +248,7 @@ export default {
         },
     },
     watch: {
-        spellingMistakes: function(n, o) {
+        warnings: function(n, o) {
             // hack to trigger a view redraw
             const cursor = this.editor.state.selection;
             this.editor.setContent(this.currentValue);
