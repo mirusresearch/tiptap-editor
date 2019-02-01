@@ -9,3 +9,18 @@ export default {
     components: { TextEditor },
 }
 ```
+
+
+```js
+ [
+                {
+                    value: 'the',
+                    message: 'did you mean...',
+                    options: ['too', 'pizza'],
+                },
+                {
+                    value: 'test text',
+                    message: 'cannot say that, sorry',
+                },
+            ]
+```

@@ -85,17 +85,7 @@ export default {
         value: { type: String, default: `this is the default test text` },
         warnings: {
             type: Array,
-            default: () => [
-                {
-                    value: 'the',
-                    message: 'did you mean...',
-                    options: ['too', 'pizza'],
-                },
-                {
-                    value: 'test text',
-                    message: 'cannot say that, sorry',
-                },
-            ],
+            default: () => [],
         },
     },
     components: { EditorContent, EditorMenuBar },
