@@ -83,15 +83,10 @@ export default {
     name: 'TextEditor',
     props: {
         value: { type: String, default: `this is the default test text` },
-        /* spellingMistakes: {
-         *     type: Array,
-         *     default: () => [
-         *         {
-         *             mispelledWord: 'txt',
-         *             options: ['text', 'texting'],
-         *         },
-         *     ],
-         * }, */
+        spellingMistakes: {
+            type: Array,
+            default: () => [],
+        },
     },
     components: { EditorContent, EditorMenuBar },
     data() {
@@ -102,16 +97,16 @@ export default {
             navigatedOptionIndex: 0,
             insertOption: () => {},
             optionsRange: null,
-            spellingMistakes: [
-                {
-                    mispelledWord: 'text',
-                    options: ['text', 'texting'],
-                },
-                {
-                    mispelledWord: 'default',
-                    options: ['pizza', 'hotdog'],
-                },
-            ],
+            /* spellingMistakes: [
+             *     {
+             *         mispelledWord: 'text',
+             *         options: ['text', 'texting'],
+             *     },
+             *     {
+             *         mispelledWord: 'default',
+             *         options: ['pizza', 'hotdog'],
+             *     },
+             * ], */
         };
     },
 
