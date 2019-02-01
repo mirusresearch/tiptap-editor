@@ -78,93 +78,120 @@ import {
     Mention,
 } from 'tiptap-extensions';
 import Spelling from './spelling.js';
-import Highlight from './highlight.js';
 
 export default {
     name: 'TextEditor',
     props: {
-        value: { type: String, default: `this is the default test txt` },
-        spellingMistakes: {
-            type: Array,
-            default: () => [
-                {
-                    mispelledWord: 'txt',
-                    options: ['text', 'texting'],
-                    /* options: [{ id: 1, word: 'text' }, { id: 2, word: 'texting' }], */
-                },
-            ],
-        },
+        value: { type: String, default: `this is the default test text` },
+        /* spellingMistakes: {
+         *     type: Array,
+         *     default: () => [
+         *         {
+         *             mispelledWord: 'txt',
+         *             options: ['text', 'texting'],
+         *         },
+         *     ],
+         * }, */
     },
     components: { EditorContent, EditorMenuBar },
     data() {
         return {
             editor: null,
             currentOptions: null,
+            currentValue: '',
             navigatedOptionIndex: 0,
             insertOption: () => {},
             optionsRange: null,
+            spellingMistakes: [
+                {
+                    mispelledWord: 'text',
+                    options: ['text', 'texting'],
+                },
+                {
+                    mispelledWord: 'default',
+                    options: ['pizza', 'hotdog'],
+                },
+            ],
         };
     },
-    mounted() {
-        const mentions = this.errors.map(error => {
-            return new Spelling({
-                word: error.mispelledWord,
-                items: error.options,
-                onEnter: ({ items, query, range, command, virtualNode }) => {
-                    this.currentOptions = items;
-                    this.navigatedOptionIndex = 0;
-                    this.optionRange = range;
-                    this.renderPopup(virtualNode);
-                    this.insertOption = command;
-                },
-                onChange: ({ items, query, range, virtualNode }) => {
-                    this.currentOptions = items;
-                    this.navigatedOptionIndex = 0;
-                    this.optionRange = range;
-                    this.renderPopup(virtualNode);
-                },
-                onExit: () => {
-                    this.navigatedOptionIndex = 0;
-                    this.currentOptions = null;
-                    this.optionRange = null;
-                    this.destroyPopup();
-                },
-                onKeyDown: ({ event }) => {
-                    // pressing up arrow
-                    if (event.keyCode === 38) {
-                        this.upHandler();
-                        return true;
-                    }
-                    // pressing down arrow
-                    if (event.keyCode === 40) {
-                        this.downHandler();
-                        return true;
-                    }
-                    // pressing enter
-                    if (event.keyCode === 13) {
-                        this.enterHandler();
-                        return true;
-                    }
-                    return false;
-                },
+
+    computed: {
+        errors() {
+            if (this.spellingMistakes.length < 1) {
+                return [];
+            }
+            return this.spellingMistakes.map(mistake => {
+                return {
+                    mispelledWord: mistake.mispelledWord,
+                    options: mistake.options.map((word, id) => ({ id, word })),
+                };
             });
-        });
+        },
+    },
+    mounted() {
+        this.currentValue = this.value;
+        setTimeout(() => {
+            this.spellingMistakes = [
+                {
+                    mispelledWord: 'default',
+                    options: ['text', 'texting'],
+                },
+            ];
+        }, 3000);
 
         this.editor = new Editor({
             extensions: [
-                ...mentions,
                 new Blockquote(),
                 new BulletList(),
                 new ListItem(),
                 new Bold(),
                 new Italic(),
                 new History(),
-                new Highlight({
-                    words: this.errors.map(err => err.mispelledWord),
+                new Spelling({
+                    getWords: this.getWords,
+                    onEnter: ({ items, range, command, virtualNode, text }) => {
+                        this.currentOptions =
+                            this.errors.find(err => err.mispelledWord === text).options || [];
+                        this.navigatedOptionIndex = 0;
+                        this.optionRange = range;
+                        this.renderPopup(virtualNode);
+                        this.insertOption = command;
+                    },
+                    onChange: ({ items, range, virtualNode }) => {
+                        this.currentOptions = items;
+                        this.navigatedOptionIndex = 0;
+                        this.optionRange = range;
+                        this.renderPopup(virtualNode);
+                    },
+                    onExit: () => {
+                        this.navigatedOptionIndex = 0;
+                        this.currentOptions = null;
+                        this.optionRange = null;
+                        this.destroyPopup();
+                    },
+                    onKeyDown: ({ event }) => {
+                        // pressing up arrow
+                        if (event.keyCode === 38) {
+                            this.upHandler();
+                            return true;
+                        }
+                        // pressing down arrow
+                        if (event.keyCode === 40) {
+                            this.downHandler();
+                            return true;
+                        }
+                        // pressing enter
+                        if (event.keyCode === 13) {
+                            this.enterHandler();
+                            return true;
+                        }
+                        return false;
+                    },
                 }),
             ],
             content: this.value,
             onUpdate: ({ getJSON, getHTML }) => {
+                this.currentValue = getHTML();
                 this.$emit('update:value', getHTML());
             },
         });
@@ -172,18 +199,11 @@ export default {
     beforeDestroy() {
         this.editor.destroy();
     },
-    computed: {
-        errors() {
-            return this.spellingMistakes.map(mistake => {
-                return {
-                    mispelledWord: mistake.mispelledWord,
-                    options: mistake.options.map((word, id) => ({ id, word })),
-                };
-                /* options: [{ id: 1, word: 'text' }, { id: 2, word: 'texting' }], */
-            });
-        },
-    },
+
     methods: {
+        getWords() {
+            return this.errors.map(err => err.mispelledWord);
+        },
         upHandler() {
             this.navigatedOptionIndex =
                 (this.navigatedOptionIndex + this.currentOptions.length - 1) %
@@ -235,6 +255,15 @@ export default {
             }
         },
     },
+    watch: {
+        spellingMistakes: function(n, o) {
+            // hack to trigger a view redraw
+            const cursor = this.editor.state.selection;
+            this.editor.setContent(this.currentValue);
+            const restore_cursor = this.editor.state.tr.setSelection(cursor);
+            this.editor.view.dispatch(restore_cursor);
+        },
+    },
 };
 </script>
 
@@ -278,7 +307,7 @@ export default {
         overflow-y: auto;
         padding: 10px;
 
-        .is-highlighted {
+        .highlighted {
             border-bottom: 3px red solid;
         }
 
