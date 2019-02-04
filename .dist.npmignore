@@ -1,4 +1,4 @@
 tiptap-editor.umd.js
 tiptap-editor.umd.js.map
-tiptap-editor.umd.min.js
-tiptap-editor.umd.min.js.map
+*.common.js
+*.common.js.map
