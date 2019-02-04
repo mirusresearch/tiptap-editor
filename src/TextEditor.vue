@@ -85,7 +85,13 @@ export default {
         value: { type: String, default: 'this is the default test text' },
         warnings: {
             type: Array,
-            default: () => [],
+            default: () => [
+                {
+                    value: 'the',
+                    message: 'did you mean...',
+                    options: ['too', 'pizza'], // optional
+                },
+            ],
         },
     },
     components: { EditorContent, EditorMenuBar },

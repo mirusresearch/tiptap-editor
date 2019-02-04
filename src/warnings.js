@@ -10,7 +10,8 @@ function dispatch(tr, state, view) {
 
 function lint(doc, position, prev, getErrorWords) {
     const words = getErrorWords();
-    const badWordsRegex = new RegExp(`\\b(${words.map(w => w.value).join('|')})\\b`, 'ig');
+    const regexString = '\\b(' + words.map(w => w.value).join('|') + ')\\b';
+    const badWordsRegex = new RegExp(regexString, 'ig');
 
     let highlights = [];
     let on = { active: false };
@@ -125,7 +126,7 @@ export default class Warning extends Node {
 
                             const state = handleExit && !handleChange ? prev : next;
                             const decorationNode = document.querySelector(
-                                `[data-decoration-id="${state.decorationId}"]`
+                                '[data-decoration-id="' + state.decorationId + '"]'
                             );
 
                             // build a virtual node for popper.js or tippy.js
