@@ -108,6 +108,7 @@ export default {
             }
             return this.warnings.map(mistake => {
                 return {
+                    overrideClass: mistake.overrideClass,
                     value: mistake.value,
                     message: mistake.message,
                     options: (mistake.options || []).map((word, id) => ({ id, word })),
@@ -198,7 +199,8 @@ export default {
             if (this.errors.length < 1) {
                 return [];
             }
-            return this.errors.map(err => err.value);
+            /* return this.errors; */
+            return this.errors.map(err => ({ value: err.value, overrideClass: err.overrideClass }));
         },
         upHandler() {
             this.navigatedOptionIndex =
@@ -289,8 +291,16 @@ export default {
         overflow-y: auto;
         padding: 10px;
 
-        .highlighted {
+        .underline-red {
             border-bottom: 3px red solid;
+        }
+
+        .underline-orange {
+            border-bottom: 3px orange solid;
+        }
+
+        .underline-green {
+            border-bottom: 3px green solid;
         }
 
         ul {

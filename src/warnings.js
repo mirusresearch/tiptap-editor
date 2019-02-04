@@ -10,7 +10,7 @@ function dispatch(tr, state, view) {
 
 function lint(doc, position, prev, getErrorWords) {
     const words = getErrorWords();
-    const badWordsRegex = new RegExp(`\\b(${words.join('|')})\\b`, 'ig');
+    const badWordsRegex = new RegExp(`\\b(${words.map(w => w.value).join('|')})\\b`, 'ig');
 
     let highlights = [];
     let on = { active: false };
@@ -20,6 +20,8 @@ function lint(doc, position, prev, getErrorWords) {
     }
 
     function record(from, to, text) {
+        const word = words.find(w => w.value === text);
+        const overrideClass = word.overrideClass;
         if (position && position.pos >= from && position.pos <= to) {
             const decorationId = get(
                 prev,
@@ -27,14 +29,14 @@ function lint(doc, position, prev, getErrorWords) {
                 (Math.random() + 1).toString(36).substr(2, 5)
             );
 
-            highlights.push({ from, to, text, decorationId });
+            highlights.push({ from, to, text, decorationId, overrideClass });
             on.active = true;
             on.decorationId = decorationId;
             on.range = { to, from };
             on.query = text;
             on.text = text;
         } else {
-            highlights.push({ from, to, text });
+            highlights.push({ from, to, text, overrideClass });
         }
     }
 
@@ -64,7 +66,7 @@ export default class Warning extends Node {
             onEnter: () => {},
             onExit: () => {},
             onKeyDown: () => {},
-            wordClass: 'highlighted',
+            defaultClass: 'underline-red',
         };
     }
 
@@ -201,7 +203,9 @@ export default class Warning extends Node {
                         this.getState(state).highlights.forEach(prob => {
                             decos.push(
                                 Decoration.inline(prob.from, prob.to, {
-                                    class: self.options.wordClass,
+                                    class: prob.overrideClass
+                                        ? prob.overrideClass
+                                        : self.options.defaultClass,
                                     'data-decoration-id': prob.decorationId
                                         ? prob.decorationId
                                         : undefined,
