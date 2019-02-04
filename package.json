@@ -2,7 +2,7 @@
     "name": "@mirus-private/tiptap-editor",
     "version": "1.0.16",
     "description": "custom setup for the tiptap editor",
-    "main": "tiptap-editor.umd.min.js",
+    "main": "src/index.js",
     "repository": "https://gitlab.mirus.io/root/node_modules/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
@@ -11,13 +11,10 @@
         "build": "vue build --target lib --name tiptap-editor src/index.js && cp package.json dist/package.json && cp .dist.npmignore dist/.npmignore"
     },
     "devDependencies": {
-        "@babel/core": "^7.0.0-0",
         "@vue/cli": "^3.3.0",
         "@vue/cli-service-global": "^3.3.0",
         "node-sass": "^4.11.0",
-        "sass-loader": "^7.1.0",
-        "vue": "^2.5.22",
-        "webpack": "^4.28.4"
+        "sass-loader": "^7.1.0"
     },
     "dependencies": {
         "lodash.get": "^4.4.2",

@@ -247,11 +247,13 @@ export default {
     },
     watch: {
         warnings: function(n, o) {
-            // hack to trigger a view redraw
-            const cursor = this.editor.state.selection;
-            this.editor.setContent(this.currentValue);
-            const restore_cursor = this.editor.state.tr.setSelection(cursor);
-            this.editor.view.dispatch(restore_cursor);
+            if (this.editor) {
+                // hack to trigger a view redraw
+                const cursor = this.editor.state.selection;
+                this.editor.setContent(this.currentValue);
+                const restore_cursor = this.editor.state.tr.setSelection(cursor);
+                this.editor.view.dispatch(restore_cursor);
+            }
         },
     },
 };
