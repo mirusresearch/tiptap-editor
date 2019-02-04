@@ -82,7 +82,7 @@ import Warning from './warnings.js';
 export default {
     name: 'TextEditor',
     props: {
-        value: { type: String, default: `this is the default test text` },
+        value: { type: String, default: 'this is the default test text' },
         warnings: {
             type: Array,
             default: () => [],
