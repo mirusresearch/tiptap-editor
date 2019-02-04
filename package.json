@@ -1,13 +1,14 @@
 {
     "name": "@mirus-private/tiptap-editor",
-    "version": "1.0.14",
+    "version": "1.0.15",
     "description": "custom setup for the tiptap editor",
-    "main": "src/index.js",
+    "main": "tiptap-editor.common.js",
     "repository": "https://gitlab.mirus.io/root/node_modules/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
     "scripts": {
-        "dev": "vue serve src/TextEditor.vue"
+        "dev": "vue serve src/TextEditor.vue",
+        "build": "vue build --target lib --name tiptap-editor src/index.js && cp package.json dist/package.json"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0-0",

@@ -10,4 +10,7 @@ publish:
     - npm config set @mirus-private:registry https://$PRIVATE_MIRUS_NPM_REGISTRY
     - npm config set //$PRIVATE_MIRUS_NPM_REGISTRY/:_authToken $PRIVATE_MIRUS_NPM_AUTH_TOKEN
     - npm config set always-auth true
+    - yarn
+    - yarn build
+    - cd dist/
     - npm publish
