@@ -8,7 +8,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "vue serve src/TextEditor.vue",
-        "build": "vue build --target lib --name tiptap-editor src/index.js && cp package.json dist/package.json"
+        "build": "vue build --target lib --name tiptap-editor src/index.js && cp package.json dist/package.json && cp .dist.npmignore dist/.npmignore"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0-0",
@@ -24,5 +24,8 @@
         "tippy.js": "^3.4.1",
         "tiptap": "^1.8.0",
         "tiptap-extensions": "^1.8.0"
-    }
+    },
+    "browserslist": [
+        "IE 11"
+    ]
 }
