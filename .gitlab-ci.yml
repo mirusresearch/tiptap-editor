@@ -12,5 +12,4 @@ publish:
     - npm config set always-auth true
     - yarn
     - yarn build
-    - cd dist/
     - npm publish
