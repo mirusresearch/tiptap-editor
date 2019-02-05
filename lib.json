@@ -1,0 +1,15 @@
+
+{
+    "name": "@mirus-private/tiptap-editor",
+    "description": "custom setup for the tiptap editor",
+    "author": "alec@mirusresearch.com",
+    "dependencies": {
+        "lodash.get": "^4.4.2",
+        "tippy.js": "^3.4.1",
+        "tiptap": "^1.8.0",
+        "tiptap-extensions": "^1.8.0"
+    },
+    "peerDependencies": {
+        "vue": ">=2.0.0"
+    }
+}
