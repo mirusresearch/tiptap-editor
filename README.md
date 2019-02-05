@@ -7,6 +7,7 @@ vue component that contains our custom setup for the tiptap editor. Able to high
   <TextEditor
     :value.sync="localtext"
     :warnings="warnings"
+    placeholder="write something will-ya!"
   />
 </template
 
@@ -30,7 +31,10 @@ export default {
 ### Props:
 
 #### value
-the initial text to edit
+the text to edit
+
+#### placeholder
+Text to display when there is nothing in the editor
 
 #### warnings
 array of text that should be warned about

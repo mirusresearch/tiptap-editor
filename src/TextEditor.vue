@@ -76,23 +76,19 @@ import {
     Italic,
     History,
     Mention,
+    Placeholder,
 } from 'tiptap-extensions';
 import Warning from './warnings.js';
 
 export default {
     name: 'TextEditor',
     props: {
-        value: { type: String, default: 'this is the default test text' },
+        value: { type: String, default: '' },
         warnings: {
             type: Array,
-            default: () => [
-                {
-                    value: 'the',
-                    message: 'did you mean...',
-                    options: ['too', 'pizza'], // optional
-                },
-            ],
+            default: () => [],
         },
+        placeholder: { type: String, default: 'write your content here...' },
     },
     components: { EditorContent, EditorMenuBar },
     data() {
@@ -132,6 +128,10 @@ export default {
                 new Bold(),
                 new Italic(),
                 new History(),
+                new Placeholder({
+                    emptyClass: 'is-empty',
+                    emptyNodeText: this.placeholder,
+                }),
                 new Warning({
                     getErrorWords: this.getErrorWords,
                     onEnter: ({ range, command, virtualNode, text }) => {
@@ -271,6 +271,15 @@ export default {
 
 .tiptap-editor {
     border: 1px solid hsla(0, 0%, 4%, 0.1);
+
+    p.is-empty:first-child::before {
+        content: attr(data-empty-text);
+        float: left;
+        color: #aaa;
+        pointer-events: none;
+        height: 0;
+        font-style: italic;
+    }
 
     .menubar {
         border-bottom: 1px solid hsla(0, 0%, 4%, 0.1);
