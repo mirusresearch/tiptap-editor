@@ -1,5 +1,6 @@
 // rollup.config.js
 import vue from 'rollup-plugin-vue';
+import css from 'rollup-plugin-css-only';
 import buble from 'rollup-plugin-buble';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
@@ -19,8 +20,9 @@ const config = {
             'process.env.NODE_ENV': JSON.stringify('production'),
         }),
         commonjs(),
+        css(),
         vue({
-            css: true,
+            css: false,
             compileTemplate: true,
             template: {
                 isProduction: true,
