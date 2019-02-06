@@ -10,7 +10,6 @@
                     >
                         <b>B</b>
                     </button>
-
                     <button
                         class="menubar__button"
                         :class="{ 'is-active': isActive.italic() }"
@@ -18,32 +17,30 @@
                     >
                         <i>I</i>
                     </button>
-
                     <button
                         class="menubar__button"
                         :class="{ 'is-active': isActive.bullet_list() }"
                         @click="commands.bullet_list"
                     >
-                        &#8729;
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" class="svg-inline--fa fa-list-ul fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path fill="currentColor" d="M96 96c0 26.51-21.49 48-48 48S0 122.51 0 96s21.49-48 48-48 48 21.49 48 48zM48 208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm0 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm96-236h352c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z">
+                            </path>
+                        </svg>
                     </button>
-
                     <button
                         class="menubar__button"
                         @click="commands.undo"
                     >
                         &#8592;
                     </button>
-
                     <button
                         class="menubar__button"
                         @click="commands.redo"
                     >
                         &#8594;
                     </button>
-
                 </div>
             </editor-menu-bar>
-
             <editor-content class="editor__content" :editor="editor" />
         </div>
 
@@ -300,6 +297,11 @@ export default {
             &.is-active,
             &:hover {
                 background-color: #f0f0f0;
+            }
+
+            svg {
+                padding-top: 3px;
+                width: 12px;
             }
         }
     }
