@@ -196,16 +196,15 @@ export default {
             hideOnClick: false,
         });
     },
-    beforeDestroy() {
+    destroyed() {
         this.editor.destroy();
+        this.popup.destroyAll();
     },
-
     methods: {
         getErrorWords() {
             if (this.errors.length < 1) {
                 return [];
             }
-            /* return this.errors; */
             return this.errors.map(err => ({ value: err.value, overrideClass: err.overrideClass }));
         },
         upHandler() {
@@ -270,6 +269,10 @@ export default {
 }
 
 .tiptap-editor {
+    *:focus {
+        outline: none;
+    }
+
     border: 1px solid hsla(0, 0%, 4%, 0.1);
 
     p.is-empty:first-child::before {
