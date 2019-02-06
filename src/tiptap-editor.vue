@@ -266,6 +266,11 @@ export default {
 }
 
 .tiptap-editor {
+    textarea:focus,
+    input:focus {
+        outline: none;
+    }
+
     *:focus {
         outline: none;
     }
