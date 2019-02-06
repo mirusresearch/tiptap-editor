@@ -1,6 +1,6 @@
 {
     "name": "@mirus-private/tiptap-editor",
-    "version": "1.0.19",
+    "version": "1.0.20",
     "description": "custom setup for the tiptap editor",
     "main": "dist/tiptop-editor.umd.js",
     "module": "dist/tiptop-editor.esm.js",
