@@ -22,10 +22,10 @@ export default {
                 {
                     value: 'test text',
                     message: 'cannot say that, sorry',
-                    overrideClass: 'underlined-green', // optional
+                    overrideClass: 'underline-blue', // optional
                 },
             ],
-            localtext: 'this is the initial value',
+            localtext: 'this is the initial value, test text here',
         };
     },
 };

@@ -54,7 +54,7 @@
                     :class="{ 'selected': navigatedOptionIndex === index }"
                     @click="selectOption(option)"
                 >
-                    {{ option.word }}
+                    {{ option.value }}
                 </div>
             </template>
         </div>
@@ -224,7 +224,7 @@ export default {
                 range: this.optionRange,
                 attrs: {
                     id: option.id,
-                    label: option.word,
+                    label: option.value,
                 },
             });
             this.editor.focus();
@@ -327,7 +327,11 @@ export default {
         }
 
         .underline-green {
-            border-bottom: 3px green solid;
+            border-bottom: 3px lightgreen solid;
+        }
+
+        .underline-blue {
+            border-bottom: 3px blue solid;
         }
 
         ul {
