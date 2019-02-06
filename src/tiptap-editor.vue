@@ -110,7 +110,7 @@ export default {
                     overrideClass: mistake.overrideClass,
                     value: mistake.value,
                     message: mistake.message,
-                    options: (mistake.options || []).map((word, id) => ({ id, word })),
+                    options: (mistake.options || []).map((value, id) => ({ value, id })),
                 };
             });
         },
@@ -305,7 +305,7 @@ export default {
             }
 
             svg {
-                padding-top: 3px;
+                padding-top: 4px;
                 width: 12px;
             }
         }
