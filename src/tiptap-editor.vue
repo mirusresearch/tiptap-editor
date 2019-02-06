@@ -27,18 +27,18 @@
                             </path>
                         </svg>
                     </button>
-                    <button
-                        class="menubar__button"
-                        @click="commands.undo"
-                    >
-                        &#8592;
-                    </button>
-                    <button
-                        class="menubar__button"
-                        @click="commands.redo"
-                    >
-                        &#8594;
-                    </button>
+                    <!-- <button
+                         class="menubar__button"
+                         @click="commands.undo"
+                         >
+                         &#8592;
+                         </button>
+                         <button
+                         class="menubar__button"
+                         @click="commands.redo"
+                         >
+                         &#8594;
+                         </button> -->
                 </div>
             </editor-menu-bar>
             <editor-content class="editor__content" :editor="editor" />
@@ -124,7 +124,7 @@ export default {
                 new ListItem(),
                 new Bold(),
                 new Italic(),
-                new History(),
+                /* new History(), */
                 new Placeholder({
                     emptyClass: 'is-empty',
                     emptyNodeText: this.placeholder,
