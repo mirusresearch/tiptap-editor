@@ -195,7 +195,11 @@ export default {
     },
     destroyed() {
         this.editor.destroy();
-        this.popup.destroyAll();
+        try {
+            this.popup.destroyAll();
+        } catch (err) {
+            /* eat error */
+        }
     },
     methods: {
         getErrorWords() {

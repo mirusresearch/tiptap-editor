@@ -15,17 +15,29 @@ export default {
         return {
             warnings: [
                 {
-                    value: 'the',
+                    value: 'red',
                     message: 'did you mean...',
-                    options: ['too', 'pizza'], // optional
+                    options: ['read', 'reed'], // optional
+                    // default class is red
                 },
                 {
-                    value: 'test text',
+                    value: 'blue',
                     message: 'cannot say that, sorry',
                     overrideClass: 'underline-blue', // optional
                 },
+                {
+                    value: 'green',
+                    message: 'I really like this!',
+                    overrideClass: 'underline-green', // optional
+                },
+                {
+                    value: 'orange',
+                    message: 'this is a bad idea!',
+                    overrideClass: 'underline-orange', // optional
+                },
             ],
-            localtext: 'this is the initial value, test text here',
+            localtext:
+                'welcome to tiptap editor, here is a red mark blue with suggestions. You can also to blue, orange, and green!!',
         };
     },
 };

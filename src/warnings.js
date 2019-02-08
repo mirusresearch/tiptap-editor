@@ -24,9 +24,10 @@ function lint(doc, position, prev, getErrorWords) {
         const word = words.find(w => w.value === text);
         const overrideClass = word.overrideClass;
         if (position && position.pos >= from && position.pos <= to) {
+            console.log(prev);
             const decorationId = get(
                 prev,
-                'active.decorationId',
+                'on.decorationId',
                 (Math.random() + 1).toString(36).substr(2, 5)
             );
 
