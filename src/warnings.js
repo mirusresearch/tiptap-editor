@@ -148,6 +148,10 @@ export default class Warning extends Node {
                                 decorationNode,
                                 virtualNode,
                                 command: ({ range, attrs }) => {
+                                    console.log('range = ', range);
+                                    console.log('view = ', view);
+                                    console.log('attrs = ', attrs);
+
                                     const result = replaceText(
                                         range,
                                         view.state.schema.nodes[self.name],
