@@ -148,24 +148,21 @@ export default class Warning extends Node {
                                 decorationNode,
                                 virtualNode,
                                 command: ({ range, attrs }) => {
-                                    console.log('range = ', range);
-                                    console.log('view = ', view);
-                                    console.log('attrs = ', attrs);
-
-                                    const result = replaceText(
-                                        range,
-                                        view.state.schema.nodes[self.name],
-                                        attrs
-                                    )(view.state, view.dispatch, view);
+                                    console.log('view = ', view.state.schema.nodes[self.name]);
 
                                     // need to merge text nodes
                                     setTimeout(() => {
+                                        const result = replaceText(
+                                            range,
+                                            view.state.schema.nodes[self.name],
+                                            attrs
+                                        )(view.state, view.dispatch, view);
+
                                         document
                                             .getElementsByClassName('editor__content')[0]
                                             .normalize();
+                                        return result;
                                     });
-
-                                    return result;
                                 },
                             };
 
