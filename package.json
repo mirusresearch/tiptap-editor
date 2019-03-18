@@ -1,6 +1,6 @@
 {
     "name": "@mirus-private/tiptap-editor",
-    "version": "1.0.23",
+    "version": "1.0.24",
     "description": "custom setup for the tiptap editor",
     "main": "dist/tiptop-editor.umd.js",
     "module": "dist/tiptop-editor.esm.js",
@@ -24,11 +24,15 @@
         "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife --file dist/tiptop-editor.min.js"
     },
     "devDependencies": {
+        "@babel/core": "^7.3.4",
         "@vue/cli": "^3.3.0",
         "@vue/cli-service-global": "^3.3.0",
         "cross-env": "^5.2.0",
+        "eslint": "^5.15.3",
+        "graphql": "^14.1.1",
         "minimist": "^1.2.0",
         "node-sass": "^4.11.0",
+        "postcss": "^7.0.14",
         "rollup": "^1.1.2",
         "rollup-plugin-buble": "^0.19.6",
         "rollup-plugin-commonjs": "^9.2.0",
@@ -38,10 +42,13 @@
         "rollup-plugin-vue": "^4.6.2",
         "sass-loader": "^7.1.0",
         "vue": "^2.5.22",
-        "vue-template-compiler": "^2.5.22"
+        "vue-template-compiler": "^2.5.22",
+        "webpack": "^4.29.6"
     },
     "dependencies": {
         "lodash.get": "^4.4.2",
+        "prosemirror-model": "^1.7.0",
+        "prosemirror-utils": "^0.7.7",
         "tippy.js": "^3.4.1",
         "tiptap": "^1.8.0",
         "tiptap-extensions": "^1.8.0"
