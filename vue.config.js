@@ -3,7 +3,7 @@
 module.exports = {
     css: { extract: false },
     configureWebpack: () => ({
-        // mode: 'production',
+        mode: 'production',
         // plugins: [new BundleAnalyzerPlugin({ analyzerMode: 'static' })],
     }),
     chainWebpack: config => {

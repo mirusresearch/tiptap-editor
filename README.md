@@ -1,5 +1,10 @@
 vue component that contains our custom setup for the tiptap editor. Able to highlihght phrases and give reasons/fixes to the warnings
 
+```bash
+npm i tiptap-editor
+yarn add tiptap-editor
+```
+
 ![example image](img/example.png)
 
 ```js
@@ -13,7 +18,6 @@ vue component that contains our custom setup for the tiptap editor. Able to high
 
 <script>
 import TextEditor from 'tiptap-editor'
-import '@mirus-private/tiptap-editor/dist/tiptop-editor.min.css';
 
 export default {
     components: { TextEditor },
