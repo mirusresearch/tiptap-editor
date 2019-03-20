@@ -149,24 +149,22 @@ export default class Warning extends Node {
                                 decorationNode,
                                 virtualNode,
                                 command: ({ range, attrs }) => {
-                                    console.log('view = ', view);
-                                    Vue.nextTick(() => {
-                                        console.log('view2 = ', view);
-                                        const result = replaceText(
-                                            range,
-                                            view.state.schema.nodes[self.name],
-                                            attrs
-                                        )(view.state, view.dispatch, view);
+                                    // Vue.nextTick(() => {
+                                    const result = replaceText(
+                                        range,
+                                        view.state.schema.nodes[self.name],
+                                        attrs
+                                    )(view.state, view.dispatch, view);
 
-                                        // need to merge text nodes
-                                        // setTimeout(() => {
+                                    // need to merge text nodes
+                                    setTimeout(() => {
                                         document
                                             .getElementsByClassName('editor__content')[0]
                                             .normalize();
-                                        // });
-
-                                        return result;
                                     });
+
+                                    return result;
+                                    // });
                                 },
                             };
 
