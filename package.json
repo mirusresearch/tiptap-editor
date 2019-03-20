@@ -1,6 +1,6 @@
 {
     "name": "@mirus-private/tiptap-editor",
-    "version": "1.0.27",
+    "version": "1.0.28",
     "description": "custom setup for the tiptap editor",
     "main": "dist/tiptop-editor.umd.js",
     "module": "dist/tiptop-editor.esm.js",
@@ -48,12 +48,16 @@
     "dependencies": {
         "lodash.get": "^4.4.2",
         "prosemirror-model": "^1.7.0",
+        "prosemirror-state": "^1.2.2",
+        "prosemirror-tables": "^0.7.10",
         "prosemirror-utils": "^0.7.7",
         "tippy.js": "^3.4.1",
         "tiptap": "^1.8.0",
         "tiptap-extensions": "^1.8.0"
     },
     "browserslist": [
-        "IE 11"
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
     ]
 }
