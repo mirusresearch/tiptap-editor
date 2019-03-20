@@ -1,13 +1,13 @@
 {
     "name": "tiptap-editor",
-    "version": "1.0.30",
+    "version": "1.0.31",
     "description": "custom setup for the tiptap editor",
     "main": "./dist/tiptop-editor.umd.js",
-    "repository": "https://gitlab.mirus.io/root/node_modules/tiptap-editor",
+    "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
-        "url": "https://gitlab.mirus.io/root/node_modules/tiptap-editor"
+        "url": "https://github.com/mirusresearch/tiptap-editor"
     },
-    "homepage": "https://gitlab.mirus.io/root/node_modules/tiptap-editor",
+    "homepage": "https://github.com/mirusresearch/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
     "files": [
