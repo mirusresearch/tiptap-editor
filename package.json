@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.0.29",
+    "version": "1.0.30",
     "description": "custom setup for the tiptap editor",
     "main": "./dist/tiptop-editor.umd.js",
     "repository": "https://gitlab.mirus.io/root/node_modules/tiptap-editor",
