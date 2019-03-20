@@ -1,8 +1,7 @@
 {
     "name": "tiptap-editor",
-    "version": "1.0.31",
+    "version": "1.0.32",
     "description": "custom setup for the tiptap editor",
-    "main": "./dist/tiptop-editor.umd.js",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
         "url": "https://github.com/mirusresearch/tiptap-editor"
@@ -10,14 +9,23 @@
     "homepage": "https://github.com/mirusresearch/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
+    "main": "dist/tiptap-editor.common.js",
+    "module": "dist/tiptap-editor.common.js",
+    "unpkg": "dist/tiptap-editor.umd.min.js",
+    "browser": {
+        "./sfc": "src/tiptap-editor.vue"
+    },
     "files": [
-        "dist",
-        "src"
+        "dist/*",
+        "src/*",
+        "public/*",
+        "*.json",
+        "*.js"
     ],
     "scripts": {
         "dev": "yarn serve",
         "serve": "vue serve src/dev.vue",
-        "build": "vue-cli-service build --mode package --target lib --name tiptap-editor src/index.js  --report-json"
+        "build": "vue-cli-service build --target lib --name tiptap-editor src/index.js"
     },
     "devDependencies": {
         "@babel/core": "^7.3.4",
