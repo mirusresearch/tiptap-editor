@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.0.33",
+    "version": "1.0.34",
     "description": "custom setup for the tiptap editor",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
@@ -9,9 +9,7 @@
     "homepage": "https://github.com/mirusresearch/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
-    "main": "dist/tiptap-editor.umd.js",
-    "module": "dist/tiptap-editor.common.js",
-    "unpkg": "dist/tiptap-editor.umd.min.js",
+    "main": "dist/tiptap-editor.umd.min.js",
     "browser": {
         "./sfc": "src/tiptap-editor.vue"
     },
