@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.0.34",
+    "version": "1.0.35",
     "description": "custom setup for the tiptap editor",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
@@ -9,6 +9,7 @@
     "homepage": "https://github.com/mirusresearch/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
+    "module": "dist/tiptap-editor.common.js",
     "main": "dist/tiptap-editor.umd.min.js",
     "browser": {
         "./sfc": "src/tiptap-editor.vue"
@@ -26,10 +27,9 @@
         "build": "vue-cli-service build --target lib --name tiptap-editor src/index.js"
     },
     "devDependencies": {
-        "@babel/core": "^7.3.4",
-        "@vue/babel-preset-app": "3.2.0",
-        "@vue/cli-service": "^3.3.0",
-        "cross-env": "^5.2.0",
+        "@babel/core": "^7.4.0",
+        "@vue/babel-preset-app": "^3.5.1",
+        "@vue/cli-service": "^3.5.1",
         "eslint": "^5.15.3",
         "lodash.get": "^4.4.2",
         "node-sass": "^4.11.0",
@@ -37,12 +37,10 @@
         "tippy.js": "^3.4.1",
         "tiptap": "1.8.0",
         "tiptap-extensions": "1.8.0",
-        "vue-template-compiler": "2.5.22",
+        "vue": "^2.6.10",
+        "vue-template-compiler": "^2.6.10",
         "webpack": "^4.29.6",
         "webpack-bundle-analyzer": "^3.1.0"
-    },
-    "dependencies": {
-        "vue": "2.5.22"
     },
     "browserslist": [
         "> 1%",
