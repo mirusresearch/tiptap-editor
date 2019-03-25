@@ -8049,6 +8049,17 @@ tippy.js@^3.4.1:
   dependencies:
     popper.js "^1.14.6"
 
+tiptap-commands@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.4.0.tgz#0cfb3ac138ee3099de56114cb119abd841fbcbe7"
+  integrity sha512-ytO8jFXgufK5DziamTaVojzUTolWvL4m2xNXaLkAVJYy9CWXruMK7avqeLoFYPI4GZlhleMn5i4gzYTbD7e2jA==
+  dependencies:
+    prosemirror-commands "^1.0.7"
+    prosemirror-inputrules "^1.0.1"
+    prosemirror-schema-list "^1.0.1"
+    prosemirror-state "^1.2.2"
+    tiptap-utils "^1.1.1"
+
 tiptap-commands@^1.4.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.7.0.tgz#d15cec2cb09264b5c1f6f712dab8819bb9ab7e13"

@@ -9,8 +9,7 @@
     "homepage": "https://github.com/mirusresearch/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
-    "module": "dist/tiptap-editor.common.js",
-    "main": "dist/tiptap-editor.umd.min.js",
+    "main": "dist/tiptap-editor.umd.js",
     "browser": {
         "./sfc": "src/tiptap-editor.vue"
     },
@@ -24,7 +23,7 @@
     "scripts": {
         "dev": "yarn serve",
         "serve": "vue serve src/dev.vue",
-        "build": "vue-cli-service build --target lib --name tiptap-editor src/index.js"
+        "build": "vue-cli-service build --target lib --name tiptap-editor src/tiptap-editor.vue"
     },
     "devDependencies": {
         "@babel/core": "^7.4.0",
@@ -36,6 +35,7 @@
         "sass-loader": "^7.1.0",
         "tippy.js": "^3.4.1",
         "tiptap": "1.8.0",
+        "tiptap-commands": "1.4.0",
         "tiptap-extensions": "1.8.0",
         "vue": "^2.6.10",
         "vue-template-compiler": "^2.6.10",
