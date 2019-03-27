@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import unescape from 'lodash.unescape';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
@@ -85,9 +86,11 @@ export default {
                 return [];
             }
             return this.warnings.map(mistake => {
+                const isWord = mistake.isWord === undefined ? true : mistake.isWord;
                 return {
                     overrideClass: mistake.overrideClass,
-                    value: mistake.value,
+                    isWord: isWord,
+                    value: isWord ? mistake.value : unescape(mistake.value),
                     message: mistake.message,
                     options: (mistake.options || []).map((value, id) => ({ value, id })),
                 };
@@ -184,7 +187,11 @@ export default {
             if (this.errors.length < 1) {
                 return [];
             }
-            return this.errors.map(err => ({ value: err.value, overrideClass: err.overrideClass }));
+            return this.errors.map(err => ({
+                value: err.value,
+                overrideClass: err.overrideClass,
+                isWord: err.isWord,
+            }));
         },
         upHandler() {
             this.navigatedOptionIndex =

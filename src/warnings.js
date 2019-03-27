@@ -11,7 +11,9 @@ function dispatch(tr, state, view) {
 
 function lint(doc, position, prev, getErrorWords) {
     const words = getErrorWords();
-    const regexString = '\\b(' + words.map(w => w.value).join('|') + ')\\b';
+    const regexString = words
+        .map(w => (w.isWord ? `\\b(${w.value})\\b` : `(${w.value})`))
+        .join('|');
     const badWordsRegex = new RegExp(regexString, 'ig');
 
     let highlights = [];
@@ -24,6 +26,7 @@ function lint(doc, position, prev, getErrorWords) {
     function record(from, to, text) {
         const word = words.find(w => w.value === text);
         const overrideClass = word.overrideClass;
+
         if (position && position.pos >= from && position.pos <= to) {
             const decorationId = get(
                 prev,
