@@ -319,6 +319,10 @@ export default {
         ul {
             padding: 0px 40px;
         }
+
+        .ProseMirror {
+            height: 100%;
+        }
     }
 }
 </style>

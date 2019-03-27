@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.0.36",
+    "version": "1.0.37",
     "description": "custom setup for the tiptap editor",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
@@ -23,7 +23,7 @@
     "scripts": {
         "dev": "yarn serve",
         "serve": "vue serve src/dev.vue",
-        "build": "vue-cli-service build --target lib --name tiptap-editor src/tiptap-editor.vue"
+        "build": "WEBPACK_TARGET=node vue-cli-service build --target lib --name tiptap-editor src/tiptap-editor.vue"
     },
     "devDependencies": {
         "@babel/core": "^7.4.0",
@@ -46,5 +46,6 @@
         "> 1%",
         "last 2 versions",
         "not ie <= 11"
-    ]
+    ],
+    "dependencies": {}
 }
