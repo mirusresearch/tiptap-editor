@@ -23,4 +23,3 @@ test_result.html
 yarn-error.log
 bin/
 database.json
-dist/
