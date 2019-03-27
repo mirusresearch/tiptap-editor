@@ -1,46 +1,51 @@
 {
-    "name": "@mirus-private/tiptap-editor",
-    "version": "1.0.28",
+    "name": "tiptap-editor",
+    "version": "1.0.38",
     "description": "custom setup for the tiptap editor",
-    "main": "./dist/tiptop-editor.umd.js",
-    "repository": "https://gitlab.mirus.io/root/node_modules/tiptap-editor",
+    "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
-        "url": "https://gitlab.mirus.io/root/node_modules/tiptap-editor"
+        "url": "https://github.com/mirusresearch/tiptap-editor"
     },
-    "homepage": "https://gitlab.mirus.io/root/node_modules/tiptap-editor",
+    "homepage": "https://github.com/mirusresearch/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
+    "main": "dist/tiptap-editor.common.js",
+    "browser": {
+        "./sfc": "src/tiptap-editor.vue"
+    },
     "files": [
-        "dist",
-        "src"
+        "dist/*",
+        "src/*",
+        "public/*",
+        "*.json",
+        "*.js"
     ],
     "scripts": {
         "dev": "yarn serve",
         "serve": "vue serve src/dev.vue",
-        "build": "vue-cli-service build --mode package --target lib --name tiptap-editor src/index.js  --report-json"
+        "build": "WEBPACK_TARGET=node vue-cli-service build --target lib --name tiptap-editor src/tiptap-editor.vue"
     },
     "devDependencies": {
-        "@babel/core": "^7.3.4",
-        "@vue/babel-preset-app": "3.2.0",
-        "@vue/cli-service": "^3.3.0",
-        "cross-env": "^5.2.0",
+        "@babel/core": "^7.4.0",
+        "@vue/babel-preset-app": "^3.5.1",
+        "@vue/cli-service": "^3.5.1",
         "eslint": "^5.15.3",
         "lodash.get": "^4.4.2",
         "node-sass": "^4.11.0",
         "sass-loader": "^7.1.0",
         "tippy.js": "^3.4.1",
         "tiptap": "1.8.0",
+        "tiptap-commands": "1.4.0",
         "tiptap-extensions": "1.8.0",
-        "vue-template-compiler": "2.5.22",
+        "vue": "^2.6.10",
+        "vue-template-compiler": "^2.6.10",
         "webpack": "^4.29.6",
         "webpack-bundle-analyzer": "^3.1.0"
-    },
-    "dependencies": {
-        "vue": "2.5.22"
     },
     "browserslist": [
         "> 1%",
         "last 2 versions",
         "not ie <= 11"
-    ]
+    ],
+    "dependencies": {}
 }
