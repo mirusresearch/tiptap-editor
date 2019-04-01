@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "custom setup for the tiptap editor",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
@@ -9,7 +9,7 @@
     "homepage": "https://github.com/mirusresearch/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
-    "main": "dist/tiptap-editor.common.js",
+    "main": "dist/tiptap-editor.umd.min.js",
     "browser": {
         "./sfc": "src/tiptap-editor.vue"
     },
@@ -27,8 +27,13 @@
     },
     "devDependencies": {
         "@babel/core": "^7.4.0",
+        "@babel/polyfill": "^7.4.0",
+        "@babel/preset-env": "^7.4.2",
         "@vue/babel-preset-app": "^3.5.1",
+        "@vue/cli-plugin-babel": "^3.5.5",
         "@vue/cli-service": "^3.5.1",
+        "babel-loader": "^8.0.5",
+        "current-script-polyfill": "^1.0.0",
         "eslint": "^5.15.3",
         "lodash.get": "^4.4.2",
         "lodash.unescape": "^4.0.1",
@@ -46,7 +51,7 @@
     "browserslist": [
         "> 1%",
         "last 2 versions",
-        "not ie <= 11"
+        "not ie <= 8"
     ],
     "dependencies": {}
 }

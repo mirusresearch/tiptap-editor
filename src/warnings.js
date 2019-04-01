@@ -2,7 +2,6 @@ import { Node, Plugin, PluginKey } from 'tiptap';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { replaceText } from 'tiptap-commands';
 import get from 'lodash.get';
-import Vue from 'vue';
 
 function dispatch(tr, state, view) {
     state = state.apply(tr);
@@ -152,7 +151,6 @@ export default class Warning extends Node {
                                 decorationNode,
                                 virtualNode,
                                 command: ({ range, attrs }) => {
-                                    // Vue.nextTick(() => {
                                     const result = replaceText(
                                         range,
                                         view.state.schema.nodes[self.name],
@@ -167,7 +165,6 @@ export default class Warning extends Node {
                                     });
 
                                     return result;
-                                    // });
                                 },
                             };
 

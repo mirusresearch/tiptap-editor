@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import 'current-script-polyfill';
 import unescape from 'lodash.unescape';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
