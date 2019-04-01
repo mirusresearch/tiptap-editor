@@ -4380,6 +4380,31 @@ module.exports = function (R, S) {
 
 /***/ }),
 
+/***/ "5f84":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = (function () {
+	"use strict";
+
+	var ownKeys      = __webpack_require__ ("e0c5")
+	var reduce       = Function.bind.call(Function.call, Array.prototype.reduce);
+	var isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
+	var concat       = Function.bind.call(Function.call, Array.prototype.concat);
+
+	if (!Object.values) {
+		 Object.values = function values(O) {
+			return reduce(ownKeys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []) } }
+
+	if (!Object.entries) {
+		 Object.entries = function entries(O) {
+			return reduce(ownKeys(O), (e, k) => concat(e, typeof k === 'string' && isEnumerable(O, k) ? [[k, O[k]]] : []), []) } }
+
+	return Object
+
+}) ();
+
+/***/ }),
+
 /***/ "613b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22701,6 +22726,24 @@ module.exports = function create(P, D) {
 
 /***/ }),
 
+/***/ "e0c5":
+/***/ (function(module, exports) {
+
+if (typeof Reflect === 'object' && typeof Reflect.ownKeys === 'function') {
+  module.exports = Reflect.ownKeys;
+} else if (typeof Object.getOwnPropertySymbols === 'function') {
+  module.exports = function Reflect_ownKeys(o) {
+    return (
+      Object.getOwnPropertyNames(o).concat(Object.getOwnPropertySymbols(o))
+    );
+  }
+} else {
+  module.exports = Object.getOwnPropertyNames;
+}
+
+
+/***/ }),
+
 /***/ "e11e":
 /***/ (function(module, exports) {
 
@@ -27416,7 +27459,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"53e06f1c-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=template&id=2eaeba8d&
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"53e06f1c-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=template&id=07757016&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"tiptap-editor"},[_c('editor-menu-bar',{attrs:{"editor":_vm.editor},scopedSlots:_vm._u([{key:"default",fn:function(ref){
 var commands = ref.commands;
 var isActive = ref.isActive;
@@ -27424,13 +27467,16 @@ return _c('div',{staticClass:"menubar"},[_c('button',{staticClass:"menubar__butt
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/tiptap-editor.vue?vue&type=template&id=2eaeba8d&
+// CONCATENATED MODULE: ./src/tiptap-editor.vue?vue&type=template&id=07757016&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.find.js
 var es6_array_find = __webpack_require__("7514");
 
 // EXTERNAL MODULE: ./node_modules/current-script-polyfill/currentScript.js
 var currentScript = __webpack_require__("f6fd");
+
+// EXTERNAL MODULE: ./node_modules/es7-object-polyfill/es7-object-polyfill.js
+var es7_object_polyfill = __webpack_require__("5f84");
 
 // EXTERNAL MODULE: ./node_modules/lodash.unescape/index.js
 var lodash_unescape = __webpack_require__("36b6");
@@ -36962,6 +37008,7 @@ function (_Node) {
 //
 //
 //
+
 
 
 
