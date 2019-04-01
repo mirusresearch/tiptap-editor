@@ -2,7 +2,7 @@ const { resolve } = require('path');
 
 module.exports = {
     css: { extract: false },
-    transpileDependencies: ['./src/warnings.js'],
+    transpileDependencies: ['tiptap'],
     configureWebpack: {
         module: {
             rules: [

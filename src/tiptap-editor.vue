@@ -51,7 +51,6 @@
 
 <script>
 import 'current-script-polyfill';
-import 'es7-object-polyfill';
 import unescape from 'lodash.unescape';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
