@@ -1,9 +1,11 @@
 <template>
-    <tiptapEditor
-    :value.sync="localtext"
-        :warnings="warnings"
-        placeholder="write something will-ya!"
-    />
+    <div>
+        <tiptapEditor
+            :value.sync="localtext"
+            :warnings="warnings"
+            placeholder="write something will-ya!"
+        />
+    </div>
 </template>
 
 <script>
@@ -44,5 +46,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
