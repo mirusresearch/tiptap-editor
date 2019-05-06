@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "description": "custom setup for the tiptap editor",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
@@ -22,16 +22,16 @@
     ],
     "scripts": {
         "dev": "yarn serve",
-        "serve": "vue serve src/dev.vue",
+        "serve": "vue-cli-service serve src/dev.vue",
         "build": "WEBPACK_TARGET=node vue-cli-service build --target lib --name tiptap-editor src/tiptap-editor.vue"
     },
     "devDependencies": {
         "@babel/core": "^7.4.0",
         "@babel/polyfill": "^7.4.0",
         "@babel/preset-env": "^7.4.2",
-        "@vue/babel-preset-app": "^3.5.1",
+        "@vue/babel-preset-app": "^3.5.5",
         "@vue/cli-plugin-babel": "^3.5.5",
-        "@vue/cli-service": "^3.5.1",
+        "@vue/cli-service": "^3.5.5",
         "babel-loader": "^8.0.5",
         "current-script-polyfill": "^1.0.0",
         "eslint": "^5.15.3",
@@ -53,5 +53,5 @@
         "last 2 versions",
         "not ie <= 8"
     ],
-    "dependencies": { }
+    "dependencies": {}
 }

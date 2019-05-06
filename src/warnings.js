@@ -23,7 +23,7 @@ function lint(doc, position, prev, getErrorWords) {
     }
 
     function record(from, to, text) {
-        const word = words.find(w => w.value === text);
+        const word = words.find(w => w.value.toLowerCase() === text.toLowerCase());
         const overrideClass = word.overrideClass;
 
         if (position && position.pos >= from && position.pos <= to) {
