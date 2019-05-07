@@ -23,24 +23,27 @@ function lint(doc, position, prev, getErrorWords) {
     }
 
     function record(from, to, text) {
-        const word = words.find(w => w.value.toLowerCase() === text.toLowerCase());
-        const overrideClass = word.overrideClass;
+        const word = words.find(w => w.value === text);
 
-        if (position && position.pos >= from && position.pos <= to) {
-            const decorationId = get(
-                prev,
-                'on.decorationId',
-                (Math.random() + 1).toString(36).substr(2, 5)
-            );
+        if (word !== undefined) {
+            const overrideClass = word.overrideClass;
 
-            highlights.push({ from, to, text, decorationId, overrideClass });
-            on.active = true;
-            on.decorationId = decorationId;
-            on.range = { to, from };
-            on.query = text;
-            on.text = text;
-        } else {
-            highlights.push({ from, to, text, overrideClass });
+            if (position && position.pos >= from && position.pos <= to) {
+                const decorationId = get(
+                    prev,
+                    'on.decorationId',
+                    (Math.random() + 1).toString(36).substr(2, 5)
+                );
+
+                highlights.push({ from, to, text, decorationId, overrideClass });
+                on.active = true;
+                on.decorationId = decorationId;
+                on.range = { to, from };
+                on.query = text;
+                on.text = text;
+            } else {
+                highlights.push({ from, to, text, overrideClass });
+            }
         }
     }
 
