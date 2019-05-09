@@ -37838,6 +37838,12 @@ function (_Node) {
       return [// underline the words
       new dist["Plugin"]({
         key: new dist["PluginKey"]('warning'),
+        appendTransaction: function appendTransaction(transactions, oldState, newState) {
+          // make sure the position of the cursor never goes beyond the size of the doc
+          var maxPos = newState.doc.content.size;
+          var currentPos = newState.selection.$from.pos;
+          newState.selection.$from.pos = Math.min(maxPos, currentPos);
+        },
         view: function view() {
           var _this2 = this;
 

@@ -110,6 +110,12 @@ export default class Warning extends Node {
             // underline the words
             new Plugin({
                 key: new PluginKey('warning'),
+                appendTransaction: (transactions, oldState, newState) => {
+                    // make sure the position of the cursor never goes beyond the size of the doc
+                    const maxPos = newState.doc.content.size;
+                    const currentPos = newState.selection.$from.pos;
+                    newState.selection.$from.pos = Math.min(maxPos, currentPos);
+                },
                 view() {
                     return {
                         update: (view, prevState) => {
