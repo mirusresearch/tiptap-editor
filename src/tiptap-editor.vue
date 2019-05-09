@@ -91,7 +91,6 @@ export default {
             optionsRange: null,
         };
     },
-
     computed: {
         errors() {
             if (this.warnings.length < 1) {
@@ -112,6 +111,12 @@ export default {
     mounted() {
         this.currentValue = this.value;
         this.editor = new Editor({
+            content: this.value,
+            parseOptions: { preserveWhitespace: 'full' },
+            onUpdate: ({ getJSON, getHTML }) => {
+                this.currentValue = getHTML();
+                this.$emit('update:value', this.currentValue);
+            },
             extensions: [
                 new Blockquote(),
                 new BulletList(),
@@ -165,11 +170,6 @@ export default {
                     },
                 }),
             ],
-            content: this.value,
-            onUpdate: ({ getJSON, getHTML }) => {
-                this.currentValue = getHTML();
-                this.$emit('update:value', getHTML());
-            },
         });
         tippy.setDefaults({
             content: this.$refs.errors,

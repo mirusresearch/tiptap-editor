@@ -34,7 +34,6 @@ function lint(doc, position, prev, getErrorWords) {
                     'on.decorationId',
                     (Math.random() + 1).toString(36).substr(2, 5)
                 );
-
                 highlights.push({ from, to, text, decorationId, overrideClass });
                 on.active = true;
                 on.decorationId = decorationId;
@@ -66,6 +65,10 @@ export default class Warning extends Node {
         return 'warning';
     }
 
+    get isBlock() {
+        return true;
+    }
+
     get defaultOptions() {
         return {
             getErrorWords: () => [],
@@ -87,12 +90,10 @@ export default class Warning extends Node {
             inline: true,
             selectable: false,
             atom: false,
-            toDOM: mark => {
-                return mark.attrs.label;
-            },
+            toDOM: mark => mark.attrs.label,
             parseDOM: [
                 {
-                    tag: 'span[data-mention-id]',
+                    tag: '[data-mention-id]',
                     getAttrs: dom => {
                         const id = dom.getAttribute('data-mention-id');
                         const label = dom.innerText.split(this.options.matcher.char).join('');
@@ -113,8 +114,14 @@ export default class Warning extends Node {
                 appendTransaction: (transactions, oldState, newState) => {
                     // make sure the position of the cursor never goes beyond the size of the doc
                     const maxPos = newState.doc.content.size;
-                    const currentPos = newState.selection.$from.pos;
-                    newState.selection.$from.pos = Math.min(maxPos, currentPos);
+                    const currentFrom = newState.selection.$from.pos;
+                    const currentTo = newState.selection.$to.pos;
+                    const transaction = newState.tr;
+
+                    transaction.selection.$from.pos = Math.min(maxPos, currentFrom);
+                    transaction.selection.$to.pos = Math.min(maxPos, currentTo);
+
+                    return transaction;
                 },
                 view() {
                     return {
@@ -159,12 +166,13 @@ export default class Warning extends Node {
                                 text: state.text,
                                 decorationNode,
                                 virtualNode,
-                                command: ({ range, attrs }) => {
-                                    const result = replaceText(
-                                        range,
-                                        view.state.schema.nodes[self.name],
-                                        attrs
-                                    )(view.state, view.dispatch, view);
+                                command: function({ range, attrs }) {
+                                    const tr = view.state.tr.replaceWith(
+                                        range.from,
+                                        range.to,
+                                        view.state.schema.text(attrs.label)
+                                    );
+                                    const result = view.dispatch(tr);
 
                                     // need to merge text nodes
                                     setTimeout(() => {
