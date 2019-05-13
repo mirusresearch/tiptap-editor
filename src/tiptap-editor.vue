@@ -69,7 +69,7 @@ import { Blockquote, BulletList, ListItem, Bold, Italic, Placeholder } from 'tip
 import Warning from './warnings.js';
 
 export default {
-    name: 'TextEditor',
+    name: 'tiptapEditor',
     props: {
         value: { type: String, default: '' },
         warnings: {

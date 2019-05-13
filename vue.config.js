@@ -4,7 +4,7 @@ module.exports = {
     css: { extract: false },
     transpileDependencies: ['tiptap'],
     configureWebpack: {
-        // devtool: 'eval-source-map',
+        devtool: 'source-map',
         module: {
             rules: [
                 {
