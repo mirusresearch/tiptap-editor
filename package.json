@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.1.9",
+    "version": "1.1.10",
     "description": "custom setup for the tiptap editor",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
@@ -39,10 +39,10 @@
         "lodash.unescape": "^4.0.1",
         "node-sass": "^4.11.0",
         "sass-loader": "^7.1.0",
-        "tippy.js": "^3.4.1",
-        "tiptap": "^1.19.0",
-        "tiptap-commands": "^1.10.0",
-        "tiptap-extensions": "^1.19.0",
+        "tippy.js": "^4.3.1",
+        "tiptap": "^1.16.2",
+        "tiptap-commands": "^1.7.1",
+        "tiptap-extensions": "^1.16.2",
         "vue": "^2.6.10",
         "vue-template-compiler": "^2.6.10",
         "webpack": "^4.29.6",
