@@ -64,7 +64,6 @@
 import 'current-script-polyfill';
 import unescape from 'lodash.unescape';
 import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
 import { Blockquote, BulletList, ListItem, Bold, Italic, Placeholder } from 'tiptap-extensions';
 import Warning from './warnings.js';
@@ -188,10 +187,8 @@ export default {
     },
     destroyed() {
         this.editor.destroy();
-        try {
-            this.popup.destroyAll();
-        } catch (err) {
-            /* eat error */
+        if (this.popup) {
+            this.popup.destroy();
         }
     },
     methods: {
@@ -237,7 +234,7 @@ export default {
         },
         destroyPopup() {
             if (this.popup) {
-                this.popup.destroyAll();
+                this.popup.destroy();
                 this.popup = null;
             }
         },
