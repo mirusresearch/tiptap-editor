@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.1.10",
+    "version": "1.1.11",
     "description": "custom setup for the tiptap editor",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
@@ -21,18 +21,19 @@
         "*.js"
     ],
     "scripts": {
-        "dev": "yarn serve",
-        "serve": "vue serve src/dev.vue",
+        "serve": "vue-cli-service serve",
         "build": "WEBPACK_TARGET=node vue-cli-service build --target lib --name tiptap-editor src/tiptap-editor.vue"
     },
     "devDependencies": {
-        "@babel/core": "^7.4.0",
-        "@babel/polyfill": "^7.4.0",
-        "@babel/preset-env": "^7.4.2",
-        "@vue/babel-preset-app": "^3.5.5",
-        "@vue/cli-plugin-babel": "^3.5.5",
-        "@vue/cli-service": "^3.5.5",
+        "@babel/core": "^7.4.4",
+        "@babel/polyfill": "^7.4.4",
+        "@babel/preset-env": "^7.4.4",
+        "@vue/babel-preset-app": "^3.7.0",
+        "@vue/cli-plugin-babel": "^3.7.0",
+        "@vue/cli-service": "^3.7.0",
+        "@vue/cli-service-global": "^3.7.0",
         "babel-loader": "^8.0.5",
+        "babel-polyfill": "^6.26.0",
         "current-script-polyfill": "^1.0.0",
         "eslint": "^5.15.3",
         "lodash.get": "^4.4.2",
@@ -40,19 +41,22 @@
         "node-sass": "^4.11.0",
         "sass-loader": "^7.1.0",
         "tippy.js": "^4.3.1",
-        "tiptap": "^1.16.2",
-        "tiptap-commands": "^1.7.1",
-        "tiptap-extensions": "^1.16.2",
+        "tiptap": "1.17.0",
+        "tiptap-commands": "1.8.0",
+        "tiptap-extensions": "1.17.0",
         "vue": "^2.6.10",
         "vue-template-compiler": "^2.6.10",
-        "webpack": "^4.29.6",
-        "webpack-bundle-analyzer": "^3.1.0"
+        "webpack": "^4.31.0"
+    },
+    "resolutions": {
+        "tiptap": "1.17.0",
+        "tiptap-utils": "1.4.0",
+        "tiptap-commands": "1.8.0",
+        "tiptap-extensions": "1.17.0"
     },
     "browserslist": [
         "> 1%",
-        "ie >= 9",
         "last 2 versions",
-        "not ie <= 8"
-    ],
-    "dependencies": {}
+        "ie >= 9"
+    ]
 }
