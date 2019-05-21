@@ -2,7 +2,11 @@
     <div>
         <div class="tiptap-editor">
             <editor-menu-bar :editor="editor">
-                <div class="menubar" slot-scope="{ commands, isActive }">
+                <div
+                    v-if="showMenu"
+                    class="menubar"
+                    slot-scope="{ commands, isActive }"
+                >
                     <button
                         class="menubar__button"
                         :class="{ 'is-active': isActive.bold() }"
@@ -77,6 +81,10 @@ export default {
             default: () => [],
         },
         placeholder: { type: String, default: 'write your content here...' },
+        showMenu: {
+            type: Boolean,
+            default: true,
+        }
     },
     components: { EditorContent, EditorMenuBar },
     data() {
