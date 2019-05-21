@@ -44,7 +44,11 @@
                     </button>
                 </div>
             </editor-menu-bar>
-            <editor-content class="editor__content" :editor="editor" />
+            <editor-content
+                :editor="editor"
+                :style="{ height: height }"
+                class="editor__content"
+            />
         </div>
         <div
             v-if="maxCharacterCount"
@@ -94,6 +98,10 @@ export default {
         maxCharacterCount: {
             type: Number,
             default: null,
+        },
+        height: {
+            type: String,
+            default: '300px',
         },
     },
     components: { EditorContent, EditorMenuBar },
@@ -332,7 +340,6 @@ export default {
 
     .editor__content {
         font-size: 16px;
-        height: 300px;
         outline: 0;
         overflow-y: auto;
         padding: 10px;
