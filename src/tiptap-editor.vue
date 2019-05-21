@@ -46,7 +46,13 @@
             </editor-menu-bar>
             <editor-content class="editor__content" :editor="editor" />
         </div>
-
+        <div
+            v-if="maxCharacterCount"
+            :class="{ over: maxCharacterCountExceeded }"
+            class="character-count"
+        >
+            {{ currentValue.length }}/{{ maxCharacterCount }}
+        </div>
         <div class="error-list" :v-show="false" ref="errors">
             <template v-if="currentWarning">
                 <b>{{ currentWarning.message }}</b>
@@ -84,7 +90,11 @@ export default {
         showMenu: {
             type: Boolean,
             default: true,
-        }
+        },
+        maxCharacterCount: {
+            type: Number,
+            default: null,
+        },
     },
     components: { EditorContent, EditorMenuBar },
     data() {
@@ -114,6 +124,9 @@ export default {
                 };
             });
         },
+        maxCharacterCountExceeded() {
+            return this.currentValue.length > this.maxCharacterCount;
+        }
     },
     mounted() {
         this.currentValue = this.value;
@@ -347,6 +360,14 @@ export default {
         .ProseMirror {
             height: 100%;
         }
+    }
+}
+
+.character-count {
+    color: lightgreen;
+    float: right;
+    &.over {
+        color: red;
     }
 }
 </style>
