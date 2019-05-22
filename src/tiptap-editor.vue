@@ -2,7 +2,11 @@
     <div>
         <div class="tiptap-editor">
             <editor-menu-bar :editor="editor">
-                <div class="menubar" slot-scope="{ commands, isActive }">
+                <div
+                    v-if="showMenu"
+                    class="menubar"
+                    slot-scope="{ commands, isActive }"
+                >
                     <button
                         class="menubar__button"
                         :class="{ 'is-active': isActive.bold() }"
@@ -40,9 +44,19 @@
                     </button>
                 </div>
             </editor-menu-bar>
-            <editor-content class="editor__content" :editor="editor" />
+            <editor-content
+                :editor="editor"
+                :style="{ height: height }"
+                class="editor__content"
+            />
         </div>
-
+        <div
+            v-if="maxCharacterCount"
+            :class="{ over: maxCharacterCountExceeded }"
+            class="character-count"
+        >
+            {{ currentValue.length }}/{{ maxCharacterCount }}
+        </div>
         <div class="error-list" :v-show="false" ref="errors">
             <template v-if="currentWarning">
                 <b>{{ currentWarning.message }}</b>
@@ -77,6 +91,18 @@ export default {
             default: () => [],
         },
         placeholder: { type: String, default: 'write your content here...' },
+        showMenu: {
+            type: Boolean,
+            default: true,
+        },
+        maxCharacterCount: {
+            type: Number,
+            default: null,
+        },
+        height: {
+            type: String,
+            default: '300px',
+        },
     },
     components: { EditorContent, EditorMenuBar },
     data() {
@@ -106,6 +132,9 @@ export default {
                 };
             });
         },
+        maxCharacterCountExceeded() {
+            return this.currentValue.length > this.maxCharacterCount;
+        }
     },
     mounted() {
         this.currentValue = this.value;
@@ -311,7 +340,6 @@ export default {
 
     .editor__content {
         font-size: 16px;
-        height: 300px;
         outline: 0;
         overflow-y: auto;
         padding: 10px;
@@ -339,6 +367,14 @@ export default {
         .ProseMirror {
             height: 100%;
         }
+    }
+}
+
+.character-count {
+    color: lightgreen;
+    float: right;
+    &.over {
+        color: red;
     }
 }
 </style>
