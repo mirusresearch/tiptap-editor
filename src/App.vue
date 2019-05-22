@@ -2,6 +2,9 @@
     <tiptapEditor
         :value.sync="localtext"
         :warnings="warnings"
+        :showMenu="showMenu"
+        :maxCharacterCount="maxCharactercount"
+        :height="height"
         placeholder="write something will-ya!"
     />
 </template>
@@ -14,6 +17,9 @@ export default {
     components: { tiptapEditor },
     data() {
         return {
+            maxCharacterCount: 200, //default null for infinity
+            height: '200px', // default it 300px
+            showMenu: true, // false to hide
             warnings: [
                 {
                     value: 'red',

@@ -12,6 +12,9 @@ yarn add tiptap-editor
   <TextEditor
     :value.sync="localtext"
     :warnings="warnings"
+    :showMenu="true"
+    :maxCharacterCount="200"
+    height="500px"
     placeholder="write something will-ya!"
   />
 </template
@@ -35,13 +38,13 @@ export default {
 
 ### Props:
 
-#### value
+#### value: String
 the text to edit
 
-#### placeholder
+#### placeholder: String
 Text to display when there is nothing in the editor
 
-#### warnings
+#### warnings: [ Objects ]
 array of text that should be warned about
 ```js
 [
@@ -57,3 +60,12 @@ array of text that should be warned about
     },
 ]
 ```
+
+#### maxCharacterCount: Number
+Show a count of the current number of characters. If over the max the count will show red
+
+#### height: String
+height of the text editor, default is `300px`
+
+#### showMenu: Boolean
+if false, hide the format menu
