@@ -2,11 +2,7 @@
     <div>
         <div class="tiptap-editor">
             <editor-menu-bar :editor="editor">
-                <div
-                    v-if="showMenu"
-                    class="menubar"
-                    slot-scope="{ commands, isActive }"
-                >
+                <div v-if="showMenu" class="menubar" slot-scope="{ commands, isActive }">
                     <button
                         class="menubar__button"
                         :class="{ 'is-active': isActive.bold() }"
@@ -44,18 +40,14 @@
                     </button>
                 </div>
             </editor-menu-bar>
-            <editor-content
-                :editor="editor"
-                :style="{ height: height }"
-                class="editor__content"
-            />
+            <editor-content :editor="editor" :style="{ height: height }" class="editor__content" />
         </div>
         <div
             v-if="maxCharacterCount"
             :class="{ over: maxCharacterCountExceeded }"
             class="character-count"
         >
-            {{ currentValue.length }}/{{ maxCharacterCount }}
+            {{ currentCharacterCount }}/{{ maxCharacterCount }}
         </div>
         <div class="error-list" :v-show="false" ref="errors">
             <template v-if="currentWarning">
@@ -81,6 +73,7 @@ import tippy from 'tippy.js';
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
 import { Blockquote, BulletList, ListItem, Bold, Italic, Placeholder } from 'tiptap-extensions';
 import Warning from './warnings.js';
+import MaxCharacterCount from './max-character-count.js';
 
 export default {
     name: 'tiptapEditor',
@@ -114,6 +107,7 @@ export default {
             navigatedOptionIndex: 0,
             insertOption: () => {},
             optionsRange: null,
+            currentCharacterCount: 0,
         };
     },
     computed: {
@@ -133,8 +127,8 @@ export default {
             });
         },
         maxCharacterCountExceeded() {
-            return this.currentValue.length > this.maxCharacterCount;
-        }
+            return this.currentCharacterCount >= this.maxCharacterCount;
+        },
     },
     mounted() {
         this.currentValue = this.value;
@@ -154,6 +148,12 @@ export default {
                 new Placeholder({
                     emptyClass: 'is-empty',
                     emptyNodeText: this.placeholder,
+                }),
+                new MaxCharacterCount({
+                    maxCharacterCount: this.maxCharacterCount,
+                    onChange: currentCharacterCount => {
+                        this.currentCharacterCount = currentCharacterCount;
+                    },
                 }),
                 new Warning({
                     getErrorWords: this.getErrorWords,

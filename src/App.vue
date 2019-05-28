@@ -3,7 +3,7 @@
         :value.sync="localtext"
         :warnings="warnings"
         :showMenu="showMenu"
-        :maxCharacterCount="maxCharactercount"
+        :maxCharacterCount="maxCharacterCount"
         :height="height"
         placeholder="write something will-ya!"
     />
