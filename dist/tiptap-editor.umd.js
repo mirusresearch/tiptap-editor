@@ -33171,15 +33171,15 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"58ef4fa6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=template&id=fc9a53c6&
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"58ef4fa6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=template&id=2d779299&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"tiptap-editor"},[_c('editor-menu-bar',{attrs:{"editor":_vm.editor},scopedSlots:_vm._u([{key:"default",fn:function(ref){
 var commands = ref.commands;
 var isActive = ref.isActive;
-return (_vm.showMenu)?_c('div',{staticClass:"menubar"},[_c('button',{staticClass:"menubar__button",class:{ 'is-active': isActive.bold() },on:{"click":commands.bold}},[_c('b',[_vm._v("B")])]),_c('button',{staticClass:"menubar__button",class:{ 'is-active': isActive.italic() },on:{"click":commands.italic}},[_c('i',[_vm._v("I")])]),_c('button',{staticClass:"menubar__button",class:{ 'is-active': isActive.bullet_list() },on:{"click":commands.bullet_list}},[_c('svg',{staticClass:"svg-inline--fa fa-list-ul fa-w-16",attrs:{"aria-hidden":"true","focusable":"false","data-prefix":"fas","data-icon":"list-ul","role":"img","xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 512 512"}},[_c('path',{attrs:{"fill":"currentColor","d":"M96 96c0 26.51-21.49 48-48 48S0 122.51 0 96s21.49-48 48-48 48 21.49 48 48zM48 208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm0 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm96-236h352c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"}})])])]):_vm._e()}}],null,true)}),_c('editor-content',{staticClass:"editor__content",style:({ height: _vm.height }),attrs:{"editor":_vm.editor}})],1),(_vm.maxCharacterCount)?_c('div',{staticClass:"character-count",class:{ over: _vm.maxCharacterCountExceeded }},[_vm._v("\n        "+_vm._s(_vm.currentValue.length)+"/"+_vm._s(_vm.maxCharacterCount)+"\n    ")]):_vm._e(),_c('div',{ref:"errors",staticClass:"error-list",attrs:{"v-show":false}},[(_vm.currentWarning)?[_c('b',[_vm._v(_vm._s(_vm.currentWarning.message))]),_vm._l((_vm.currentOptions),function(option,index){return _c('div',{key:option.id,staticClass:"error-list__item",class:{ selected: _vm.navigatedOptionIndex === index },on:{"click":function($event){return _vm.selectOption(option)}}},[_vm._v("\n                "+_vm._s(option.value)+"\n            ")])})]:_vm._e()],2)])}
+return (_vm.showMenu)?_c('div',{staticClass:"menubar"},[_c('button',{staticClass:"menubar__button",class:{ 'is-active': isActive.bold() },on:{"click":commands.bold}},[_c('b',[_vm._v("B")])]),_c('button',{staticClass:"menubar__button",class:{ 'is-active': isActive.italic() },on:{"click":commands.italic}},[_c('i',[_vm._v("I")])]),_c('button',{staticClass:"menubar__button",class:{ 'is-active': isActive.bullet_list() },on:{"click":commands.bullet_list}},[_c('svg',{staticClass:"svg-inline--fa fa-list-ul fa-w-16",attrs:{"aria-hidden":"true","focusable":"false","data-prefix":"fas","data-icon":"list-ul","role":"img","xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 512 512"}},[_c('path',{attrs:{"fill":"currentColor","d":"M96 96c0 26.51-21.49 48-48 48S0 122.51 0 96s21.49-48 48-48 48 21.49 48 48zM48 208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm0 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm96-236h352c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"}})])])]):_vm._e()}}],null,true)}),_c('editor-content',{staticClass:"editor__content",style:({ height: _vm.height }),attrs:{"editor":_vm.editor}})],1),(_vm.maxCharacterCount)?_c('div',{staticClass:"character-count",class:{ over: _vm.maxCharacterCountExceeded }},[_vm._v("\n        "+_vm._s(_vm.currentCharacterCount)+"/"+_vm._s(_vm.maxCharacterCount)+"\n    ")]):_vm._e(),_c('div',{ref:"errors",staticClass:"error-list",attrs:{"v-show":false}},[(_vm.currentWarning)?[_c('b',[_vm._v(_vm._s(_vm.currentWarning.message))]),_vm._l((_vm.currentOptions),function(option,index){return _c('div',{key:option.id,staticClass:"error-list__item",class:{ selected: _vm.navigatedOptionIndex === index },on:{"click":function($event){return _vm.selectOption(option)}}},[_vm._v("\n                "+_vm._s(option.value)+"\n            ")])})]:_vm._e()],2)])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/tiptap-editor.vue?vue&type=template&id=fc9a53c6&
+// CONCATENATED MODULE: ./src/tiptap-editor.vue?vue&type=template&id=2d779299&
 
 // EXTERNAL MODULE: ./node_modules/current-script-polyfill/currentScript.js
 var currentScript = __webpack_require__("f6fd");
@@ -40241,6 +40241,82 @@ function (_Node) {
 }(Node);
 
 
+// CONCATENATED MODULE: ./src/max-character-count.js
+function max_character_count_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { max_character_count_typeof = function _typeof(obj) { return typeof obj; }; } else { max_character_count_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return max_character_count_typeof(obj); }
+
+function max_character_count_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function max_character_count_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function max_character_count_createClass(Constructor, protoProps, staticProps) { if (protoProps) max_character_count_defineProperties(Constructor.prototype, protoProps); if (staticProps) max_character_count_defineProperties(Constructor, staticProps); return Constructor; }
+
+function max_character_count_possibleConstructorReturn(self, call) { if (call && (max_character_count_typeof(call) === "object" || typeof call === "function")) { return call; } return max_character_count_assertThisInitialized(self); }
+
+function max_character_count_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function max_character_count_getPrototypeOf(o) { max_character_count_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return max_character_count_getPrototypeOf(o); }
+
+function max_character_count_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) max_character_count_setPrototypeOf(subClass, superClass); }
+
+function max_character_count_setPrototypeOf(o, p) { max_character_count_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return max_character_count_setPrototypeOf(o, p); }
+
+
+
+var max_character_count_MaxCharacterCount =
+/*#__PURE__*/
+function (_Extension) {
+  max_character_count_inherits(MaxCharacterCount, _Extension);
+
+  function MaxCharacterCount() {
+    max_character_count_classCallCheck(this, MaxCharacterCount);
+
+    return max_character_count_possibleConstructorReturn(this, max_character_count_getPrototypeOf(MaxCharacterCount).apply(this, arguments));
+  }
+
+  max_character_count_createClass(MaxCharacterCount, [{
+    key: "name",
+    get: function get() {
+      return 'max Character Count';
+    }
+  }, {
+    key: "defaultOptions",
+    get: function get() {
+      return {
+        maxCharacterCount: 100,
+        onChange: function onChange() {}
+      };
+    }
+  }, {
+    key: "plugins",
+    get: function get() {
+      var self = this;
+      return [new dist["Plugin"]({
+        key: new dist["PluginKey"]('maxCharacterCount'),
+        filterTransaction: function filterTransaction(transaction, state) {
+          if (self.options.maxCharacterCount !== null && transaction.docChanged) {
+            var step = transaction.steps[0].toJSON();
+            return state.doc.content.size < self.options.maxCharacterCount || step.from < step.to || // let deletes through
+            step.stepType !== 'replace' // let none adds through
+            ;
+          }
+
+          return true;
+        },
+        view: function view() {
+          return {
+            update: function update(view, prevState) {
+              self.options.onChange(view.state.doc.content.size);
+            }
+          };
+        }
+      })];
+    }
+  }]);
+
+  return MaxCharacterCount;
+}(Extension);
+
+
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/@vue/cli-service/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=script&lang=js&
 //
 //
@@ -40310,14 +40386,7 @@ function (_Node) {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -40366,7 +40435,8 @@ function (_Node) {
       currentValue: '',
       navigatedOptionIndex: 0,
       insertOption: function insertOption() {},
-      optionsRange: null
+      optionsRange: null,
+      currentCharacterCount: 0
     };
   },
   computed: {
@@ -40392,7 +40462,7 @@ function (_Node) {
       });
     },
     maxCharacterCountExceeded: function maxCharacterCountExceeded() {
-      return this.currentValue.length > this.maxCharacterCount;
+      return this.currentCharacterCount >= this.maxCharacterCount;
     }
   },
   mounted: function mounted() {
@@ -40414,6 +40484,11 @@ function (_Node) {
       extensions: [new extensions_esm_Blockquote(), new extensions_esm_BulletList(), new extensions_esm_ListItem(), new extensions_esm_Bold(), new extensions_esm_Italic(), new extensions_esm_Placeholder({
         emptyClass: 'is-empty',
         emptyNodeText: this.placeholder
+      }), new max_character_count_MaxCharacterCount({
+        maxCharacterCount: this.maxCharacterCount,
+        onChange: function onChange(currentCharacterCount) {
+          _this.currentCharacterCount = currentCharacterCount;
+        }
       }), new warnings_Warning({
         getErrorWords: this.getErrorWords,
         onEnter: function onEnter(_ref2) {
