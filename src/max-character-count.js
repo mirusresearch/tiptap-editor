@@ -19,8 +19,14 @@ export default class MaxCharacterCount extends Extension {
             new Plugin({
                 key: new PluginKey('maxCharacterCount'),
                 filterTransaction: (transaction, state) => {
-                    if (self.options.maxCharacterCount !== null) {
-                        return state.doc.content.size < self.options.maxCharacterCount;
+                    if (self.options.maxCharacterCount !== null && transaction.docChanged) {
+                        const step = transaction.steps[0].toJSON();
+
+                        return (
+                            state.doc.content.size < self.options.maxCharacterCount ||
+                            step.from < step.to || // let deletes through
+                            step.stepType !== 'replace' // let none adds through
+                        );
                     }
                     return true;
                 },
