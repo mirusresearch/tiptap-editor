@@ -1,8 +1,13 @@
 import { Extension, Plugin, PluginKey } from 'tiptap';
 
+// For some reason the empty edit area has a size of 2
+function realSize(size) {
+    return size - 2;
+}
+
 export default class MaxCharacterCount extends Extension {
     get name() {
-        return 'max Character Count';
+        return 'maxCharacterCount';
     }
 
     get defaultOptions() {
@@ -23,7 +28,7 @@ export default class MaxCharacterCount extends Extension {
                         const step = transaction.steps[0].toJSON();
 
                         return (
-                            state.doc.content.size < self.options.maxCharacterCount ||
+                            realSize(state.doc.content.size) < self.options.maxCharacterCount ||
                             step.from < step.to || // let deletes through
                             step.stepType !== 'replace' // let none adds through
                         );
@@ -33,7 +38,7 @@ export default class MaxCharacterCount extends Extension {
                 view() {
                     return {
                         update: (view, prevState) => {
-                            self.options.onChange(view.state.doc.content.size);
+                            self.options.onChange(realSize(view.state.doc.content.size));
                         },
                     };
                 },
