@@ -3,7 +3,7 @@ module.exports = {
         [
             '@vue/babel-preset-app',
             {
-                useBuiltIns: 'entry',
+                usebuiltins: 'entry',
             },
         ],
     ],
