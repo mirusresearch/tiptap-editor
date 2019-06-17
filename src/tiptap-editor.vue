@@ -47,7 +47,7 @@
             :class="{ over: maxCharacterCountExceeded }"
             class="character-count"
         >
-            {{ currentCharacterCount }}/{{ maxCharacterCount }}
+            {{ charactersRemaining }} characters remaining
         </div>
         <div class="error-list" :v-show="false" ref="errors">
             <template v-if="currentWarning">
@@ -125,6 +125,9 @@ export default {
                     options: (mistake.options || []).map((value, id) => ({ value, id })),
                 };
             });
+        },
+        charactersRemaining() {
+            return this.maxCharacterCount - this.currentCharacterCount;
         },
         maxCharacterCountExceeded() {
             return this.currentCharacterCount >= this.maxCharacterCount;
@@ -371,8 +374,11 @@ export default {
 }
 
 .character-count {
-    color: lightgreen;
+    margin-right: 5px;
+    margin-top: 5px;
+    color: #0a6800;
     float: right;
+
     &.over {
         color: red;
     }
