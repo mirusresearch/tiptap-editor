@@ -7,6 +7,8 @@
                         class="menubar__button"
                         :class="{ 'is-active': isActive.bold() }"
                         @click="commands.bold"
+                        :aria-pressed="isActive.bold()"
+                        aria-label="bold"
                     >
                         <b>B</b>
                     </button>
@@ -14,6 +16,8 @@
                         class="menubar__button"
                         :class="{ 'is-active': isActive.italic() }"
                         @click="commands.italic"
+                        :aria-pressed="isActive.italic()"
+                        aria-label="italic"
                     >
                         <i>I</i>
                     </button>
@@ -21,6 +25,8 @@
                         class="menubar__button"
                         :class="{ 'is-active': isActive.bullet_list() }"
                         @click="commands.bullet_list"
+                        :aria-pressed="isActive.bullet_list()"
+                        aria-label="bullet list"
                     >
                         <svg
                             aria-hidden="true"
@@ -115,7 +121,7 @@ export default {
             if (this.warnings.length < 1) {
                 return [];
             }
-            return this.warnings.map(mistake => {
+            return this.warnings.map((mistake) => {
                 const isWord = mistake.isWord === undefined ? true : mistake.isWord;
                 return {
                     overrideClass: mistake.overrideClass,
@@ -154,14 +160,14 @@ export default {
                 }),
                 new MaxCharacterCount({
                     maxCharacterCount: this.maxCharacterCount,
-                    onChange: currentCharacterCount => {
+                    onChange: (currentCharacterCount) => {
                         this.currentCharacterCount = currentCharacterCount;
                     },
                 }),
                 new Warning({
                     getErrorWords: this.getErrorWords,
                     onEnter: ({ range, command, virtualNode, text }) => {
-                        this.currentWarning = this.errors.find(err => err.value === text);
+                        this.currentWarning = this.errors.find((err) => err.value === text);
                         this.currentOptions = this.currentWarning.options || [];
                         this.navigatedOptionIndex = 0;
                         this.optionRange = range;
@@ -169,7 +175,7 @@ export default {
                         this.insertOption = command;
                     },
                     onChange: ({ range, virtualNode, text }) => {
-                        this.currentWarning = this.errors.find(err => err.value === text);
+                        this.currentWarning = this.errors.find((err) => err.value === text);
                         this.currentOptions = this.currentWarning.options || [];
                         this.navigatedOptionIndex = 0;
                         this.optionRange = range;
@@ -228,7 +234,7 @@ export default {
             if (this.errors.length < 1) {
                 return [];
             }
-            return this.errors.map(err => ({
+            return this.errors.map((err) => ({
                 value: err.value,
                 overrideClass: err.overrideClass,
                 isWord: err.isWord,
