@@ -7,7 +7,7 @@
                         class="menubar__button"
                         :class="{ 'is-active': isActive.bold() }"
                         @click="commands.bold"
-                        :aria-pressed="isActive.bold()"
+                        :aria-pressed="`${isActive.bold() ? 'true' : 'false'}`"
                         aria-label="bold"
                     >
                         <b>B</b>
@@ -16,7 +16,7 @@
                         class="menubar__button"
                         :class="{ 'is-active': isActive.italic() }"
                         @click="commands.italic"
-                        :aria-pressed="isActive.italic()"
+                        :aria-pressed="`${isActive.italic() ? 'true' : 'false'}`"
                         aria-label="italic"
                     >
                         <i>I</i>
@@ -25,7 +25,7 @@
                         class="menubar__button"
                         :class="{ 'is-active': isActive.bullet_list() }"
                         @click="commands.bullet_list"
-                        :aria-pressed="isActive.bullet_list()"
+                        :aria-pressed="`${isActive.bullet_list() ? 'true' : 'false'}`"
                         aria-label="bullet list"
                     >
                         <svg
