@@ -2,31 +2,45 @@
     <div>
         <div class="tiptap-editor">
             <editor-menu-bar :editor="editor">
-                <div v-if="showMenu" class="menubar" slot-scope="{ commands, isActive }">
+                <div
+                    v-if="showMenu"
+                    class="menubar"
+                    slot-scope="{ commands, isActive }"
+                    role="toolbar"
+                    :aria-controls="id || null"
+                >
                     <button
-                        class="menubar__button"
-                        :class="{ 'is-active': isActive.bold() }"
-                        @click="commands.bold"
                         :aria-pressed="`${isActive.bold() ? 'true' : 'false'}`"
+                        :class="{ 'is-active': isActive.bold() }"
+                        @keyup.left="toolbarGoLeft"
+                        @keyup.right="toolbarGoRight"
+                        @click="commands.bold"
                         aria-label="bold"
+                        class="menubar__button"
+                        value="bold"
                     >
                         <b>B</b>
                     </button>
                     <button
-                        class="menubar__button"
+                        :aria-pressed="`${isActive.italic() ? 'true' : 'false'}`"
                         :class="{ 'is-active': isActive.italic() }"
                         @click="commands.italic"
-                        :aria-pressed="`${isActive.italic() ? 'true' : 'false'}`"
+                        @keyup.left="toolbarGoLeft"
+                        @keyup.right="toolbarGoRight"
                         aria-label="italic"
+                        class="menubar__button"
+                        value="italic"
                     >
                         <i>I</i>
                     </button>
                     <button
-                        class="menubar__button"
+                        :aria-pressed="`${isActive.bullet_list() ? 'true' : 'false'}`"
                         :class="{ 'is-active': isActive.bullet_list() }"
                         @click="commands.bullet_list"
-                        :aria-pressed="`${isActive.bullet_list() ? 'true' : 'false'}`"
+                        @keyup.left="toolbarGoLeft"
+                        @keyup.right="toolbarGoRight"
                         aria-label="bullet list"
+                        class="menubar__button"
                     >
                         <svg
                             aria-hidden="true"
@@ -46,7 +60,14 @@
                     </button>
                 </div>
             </editor-menu-bar>
-            <editor-content :editor="editor" :style="{ height: height }" class="editor__content" />
+            <editor-content
+                :editor="editor"
+                :style="{ height: height }"
+                :id="id || null"
+                role="Textbox"
+                class="editor__content"
+                aria-label="text area"
+            />
         </div>
         <div
             v-if="maxCharacterCount"
@@ -84,6 +105,7 @@ import MaxCharacterCount from './max-character-count.js';
 export default {
     name: 'tiptapEditor',
     props: {
+        id: { type: String, default: null },
         value: { type: String, default: '' },
         warnings: {
             type: Array,
@@ -274,6 +296,22 @@ export default {
             if (this.popup) {
                 this.popup.destroy();
                 this.popup = null;
+            }
+        },
+        toolbarGoLeft(evt) {
+            evt.preventDefault();
+            const prevSibling = evt.target.previousSibling;
+
+            if (prevSibling && prevSibling.focus !== undefined) {
+                prevSibling.focus();
+            }
+        },
+        toolbarGoRight(evt) {
+            evt.preventDefault();
+            const nextSibling = evt.target.nextSibling;
+
+            if (nextSibling && nextSibling.focus !== undefined) {
+                nextSibling.focus();
             }
         },
     },

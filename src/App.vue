@@ -5,6 +5,7 @@
         :showMenu="showMenu"
         :maxCharacterCount="maxCharacterCount"
         :height="height"
+        id="unique_id"
         placeholder="write something will-ya!"
     />
 </template>

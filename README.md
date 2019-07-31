@@ -16,6 +16,7 @@ yarn add tiptap-editor
     :maxCharacterCount="200"
     height="500px"
     placeholder="write something will-ya!"
+    id="some_unique_id"
   />
 </template
 
@@ -69,3 +70,6 @@ height of the text editor, default is `300px`
 
 #### showMenu: Boolean
 if false, hide the format menu
+
+#### id: String
+give the editor a unique id, also adds aria tags to link the editor menu to the text area
