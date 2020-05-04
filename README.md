@@ -73,3 +73,12 @@ if false, hide the format menu
 
 #### id: String
 give the editor a unique id, also adds aria tags to link the editor menu to the text area
+
+## Dev
+start the dev server with
+
+```bash
+yarn serve
+```
+
+tests: TODO

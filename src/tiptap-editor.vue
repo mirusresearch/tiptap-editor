@@ -98,7 +98,15 @@ import 'current-script-polyfill';
 import unescape from 'lodash.unescape';
 import tippy from 'tippy.js';
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
-import { Blockquote, BulletList, ListItem, Bold, Italic, Placeholder } from 'tiptap-extensions';
+import {
+    Blockquote,
+    BulletList,
+    ListItem,
+    Bold,
+    Italic,
+    Placeholder,
+    History,
+} from 'tiptap-extensions';
 import Warning from './warnings.js';
 import MaxCharacterCount from './max-character-count.js';
 
@@ -168,9 +176,11 @@ export default {
             parseOptions: { preserveWhitespace: 'full' },
             onUpdate: ({ getJSON, getHTML }) => {
                 this.currentValue = getHTML();
+
                 this.$emit('update:value', this.currentValue);
             },
             extensions: [
+                new History(),
                 new Blockquote(),
                 new BulletList(),
                 new ListItem(),
