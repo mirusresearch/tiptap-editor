@@ -18156,7 +18156,7 @@ exports = module.exports = __webpack_require__("c356")(false);
 
 
 // module
-exports.push([module.i, ".error-list .error-list__item.selected,.error-list .error-list__item:hover{background-color:hsla(0,0%,100%,.2)}.tiptap-editor{border:1px solid rgba(10,10,10,.1)}.tiptap-editor input:focus,.tiptap-editor textarea:focus{outline:none}.tiptap-editor :focus{outline:none}.tiptap-editor p.is-empty:first-child:before{content:attr(data-empty-text);float:left;color:#aaa;pointer-events:none;height:0;font-style:italic}.tiptap-editor .menubar{border-bottom:1px solid rgba(10,10,10,.1)}.tiptap-editor .menubar button{font-size:14px;background-color:rgba(0,0,0,0);border:none;cursor:pointer;height:30px;outline:0;width:35px;vertical-align:bottom}.tiptap-editor .menubar button.is-active,.tiptap-editor .menubar button:hover{background-color:#f0f0f0}.tiptap-editor .menubar button svg{padding-top:4px;width:12px}.tiptap-editor .editor__content{font-size:16px;outline:0;overflow-y:auto;padding:10px}.tiptap-editor .editor__content .underline-red{border-bottom:3px solid red}.tiptap-editor .editor__content .underline-orange{border-bottom:3px solid orange}.tiptap-editor .editor__content .underline-green{border-bottom:3px solid #90ee90}.tiptap-editor .editor__content .underline-blue{border-bottom:3px solid #00f}.tiptap-editor .editor__content ul{padding:0 40px}.tiptap-editor .editor__content .ProseMirror{height:100%}.character-count{margin-right:5px;margin-top:5px;color:#0a6800;float:right}.character-count.over{color:red}", ""]);
+exports.push([module.i, ".error-list .error-list__item.selected,.error-list .error-list__item:hover{background-color:hsla(0,0%,100%,.2)}.tiptap-editor{border:1px solid rgba(10,10,10,.1)}.tiptap-editor input:focus,.tiptap-editor textarea:focus{outline:none}.tiptap-editor :focus{outline:none}.tiptap-editor p.is-empty:first-child:before{content:attr(data-empty-text);float:left;color:#aaa;pointer-events:none;height:0;font-style:italic}.tiptap-editor .menubar{border-bottom:1px solid rgba(10,10,10,.1)}.tiptap-editor .menubar button{font-size:14px;background-color:rgba(0,0,0,0);border:none;cursor:pointer;height:30px;outline:0;width:35px;vertical-align:bottom}.tiptap-editor .menubar button.is-active,.tiptap-editor .menubar button:hover{background-color:#f0f0f0}.tiptap-editor .menubar button svg{padding-top:4px;width:12px}.tiptap-editor .editor__content{font-size:16px;outline:0;overflow-y:auto;padding:10px}.tiptap-editor .editor__content .underline-red{border-bottom:3px solid red}.tiptap-editor .editor__content .underline-orange{border-bottom:3px solid orange}.tiptap-editor .editor__content .underline-green{border-bottom:3px solid #90ee90}.tiptap-editor .editor__content .underline-blue{border-bottom:3px solid #00f}.tiptap-editor .editor__content ul{padding:0 40px}.tiptap-editor .editor__content .ProseMirror{height:100%;padding:2px}.character-count{margin-right:5px;margin-top:5px;color:#0a6800;float:right}.character-count.over{color:red}", ""]);
 
 // exports
 
@@ -27329,7 +27329,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"49cc484b-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=template&id=294e2b28&
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"49cc484b-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=template&id=7f2b6a9a&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"tiptap-editor"},[_c('editor-menu-bar',{attrs:{"editor":_vm.editor},scopedSlots:_vm._u([{key:"default",fn:function(ref){
 var commands = ref.commands;
 var isActive = ref.isActive;
@@ -27337,7 +27337,7 @@ return (_vm.showMenu)?_c('div',{staticClass:"menubar",attrs:{"role":"toolbar","a
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/tiptap-editor.vue?vue&type=template&id=294e2b28&
+// CONCATENATED MODULE: ./src/tiptap-editor.vue?vue&type=template&id=7f2b6a9a&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.find.js
 var es6_array_find = __webpack_require__("7514");
