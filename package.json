@@ -1,6 +1,6 @@
 {
     "name": "tiptap-editor",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "custom setup for the tiptap editor",
     "repository": "https://github.com/mirusresearch/tiptap-editor",
     "bugs": {
