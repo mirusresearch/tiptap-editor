@@ -423,6 +423,7 @@ export default {
 
         .ProseMirror {
             height: 100%;
+            padding: 2px;
         }
     }
 }
