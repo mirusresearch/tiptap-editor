@@ -8,10 +8,16 @@ function dispatch(tr, state, view) {
     view.updateState(state);
 }
 
+function isWord(w) {
+    const regex = new RegExp(/[!@#$^%^&*(),.?":{}|<>]/g)
+    const startsSpecial = regex.test(w.value[0]);
+    return w.isWord && !startsSpecial;
+}
+
 function lint(doc, position, prev, getErrorWords) {
     const words = getErrorWords();
     const regexString = words
-        .map(w => (w.isWord ? `\\b(${w.value})\\b` : `(${w.value})`))
+        .map(w => (isWord(w) ? `\\b(${w.value})\\b` : `(${w.value})`))
         .join('|');
     const badWordsRegex = new RegExp(regexString, 'ig');
 
