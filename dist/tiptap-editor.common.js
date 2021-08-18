@@ -49677,10 +49677,16 @@ function warnings_dispatch(tr, state, view) {
   view.updateState(state);
 }
 
+function warnings_isWord(w) {
+  var regex = new RegExp(/[!@#$^%^&*(),.?":{}|<>]/g);
+  var startsSpecial = regex.test(w.value[0]);
+  return w.isWord && !startsSpecial;
+}
+
 function lint(doc, position, prev, getErrorWords) {
   var words = getErrorWords();
   var regexString = words.map(function (w) {
-    return w.isWord ? "\\b(".concat(w.value, ")\\b") : "(".concat(w.value, ")");
+    return warnings_isWord(w) ? "\\b(".concat(w.value, ")\\b") : "(".concat(w.value, ")");
   }).join('|');
   var badWordsRegex = new RegExp(regexString, 'ig');
   var highlights = [];
