@@ -9,7 +9,7 @@ function dispatch(tr, state, view) {
 }
 
 function isWord(w) {
-    const regex = new RegExp(/[!@#$^%^&*(),.?":{}|<>]/g)
+    const regex = new RegExp(/[!@#$^%^&*(),.?":{}|<>]/g);
     const startsSpecial = regex.test(w.value[0]);
     return w.isWord && !startsSpecial;
 }
@@ -17,7 +17,7 @@ function isWord(w) {
 function lint(doc, position, prev, getErrorWords) {
     const words = getErrorWords();
     const regexString = words
-        .map(w => (isWord(w) ? `\\b(${w.value})\\b` : `(${w.value})`))
+        .map((w) => (isWord(w) ? `\\b(${w.value})\\b` : `(${w.value})`))
         .join('|');
     const badWordsRegex = new RegExp(regexString, 'ig');
 
@@ -29,7 +29,7 @@ function lint(doc, position, prev, getErrorWords) {
     }
 
     function record(from, to, text) {
-        const word = words.find(w => w.value === text);
+        const word = words.find((w) => w.value === text);
 
         if (word !== undefined) {
             const overrideClass = word.overrideClass;
@@ -96,11 +96,11 @@ export default class Warning extends Node {
             inline: true,
             selectable: false,
             atom: false,
-            toDOM: mark => mark.attrs.label,
+            toDOM: (mark) => mark.attrs.label,
             parseDOM: [
                 {
                     tag: '[data-mention-id]',
-                    getAttrs: dom => {
+                    getAttrs: (dom) => {
                         const id = dom.getAttribute('data-mention-id');
                         const label = dom.innerText.split(this.options.matcher.char).join('');
                         return { id, label };
@@ -227,7 +227,7 @@ export default class Warning extends Node {
                     },
                     decorations(state) {
                         let decos = [];
-                        this.getState(state).highlights.forEach(prob => {
+                        this.getState(state).highlights.forEach((prob) => {
                             decos.push(
                                 Decoration.inline(prob.from, prob.to, {
                                     class: prob.overrideClass
