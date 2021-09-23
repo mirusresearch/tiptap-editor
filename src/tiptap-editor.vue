@@ -232,8 +232,7 @@ export default {
                         }
                         // pressing enter
                         if (event.keyCode === 13) {
-                            this.enterHandler();
-                            return true;
+                            return this.enterHandler();
                         }
                         return false;
                     },
@@ -282,10 +281,15 @@ export default {
                 (this.navigatedOptionIndex + 1) % this.currentOptions.length;
         },
         enterHandler() {
+            if (this.currentOptions.length === 0) {
+                return false;
+            }
+
             const option = this.currentOptions[this.navigatedOptionIndex];
             if (option) {
                 this.selectOption(option);
             }
+            return true;
         },
         selectOption(option) {
             this.insertOption({
