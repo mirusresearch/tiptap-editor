@@ -328,11 +328,10 @@ export default {
     watch: {
         warnings: function(n, o) {
             if (this.editor) {
-                // hack to trigger a view redraw
-                const cursor = this.editor.state.selection;
+                // preserve selection after updating warnings
+                const oldSelection = this.editor.selection;
                 this.editor.setContent(this.currentValue);
-                const restore_cursor = this.editor.state.tr.setSelection(cursor);
-                this.editor.view.dispatch(restore_cursor);
+                this.editor.setSelection(oldSelection.from, oldSelection.to);
             }
         },
     },
