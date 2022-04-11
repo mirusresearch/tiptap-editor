@@ -27338,7 +27338,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"49cc484b-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=template&id=7f2b6a9a&
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"68a8ac99-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/tiptap-editor.vue?vue&type=template&id=2f71cc94&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"tiptap-editor"},[_c('editor-menu-bar',{attrs:{"editor":_vm.editor},scopedSlots:_vm._u([{key:"default",fn:function(ref){
 var commands = ref.commands;
 var isActive = ref.isActive;
@@ -27346,7 +27346,7 @@ return (_vm.showMenu)?_c('div',{staticClass:"menubar",attrs:{"role":"toolbar","a
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/tiptap-editor.vue?vue&type=template&id=7f2b6a9a&
+// CONCATENATED MODULE: ./src/tiptap-editor.vue?vue&type=template&id=2f71cc94&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.find.js
 var es6_array_find = __webpack_require__("7514");
@@ -49555,6 +49555,9 @@ var extensions_esm_TrailingNode = /*#__PURE__*/function (_Extension) {
 
 
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.constructor.js
+var es6_regexp_constructor = __webpack_require__("3b2b");
+
 // CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js
 function classCallCheck_classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -49650,9 +49653,6 @@ function getPrototypeOf_getPrototypeOf(o) {
   };
   return getPrototypeOf_getPrototypeOf(o);
 }
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.constructor.js
-var es6_regexp_constructor = __webpack_require__("3b2b");
-
 // EXTERNAL MODULE: ./node_modules/lodash.get/index.js
 var lodash_get = __webpack_require__("c832");
 var lodash_get_default = /*#__PURE__*/__webpack_require__.n(lodash_get);
@@ -49672,9 +49672,47 @@ var lodash_get_default = /*#__PURE__*/__webpack_require__.n(lodash_get);
 
 
 
-function warnings_createSuper(Derived) { var hasNativeReflectConstruct = warnings_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return possibleConstructorReturn_possibleConstructorReturn(this, result); }; }
 
-function warnings_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+
+
+
+
+
+
+
+
+function warnings_createSuper(Derived) {
+  var hasNativeReflectConstruct = warnings_isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = getPrototypeOf_getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return possibleConstructorReturn_possibleConstructorReturn(this, result);
+  };
+}
+
+function warnings_isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 
 
@@ -49690,12 +49728,18 @@ function warnings_isWord(w) {
   var regex = new RegExp(/[!@#$^%^&*(),.?":{}|<>]/g);
   var startsSpecial = regex.test(w.value[0]);
   return w.isWord && !startsSpecial;
+} // cribbed from here https://stackoverflow.com/a/6969486/216154
+// and here https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
+
+
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 function lint(doc, position, prev, getErrorWords) {
   var words = getErrorWords();
   var regexString = words.map(function (w) {
-    return warnings_isWord(w) ? "\\b(".concat(w.value, ")\\b") : "(".concat(w.value, ")");
+    return warnings_isWord(w) ? "\\b(".concat(escapeRegExp(w.value), ")\\b") : "(".concat(escapeRegExp(w.value), ")");
   }).join('|');
   var badWordsRegex = new RegExp(regexString, 'ig');
   var highlights = [];
@@ -49964,9 +50008,38 @@ var warnings_Warning = /*#__PURE__*/function (_Node) {
 
 
 
-function max_character_count_createSuper(Derived) { var hasNativeReflectConstruct = max_character_count_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return possibleConstructorReturn_possibleConstructorReturn(this, result); }; }
 
-function max_character_count_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function max_character_count_createSuper(Derived) {
+  var hasNativeReflectConstruct = max_character_count_isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = getPrototypeOf_getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return possibleConstructorReturn_possibleConstructorReturn(this, result);
+  };
+}
+
+function max_character_count_isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
  // For some reason the empty edit area has a size of 2
 
@@ -50294,9 +50367,7 @@ var max_character_count_MaxCharacterCount = /*#__PURE__*/function (_Extension) {
 
 
           if (event.keyCode === 13) {
-            _this.enterHandler();
-
-            return true;
+            return _this.enterHandler();
           }
 
           return false;
@@ -50346,11 +50417,17 @@ var max_character_count_MaxCharacterCount = /*#__PURE__*/function (_Extension) {
       this.navigatedOptionIndex = (this.navigatedOptionIndex + 1) % this.currentOptions.length;
     },
     enterHandler: function enterHandler() {
+      if (this.currentOptions.length === 0) {
+        return false;
+      }
+
       var option = this.currentOptions[this.navigatedOptionIndex];
 
       if (option) {
         this.selectOption(option);
       }
+
+      return true;
     },
     selectOption: function selectOption(option) {
       this.insertOption({
@@ -50395,11 +50472,10 @@ var max_character_count_MaxCharacterCount = /*#__PURE__*/function (_Extension) {
   watch: {
     warnings: function warnings(n, o) {
       if (this.editor) {
-        // hack to trigger a view redraw
-        var cursor = this.editor.state.selection;
+        // preserve selection after updating warnings
+        var oldSelection = this.editor.selection;
         this.editor.setContent(this.currentValue);
-        var restore_cursor = this.editor.state.tr.setSelection(cursor);
-        this.editor.view.dispatch(restore_cursor);
+        this.editor.setSelection(oldSelection.from, oldSelection.to);
       }
     }
   }

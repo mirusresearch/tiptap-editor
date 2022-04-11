@@ -29,6 +29,11 @@ export default {
                     // default class is red
                 },
                 {
+                    value: 'prob|emati(', // avoid regexs that go bump in the night
+                    isWord: false,
+                    message: 'What even is this?',
+                },
+                {
                     value: '<script&gt;', // can use the real thing, or escape it
                     isWord: false,
                     message: 'you sure you wanted a tag?',
@@ -46,7 +51,7 @@ export default {
                 },
             ],
             localtext:
-                '&lt;script&gt; welcome to tiptap editor, here is a red mark blue with suggestions. You can also to blue, orange, and green!!',
+                '&lt;script&gt; welcome to tiptap editor, here is a red mark blue with suggestions. Even prob|emati( strings. You can highlight with other colors, e.g blue, orange, and green!!',
         };
     },
 };

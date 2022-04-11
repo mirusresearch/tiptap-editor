@@ -14,10 +14,16 @@ function isWord(w) {
     return w.isWord && !startsSpecial;
 }
 
+// cribbed from here https://stackoverflow.com/a/6969486/216154
+// and here https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 function lint(doc, position, prev, getErrorWords) {
     const words = getErrorWords();
     const regexString = words
-        .map((w) => (isWord(w) ? `\\b(${w.value})\\b` : `(${w.value})`))
+        .map((w) => (isWord(w) ? `\\b(${escapeRegExp(w.value)})\\b` : `(${escapeRegExp(w.value)})`))
         .join('|');
     const badWordsRegex = new RegExp(regexString, 'ig');
 
