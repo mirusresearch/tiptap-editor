@@ -29,7 +29,7 @@ export default {
                     // default class is red
                 },
                 {
-                    value: 'prob|emati(', // can use the real thing, or escape it
+                    value: 'prob|emati(', // avoid regexs that go bump in the night
                     isWord: false,
                     message: 'What even is this?',
                 },
