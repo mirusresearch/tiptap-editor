@@ -18,6 +18,7 @@
                         aria-label="bold"
                         class="menubar__button"
                         value="bold"
+                        type="button"
                     >
                         <b>B</b>
                     </button>
@@ -30,6 +31,7 @@
                         aria-label="italic"
                         class="menubar__button"
                         value="italic"
+                        type="button"
                     >
                         <i>I</i>
                     </button>
@@ -41,6 +43,8 @@
                         @keyup.right="toolbarGoRight"
                         aria-label="bullet list"
                         class="menubar__button"
+                        value="bulletlist"
+                        type="button"
                     >
                         <svg
                             aria-hidden="true"
