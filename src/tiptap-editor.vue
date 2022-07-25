@@ -1,69 +1,56 @@
 <template>
     <div>
         <div class="tiptap-editor">
-            <editor-menu-bar :editor="editor">
-                <div
-                    v-if="showMenu"
-                    class="menubar"
-                    slot-scope="{ commands, isActive }"
-                    role="toolbar"
-                    :aria-controls="id || null"
+            <div v-if="showMenu" class="menubar" role="toolbar" :aria-controls="id || null">
+                <button
+                    :aria-pressed="`${editor.isActive('bold') ? 'true' : 'false'}`"
+                    :class="{ 'is-active': editor.isActive('bold') }"
+                    @keyup.left="toolbarGoLeft"
+                    @keyup.right="toolbarGoRight"
+                    @click="editor.chain().focus().toggleBold().run()"
+                    aria-label="bold"
+                    value="bold"
+                    type="button"
                 >
-                    <button
-                        :aria-pressed="`${isActive.bold() ? 'true' : 'false'}`"
-                        :class="{ 'is-active': isActive.bold() }"
-                        @keyup.left="toolbarGoLeft"
-                        @keyup.right="toolbarGoRight"
-                        @click="commands.bold"
-                        aria-label="bold"
-                        class="menubar__button"
-                        value="bold"
-                        type="button"
+                    <b>B</b>
+                </button>
+                <button
+                    :aria-pressed="`${editor.isActive('italic') ? 'true' : 'false'}`"
+                    :class="{ 'is-active': editor.isActive('italic') }"
+                    @click="editor.chain().focus().toggleItalic().run()"
+                    @keyup.left="toolbarGoLeft"
+                    @keyup.right="toolbarGoRight"
+                    value="italic"
+                    type="button"
+                >
+                    <i>I</i>
+                </button>
+                <button
+                    @click="editor.chain().focus().toggleBulletList().run()"
+                    :class="{ 'is-active': editor.isActive('bulletList') }"
+                    @keyup.left="toolbarGoLeft"
+                    @keyup.right="toolbarGoRight"
+                    aria-label="bullet list"
+                    value="bulletlist"
+                    type="button"
+                >
+                    <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="list-ul"
+                        class="svg-inline--fa fa-list-ul fa-w-16"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512"
                     >
-                        <b>B</b>
-                    </button>
-                    <button
-                        :aria-pressed="`${isActive.italic() ? 'true' : 'false'}`"
-                        :class="{ 'is-active': isActive.italic() }"
-                        @click="commands.italic"
-                        @keyup.left="toolbarGoLeft"
-                        @keyup.right="toolbarGoRight"
-                        aria-label="italic"
-                        class="menubar__button"
-                        value="italic"
-                        type="button"
-                    >
-                        <i>I</i>
-                    </button>
-                    <button
-                        :aria-pressed="`${isActive.bullet_list() ? 'true' : 'false'}`"
-                        :class="{ 'is-active': isActive.bullet_list() }"
-                        @click="commands.bullet_list"
-                        @keyup.left="toolbarGoLeft"
-                        @keyup.right="toolbarGoRight"
-                        aria-label="bullet list"
-                        class="menubar__button"
-                        value="bulletlist"
-                        type="button"
-                    >
-                        <svg
-                            aria-hidden="true"
-                            focusable="false"
-                            data-prefix="fas"
-                            data-icon="list-ul"
-                            class="svg-inline--fa fa-list-ul fa-w-16"
-                            role="img"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                        >
-                            <path
-                                fill="currentColor"
-                                d="M96 96c0 26.51-21.49 48-48 48S0 122.51 0 96s21.49-48 48-48 48 21.49 48 48zM48 208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm0 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm96-236h352c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
-                            ></path>
-                        </svg>
-                    </button>
-                </div>
-            </editor-menu-bar>
+                        <path
+                            fill="currentColor"
+                            d="M96 96c0 26.51-21.49 48-48 48S0 122.51 0 96s21.49-48 48-48 48 21.49 48 48zM48 208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm0 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm96-236h352c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+                        ></path>
+                    </svg>
+                </button>
+            </div>
             <editor-content
                 :editor="editor"
                 :style="{ height: height }"
@@ -74,248 +61,75 @@
             />
         </div>
         <div
-            v-if="maxCharacterCount"
             :class="{ over: maxCharacterCountExceeded }"
             class="character-count"
+            v-if="maxCharacterCount"
         >
-            {{ charactersRemaining }} characters remaining
-        </div>
-        <div class="error-list" :v-show="false" ref="errors">
-            <template v-if="currentWarning">
-                <b>{{ currentWarning.message }}</b>
-                <div
-                    v-for="(option, index) in currentOptions"
-                    :key="option.id"
-                    class="error-list__item"
-                    :class="{ selected: navigatedOptionIndex === index }"
-                    @click="selectOption(option)"
-                >
-                    {{ option.value }}
-                </div>
-            </template>
+            {{ maxCharacterCount - editor.storage.characterCount.characters() }} characters
+            remaining
         </div>
     </div>
 </template>
 
 <script>
-import 'current-script-polyfill';
-import unescape from 'lodash.unescape';
-import tippy from 'tippy.js';
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
-import {
-    Blockquote,
-    BulletList,
-    ListItem,
-    Bold,
-    Italic,
-    Placeholder,
-    History,
-} from 'tiptap-extensions';
-import Warning from './warnings.js';
-import MaxCharacterCount from './max-character-count.js';
+import { Editor, EditorContent } from '@tiptap/vue-2';
+import Bold from '@tiptap/extension-bold';
+import BulletList from '@tiptap/extension-bullet-list';
+import CharacterCount from '@tiptap/extension-character-count';
+import Document from '@tiptap/extension-document';
+import Italic from '@tiptap/extension-italic';
+import ListItem from '@tiptap/extension-list-item';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
 
 export default {
     name: 'tiptapEditor',
     props: {
-        id: { type: String, default: null },
-        value: { type: String, default: '' },
-        warnings: {
-            type: Array,
-            default: () => [],
-        },
-        placeholder: { type: String, default: 'write your content here...' },
-        showMenu: {
-            type: Boolean,
-            default: true,
-        },
-        maxCharacterCount: {
-            type: Number,
-            default: null,
-        },
         height: {
             type: String,
             default: '300px',
         },
+        id: { type: String, default: null },
+        maxCharacterCount: {
+            type: Number,
+            default: 66,
+        },
+        showMenu: {
+            type: Boolean,
+            default: true,
+        },
     },
-    components: { EditorContent, EditorMenuBar },
+    components: { EditorContent },
     data() {
         return {
             editor: null,
-            currentWarning: null,
-            currentOptions: null,
-            currentValue: '',
-            navigatedOptionIndex: 0,
-            insertOption: () => {},
-            optionsRange: null,
             currentCharacterCount: 0,
         };
     },
     computed: {
-        errors() {
-            if (this.warnings.length < 1) {
-                return [];
-            }
-            return this.warnings.map((mistake) => {
-                const isWord = mistake.isWord === undefined ? true : mistake.isWord;
-                return {
-                    overrideClass: mistake.overrideClass,
-                    isWord: isWord,
-                    value: isWord ? mistake.value : unescape(mistake.value),
-                    message: mistake.message,
-                    options: (mistake.options || []).map((value, id) => ({ value, id })),
-                };
-            });
-        },
-        charactersRemaining() {
-            return this.maxCharacterCount - this.currentCharacterCount;
-        },
         maxCharacterCountExceeded() {
-            return this.currentCharacterCount >= this.maxCharacterCount;
+            return this.editor.storage.characterCount.characters() >= this.maxCharacterCount;
         },
     },
     mounted() {
-        this.currentValue = this.value;
         this.editor = new Editor({
-            content: this.value,
-            parseOptions: { preserveWhitespace: 'full' },
-            onUpdate: ({ getJSON, getHTML }) => {
-                this.currentValue = getHTML();
-
-                this.$emit('update:value', this.currentValue);
-            },
+            content: '<p>This is up and running on tiptap 2.0! 🎉</p>',
             extensions: [
-                new History(),
-                new Blockquote(),
-                new BulletList(),
-                new ListItem(),
-                new Bold(),
-                new Italic(),
-                new Placeholder({
-                    emptyClass: 'is-empty',
-                    emptyNodeText: this.placeholder,
-                }),
-                new MaxCharacterCount({
-                    maxCharacterCount: this.maxCharacterCount,
-                    onChange: (currentCharacterCount) => {
-                        this.currentCharacterCount = currentCharacterCount;
-                    },
-                }),
-                new Warning({
-                    getErrorWords: this.getErrorWords,
-                    onEnter: ({ range, command, virtualNode, text }) => {
-                        this.currentWarning = this.errors.find((err) => err.value === text);
-                        this.currentOptions = this.currentWarning.options || [];
-                        this.navigatedOptionIndex = 0;
-                        this.optionRange = range;
-                        this.renderPopup(virtualNode);
-                        this.insertOption = command;
-                    },
-                    onChange: ({ range, virtualNode, text }) => {
-                        this.currentWarning = this.errors.find((err) => err.value === text);
-                        this.currentOptions = this.currentWarning.options || [];
-                        this.navigatedOptionIndex = 0;
-                        this.optionRange = range;
-                        this.renderPopup(virtualNode);
-                    },
-                    onExit: () => {
-                        this.navigatedOptionIndex = 0;
-                        this.currentOptions = null;
-                        this.optionRange = null;
-                        this.destroyPopup();
-                    },
-                    onKeyDown: ({ event }) => {
-                        // pressing up arrow
-                        if (event.keyCode === 38) {
-                            this.upHandler();
-                            return true;
-                        }
-                        // pressing down arrow
-                        if (event.keyCode === 40) {
-                            this.downHandler();
-                            return true;
-                        }
-                        // pressing enter
-                        if (event.keyCode === 13) {
-                            return this.enterHandler();
-                        }
-                        return false;
-                    },
-                }),
+                Bold,
+                Italic,
+                BulletList,
+                ListItem,
+                Document,
+                Paragraph,
+                Text,
+                CharacterCount,
             ],
         });
-        tippy.setDefaults({
-            content: this.$refs.errors,
-            trigger: 'mouseenter',
-            interactive: true,
-            theme: 'dark',
-            placement: 'top-start',
-            performance: true,
-            inertia: true,
-            duration: [400, 200],
-            showOnInit: true,
-            arrow: true,
-            arrowType: 'round',
-            hideOnClick: false,
-        });
     },
-    destroyed() {
+    beforeDestroy() {
         this.editor.destroy();
-        if (this.popup) {
-            this.popup.destroy();
-        }
     },
     methods: {
-        getErrorWords() {
-            if (this.errors.length < 1) {
-                return [];
-            }
-            return this.errors.map((err) => ({
-                value: err.value,
-                overrideClass: err.overrideClass,
-                isWord: err.isWord,
-            }));
-        },
-        upHandler() {
-            this.navigatedOptionIndex =
-                (this.navigatedOptionIndex + this.currentOptions.length - 1) %
-                this.currentOptions.length;
-        },
-        downHandler() {
-            this.navigatedOptionIndex =
-                (this.navigatedOptionIndex + 1) % this.currentOptions.length;
-        },
-        enterHandler() {
-            if (this.currentOptions.length === 0) {
-                return false;
-            }
-
-            const option = this.currentOptions[this.navigatedOptionIndex];
-            if (option) {
-                this.selectOption(option);
-            }
-            return true;
-        },
-        selectOption(option) {
-            this.insertOption({
-                range: this.optionRange,
-                attrs: {
-                    id: option.id,
-                    label: option.value,
-                },
-            });
-            this.editor.focus();
-        },
-        renderPopup(node) {
-            if (!this.popup) {
-                this.popup = tippy(node, { content: this.$refs.errors });
-            }
-        },
-        destroyPopup() {
-            if (this.popup) {
-                this.popup.destroy();
-                this.popup = null;
-            }
-        },
         toolbarGoLeft(evt) {
             evt.preventDefault();
             const prevSibling = evt.target.previousSibling;
@@ -333,29 +147,10 @@ export default {
             }
         },
     },
-    watch: {
-        warnings: function(n, o) {
-            if (this.editor) {
-                // preserve selection after updating warnings
-                const oldSelection = this.editor.selection;
-                this.editor.setContent(this.currentValue);
-                this.editor.setSelection(oldSelection.from, oldSelection.to);
-            }
-        },
-    },
 };
 </script>
 
 <style lang="scss">
-.error-list {
-    .error-list__item {
-        &.selected,
-        &:hover {
-            background-color: rgba(white, 0.2);
-        }
-    }
-}
-
 .tiptap-editor {
     textarea:focus,
     input:focus {
@@ -366,7 +161,8 @@ export default {
         outline: none;
     }
 
-    border: 1px solid hsla(0, 0%, 4%, 0.1);
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
 
     p.is-empty:first-child::before {
         content: attr(data-empty-text);
@@ -378,7 +174,7 @@ export default {
     }
 
     .menubar {
-        border-bottom: 1px solid hsla(0, 0%, 4%, 0.1);
+        border-bottom: 1px solid #e5e7eb;
 
         button {
             font-size: 14px;
@@ -392,7 +188,8 @@ export default {
 
             &.is-active,
             &:hover {
-                background-color: #f0f0f0;
+                background-color: #e5e7eb;
+                border-radius: 5px;
             }
 
             svg {
@@ -436,9 +233,8 @@ export default {
 }
 
 .character-count {
-    margin-right: 5px;
-    margin-top: 5px;
-    color: #0a6800;
+    margin-top: 1rem;
+    color: #868e96;
     float: right;
 
     &.over {
