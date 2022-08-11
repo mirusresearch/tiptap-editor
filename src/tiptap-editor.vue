@@ -77,6 +77,7 @@
             v-if="maxCharacterCount"
             :class="{ over: maxCharacterCountExceeded }"
             class="character-count"
+            aria-live="assertive"
         >
             {{ charactersRemaining }} characters remaining
         </div>
