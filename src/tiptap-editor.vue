@@ -1,11 +1,12 @@
 <template>
     <div>
-        <div class="tiptap-editor">
+        <div class="tiptap-editor" tabindex="0">
             <editor-menu-bar :editor="editor">
                 <div
                     v-if="showMenu"
                     class="menubar"
                     slot-scope="{ commands, isActive }"
+                    tabindex="0"
                     role="toolbar"
                     :aria-controls="id || null"
                 >
@@ -363,10 +364,6 @@ export default {
         outline: none;
     }
 
-    *:focus {
-        outline: none;
-    }
-
     border: 1px solid hsla(0, 0%, 4%, 0.1);
 
     p.is-empty:first-child::before {
@@ -387,7 +384,7 @@ export default {
             border: none;
             cursor: pointer;
             height: 30px;
-            outline: 0;
+            outline: 50;
             width: 35px;
             vertical-align: bottom;
 
