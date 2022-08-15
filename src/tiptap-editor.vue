@@ -61,9 +61,9 @@
             />
         </div>
         <div
+            v-if="maxCharacterCount"
             :class="{ over: maxCharacterCountExceeded }"
             class="character-count"
-            v-if="maxCharacterCount"
         >
             {{ maxCharacterCount - editor.storage.characterCount.characters() }} characters
             remaining
@@ -87,8 +87,6 @@
 
 <script>
 import 'current-script-polyfill';
-import unescape from 'lodash.unescape';
-import tippy from 'tippy.js';
 import { Editor, EditorContent } from '@tiptap/vue-2';
 import Bold from '@tiptap/extension-bold';
 import BulletList from '@tiptap/extension-bullet-list';
@@ -99,6 +97,8 @@ import ListItem from '@tiptap/extension-list-item';
 import Paragraph from '@tiptap/extension-paragraph';
 import Placeholder from '@tiptap/extension-placeholder';
 import Text from '@tiptap/extension-text';
+import tippy from 'tippy.js';
+import unescape from 'lodash.unescape';
 
 export default {
     name: 'tiptapEditor',
@@ -115,7 +115,7 @@ export default {
         },
         maxCharacterCount: {
             type: Number,
-            default: 66,
+            default: null,
         },
         placeholder: { type: String, default: 'write your content here...' },
         showMenu: {
@@ -130,7 +130,7 @@ export default {
             currentWarning: null,
             currentOptions: null,
             currentValue: '',
-            naviagedOptionIndex: 0,
+            navigatedOptionIndex: 0,
             insertOption: () => {},
             optionsRange: null,
             currentCharacterCount: 0,
@@ -164,16 +164,16 @@ export default {
             onUpdate: ({ getJSON, getHTML }) => {},
             extensions: [
                 Bold,
-                Italic,
                 BulletList,
-                ListItem,
+                CharacterCount.configure({ limit: this.maxCharacterCount }),
                 Document,
+                Italic,
+                ListItem,
                 Paragraph,
                 Placeholder.configure({
                     placeholder: this.placeholder,
                 }),
                 Text,
-                CharacterCount.configure({ limit: this.maxCharacterCount }),
             ],
         });
         tippy.setDefaults({
