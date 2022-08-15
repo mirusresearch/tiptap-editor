@@ -68,10 +68,27 @@
             {{ maxCharacterCount - editor.storage.characterCount.characters() }} characters
             remaining
         </div>
+        <div class="error-list" :v-show="false" ref="errors">
+            <template v-if="currentWarning">
+                <b>{{ currentWarning.message }}</b>
+                <div
+                    v-for="(option, index) in currentOptions"
+                    :key="option.id"
+                    class="error-list__item"
+                    :class="{ selected: navigatedOptionIndex === index }"
+                    @click="selectOption(option)"
+                >
+                    {{ option.value }}
+                </div>
+            </template>
+        </div>
     </div>
 </template>
 
 <script>
+import 'current-script-polyfill';
+import unescape from 'lodash.unescape';
+import tippy from 'tippy.js';
 import { Editor, EditorContent } from '@tiptap/vue-2';
 import Bold from '@tiptap/extension-bold';
 import BulletList from '@tiptap/extension-bullet-list';
@@ -80,6 +97,7 @@ import Document from '@tiptap/extension-document';
 import Italic from '@tiptap/extension-italic';
 import ListItem from '@tiptap/extension-list-item';
 import Paragraph from '@tiptap/extension-paragraph';
+import Placeholder from '@tiptap/extension-placeholder';
 import Text from '@tiptap/extension-text';
 
 export default {
@@ -90,10 +108,16 @@ export default {
             default: '300px',
         },
         id: { type: String, default: null },
+        value: { type: String, default: '' },
+        warnings: {
+            type: Array,
+            default: () => [],
+        },
         maxCharacterCount: {
             type: Number,
             default: 66,
         },
+        placeholder: { type: String, default: 'write your content here...' },
         showMenu: {
             type: Boolean,
             default: true,
@@ -103,17 +127,41 @@ export default {
     data() {
         return {
             editor: null,
+            currentWarning: null,
+            currentOptions: null,
+            currentValue: '',
+            naviagedOptionIndex: 0,
+            insertOption: () => {},
+            optionsRange: null,
             currentCharacterCount: 0,
         };
     },
     computed: {
+        errors() {
+            if (this.warnings.length < 1) {
+                return [];
+            }
+            return this.warnings.map((mistake) => {
+                const isWord = mistake.isWord === undefined ? true : mistake.isWord;
+                return {
+                    overrideClass: mistake.overrideClass,
+                    isWord: isWord,
+                    value: isWord ? mistake.value : unescape(mistake.value),
+                    message: mistake.message,
+                    options: (mistake.options || []).map((value, id) => ({ value, id })),
+                };
+            });
+        },
         maxCharacterCountExceeded() {
             return this.editor.storage.characterCount.characters() >= this.maxCharacterCount;
         },
     },
     mounted() {
+        this.currentValue = this.value;
         this.editor = new Editor({
-            content: '<p>This is up and running on tiptap 2.0! 🎉</p>',
+            content: this.value,
+            parseOptions: { preserveWhitespace: 'full' },
+            onUpdate: ({ getJSON, getHTML }) => {},
             extensions: [
                 Bold,
                 Italic,
@@ -121,15 +169,86 @@ export default {
                 ListItem,
                 Document,
                 Paragraph,
+                Placeholder.configure({
+                    placeholder: this.placeholder,
+                }),
                 Text,
-                CharacterCount,
+                CharacterCount.configure({ limit: this.maxCharacterCount }),
             ],
         });
+        tippy.setDefaults({
+            content: this.$refs.errors,
+            trigger: 'mouseenter',
+            interactive: true,
+            theme: 'dark',
+            placement: 'top-start',
+            performance: true,
+            inertia: true,
+            duration: [400, 200],
+            showOnInit: true,
+            arrow: true,
+            arrowType: 'round',
+            hideOnClick: false,
+        });
     },
-    beforeDestroy() {
+    destroyed() {
         this.editor.destroy();
+        if (this.popup) {
+            this.popup.destroy();
+        }
     },
     methods: {
+        getErrorWords() {
+            if (this.errors.length < 1) {
+                return [];
+            }
+            return this.errors.map((err) => ({
+                value: err.value,
+                overrideClass: err.overrideClass,
+                isWord: err.isWord,
+            }));
+        },
+        upHandler() {
+            this.navigatedOptionIndex =
+                (this.navigatedOptionIndex + this.currentOptions.length - 1) %
+                this.currentOptions.length;
+        },
+        downHandler() {
+            this.navigatedOptionIndex =
+                (this.navigatedOptionIndex + 1) % this.currentOptions.length;
+        },
+        enterHandler() {
+            if (this.currentOptions.length === 0) {
+                return false;
+            }
+
+            const option = this.currentOptions[this.navigatedOptionIndex];
+            if (option) {
+                this.selectOption(option);
+            }
+            return true;
+        },
+        selectOption(option) {
+            this.insertOption({
+                range: this.optionRange,
+                attrs: {
+                    id: option.id,
+                    label: option.value,
+                },
+            });
+            this.editor.focus();
+        },
+        renderPopup(node) {
+            if (!this.popup) {
+                this.popup = tippy(node, { content: this.$refs.errors });
+            }
+        },
+        destroyPopup() {
+            if (this.popup) {
+                this.popup.destroy();
+                this.popup = null;
+            }
+        },
         toolbarGoLeft(evt) {
             evt.preventDefault();
             const prevSibling = evt.target.previousSibling;
@@ -147,10 +266,29 @@ export default {
             }
         },
     },
+    watch: {
+        warnings: function (n, o) {
+            if (this.editor) {
+                // preserve selection after updating warnings
+                const oldSelection = this.editor.selection;
+                this.editor.setContent(this.currentValue);
+                this.editor.setSelection(oldSelection.from, oldSelection.to);
+            }
+        },
+    },
 };
 </script>
 
 <style lang="scss">
+.error-list {
+    .error-list__item {
+        &.selected,
+        &:hover {
+            background-color: rgba(white, 0.2);
+        }
+    }
+}
+
 .tiptap-editor {
     textarea:focus,
     input:focus {
@@ -165,12 +303,11 @@ export default {
     border-radius: 5px;
 
     p.is-empty:first-child::before {
-        content: attr(data-empty-text);
+        content: attr(data-placeholder);
         float: left;
         color: #aaa;
         pointer-events: none;
         height: 0;
-        font-style: italic;
     }
 
     .menubar {
