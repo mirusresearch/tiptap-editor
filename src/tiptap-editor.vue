@@ -69,7 +69,7 @@
                 :editor="editor"
                 :style="{ height: height }"
                 :id="id || null"
-                role="Textbox"
+                role="textbox"
                 class="editor__content"
                 aria-label="text area"
             />
