@@ -401,10 +401,11 @@ export default {
             &.is-active,
             &:hover {
                 background-color: #f0f0f0;
+                outline: 1px solid black;
             }
 
             &:focus {
-                outline: 2px solid black;
+                outline: 2px solid #0078d0;
             }
 
             svg {
