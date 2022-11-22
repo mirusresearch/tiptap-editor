@@ -227,12 +227,12 @@ export default {
                     },
                     onKeyDown: ({ event }) => {
                         // pressing up arrow
-                        if (event.keyCode === 38) {
+                        if (event.keyCode === 38 && this.currentOptions !== null) {
                             this.upHandler();
                             return true;
                         }
                         // pressing down arrow
-                        if (event.keyCode === 40) {
+                        if (event.keyCode === 40 && this.currentOptions !== null) {
                             this.downHandler();
                             return true;
                         }
@@ -240,6 +240,16 @@ export default {
                         if (event.keyCode === 13) {
                             return this.enterHandler();
                         }
+
+                        // pressing escape
+                        if (event.keyCode === 27) {
+                            this.navigatedOptionIndex = 0;
+                            this.optionRange = null;
+                            this.currentOptions = null;
+                            this.destroyPopup();
+                            return true;
+                        }
+
                         return false;
                     },
                 }),
