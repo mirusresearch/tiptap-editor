@@ -393,6 +393,10 @@ export default {
                 background-color: #f0f0f0;
             }
 
+            &:focus {
+                outline: 2px solid black;
+            }
+
             svg {
                 padding-top: 4px;
                 width: 12px;
