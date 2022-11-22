@@ -398,13 +398,14 @@ export default {
             width: 35px;
             vertical-align: bottom;
 
-            &.is-active,
-            &:hover {
+            &.is-active {
                 background-color: #f0f0f0;
                 outline: 1px solid black;
             }
 
-            &:focus {
+            &:focus,
+            &:hover {
+                background-color: #f0f0f0;
                 outline: 2px solid #0078d0;
             }
 
