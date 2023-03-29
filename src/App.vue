@@ -5,6 +5,7 @@
         :showMenu="showMenu"
         :maxCharacterCount="maxCharacterCount"
         :height="height"
+        v-on:new-character-count="localcount = $event"
         id="unique_id"
         placeholder="write something will-ya!"
     />
@@ -52,6 +53,7 @@ export default {
             ],
             localtext:
                 '&lt;script&gt; welcome to tiptap editor, here is a red mark blue with suggestions. Even prob|emati( strings. You can highlight with other colors, e.g blue, orange, and green!!',
+            localcount: null,
         };
     },
 };

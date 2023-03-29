@@ -200,6 +200,7 @@ export default {
                     maxCharacterCount: this.maxCharacterCount,
                     onChange: (currentCharacterCount) => {
                         this.currentCharacterCount = currentCharacterCount;
+                        this.$emit('new-character-count', currentCharacterCount);
                     },
                 }),
                 new Warning({
