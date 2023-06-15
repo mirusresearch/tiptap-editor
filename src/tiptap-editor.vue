@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="tiptap-editor">
+        <div class="tiptap-editor" tabindex="0">
             <div v-if="showMenu" class="menubar" role="toolbar" :aria-controls="id || null">
                 <button
                     :aria-pressed="`${editor.isActive('bold') ? 'true' : 'false'}`"
@@ -55,7 +55,7 @@
                 :editor="editor"
                 :style="{ height: height }"
                 :id="id || null"
-                role="Textbox"
+                role="textbox"
                 class="editor__content"
                 aria-label="text area"
             />
@@ -64,6 +64,7 @@
             v-if="maxCharacterCount"
             :class="{ over: maxCharacterCountExceeded }"
             class="character-count"
+            aria-live="polite"
         >
             {{ maxCharacterCount - editor.storage.characterCount.characters() }} characters
             remaining
@@ -319,11 +320,16 @@ export default {
             border: none;
             cursor: pointer;
             height: 30px;
-            outline: 0;
+            outline: 50;
             width: 35px;
             vertical-align: bottom;
 
-            &.is-active,
+            &.is-active {
+                background-color: #f0f0f0;
+                outline: 1px solid black;
+            }
+
+            &:focus,
             &:hover {
                 background-color: #e5e7eb;
                 border-radius: 5px;

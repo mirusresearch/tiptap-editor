@@ -74,6 +74,14 @@ if false, hide the format menu
 #### id: String
 give the editor a unique id, also adds aria tags to link the editor menu to the text area
 
+### Events:
+
+### update:value
+emitted whenever the core text value changes
+
+### new-character-count
+the new internal character count of the value. This is useful since the synced value may have formatting, which internal is ignored when counting characters.
+
 ## Dev
 start the dev server with
 
