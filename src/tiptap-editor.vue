@@ -94,6 +94,7 @@ import BulletList from '@tiptap/extension-bullet-list';
 import CharacterCount from '@tiptap/extension-character-count';
 import Document from '@tiptap/extension-document';
 import Italic from '@tiptap/extension-italic';
+import History from '@tiptap/extension-history';
 import ListItem from '@tiptap/extension-list-item';
 import Paragraph from '@tiptap/extension-paragraph';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -163,12 +164,16 @@ export default {
         this.editor = new Editor({
             content: this.value,
             parseOptions: { preserveWhitespace: 'full' },
-            onUpdate: ({ getJSON, getHTML }) => {},
+            onUpdate: ({ getJSON, getHTML }) => {
+                this.currentValue = getHTML();
+                this.$emit('update:value', this.currentValue);
+            },
             extensions: [
                 Bold,
                 BulletList,
                 CharacterCount.configure({ limit: this.maxCharacterCount }),
                 Document,
+                History,
                 Italic,
                 ListItem,
                 Paragraph,
@@ -320,7 +325,7 @@ export default {
         },
     },
     watch: {
-        warnings: function (n, o) {
+        warnings: function(n, o) {
             if (this.editor) {
                 // preserve selection after updating warnings
                 const oldSelection = this.editor.selection;
@@ -353,7 +358,7 @@ export default {
     }
 
     border: 1px solid #e5e7eb;
-    border-radius: 5px;
+    border-radius: 10px;
 
     p.is-empty:first-child::before {
         content: attr(data-placeholder);
@@ -365,6 +370,7 @@ export default {
 
     .menubar {
         border-bottom: 1px solid #e5e7eb;
+        padding: 4px;
 
         button {
             font-size: 14px;
@@ -375,16 +381,16 @@ export default {
             outline: 50;
             width: 35px;
             vertical-align: bottom;
+            border-radius: 7px;
+            margin-right: 3px;
 
             &.is-active {
-                background-color: #f0f0f0;
-                outline: 1px solid black;
+                background-color: #d3e3fd;
             }
 
             &:focus,
-            &:hover {
+            &:not(.is-active):hover {
                 background-color: #e5e7eb;
-                border-radius: 5px;
             }
 
             svg {
