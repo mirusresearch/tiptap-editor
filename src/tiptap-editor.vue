@@ -99,6 +99,7 @@ import Paragraph from '@tiptap/extension-paragraph';
 import Placeholder from '@tiptap/extension-placeholder';
 import Text from '@tiptap/extension-text';
 import tippy from 'tippy.js';
+import Warning from './warnings';
 import unescape from 'lodash.unescape';
 
 export default {
@@ -175,6 +176,57 @@ export default {
                     placeholder: this.placeholder,
                 }),
                 Text,
+                Warning.configure(
+                    {
+                        getErrorWords: this.getErrorWords,
+                        onEnter: ({ range, command, virtualNode, text }) => {
+                            this.currentWarning = this.errors.find((err) => err.value === text);
+                            this.currentOptions = this.currentWarning.options || [];
+                            this.navigatedOptionIndex = 0;
+                            this.optionRange = range;
+                            this.renderPopup(virtualNode);
+                            this.insertOption = command;
+                        },
+                        onChange: ({ range, virtualNode, text }) => {
+                            this.currentWarning = this.errors.find((err) => err.value === text);
+                            this.currentOptions = this.currentWarning.options || [];
+                            this.navigatedOptionIndex = 0;
+                            this.optionRange = range;
+                            this.renderPopup(virtualNode);
+                        },
+                        onExit: () => {
+                            this.navigatedOptionIndex = 0;
+                            this.currentOptions = null;
+                            this.optionRange = null;
+                            this.destroyPopup();
+                        },
+                        onKeyDown: ({ event }) => {
+                            // pressing up arrow
+                            if (event.keyCode === 38 && this.currentOptions !== null) {
+                                this.upHandler();
+                                return true;
+                            }
+                            // pressing down arrow
+                            if (event.keyCode === 40 && this.currentOptions !== null) {
+                                this.downHandler();
+                                return true;
+                            }
+                            // pressing enter
+                            if (event.keyCode === 13) {
+                                return this.enterHandler();
+                            }
+                            // pressing escape
+                            if (event.keyCode === 27) {
+                                this.navigatedOptionIndex = 0;
+                                this.optionRange = null;
+                                this.currentOptions = null;
+                                this.destroyPopup();
+                                return true;
+                            }
+                            return false;
+                        }
+                    }
+                ),
             ],
         });
         tippy.setDefaults({
@@ -237,7 +289,7 @@ export default {
                     label: option.value,
                 },
             });
-            this.editor.focus();
+            this.editor.commands.focus();
         },
         renderPopup(node) {
             if (!this.popup) {

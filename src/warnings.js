@@ -1,6 +1,6 @@
-import { Node, Plugin, PluginKey } from 'tiptap';
+import { Node } from '@tiptap/core';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
-import { replaceText } from 'tiptap-commands';
 import get from 'lodash.get';
 
 function dispatch(tr, state, view) {
@@ -72,16 +72,10 @@ function lint(doc, position, prev, getErrorWords) {
     return { highlights, on };
 }
 
-export default class Warning extends Node {
-    get name() {
-        return 'warning';
-    }
+const Warning = Node.create({
+    name: 'Warning',
 
-    get isBlock() {
-        return true;
-    }
-
-    get defaultOptions() {
+    addOptions() {
         return {
             getErrorWords: () => [],
             onChange: () => {},
@@ -89,34 +83,28 @@ export default class Warning extends Node {
             onExit: () => {},
             onKeyDown: () => {},
             defaultClass: 'underline-red',
-        };
-    }
+        }
+    },
 
-    get schema() {
-        return {
-            attrs: {
-                id: {},
-                label: {},
-            },
-            group: 'inline',
-            inline: true,
-            selectable: false,
-            atom: false,
-            toDOM: (mark) => mark.attrs.label,
-            parseDOM: [
-                {
-                    tag: '[data-mention-id]',
-                    getAttrs: (dom) => {
-                        const id = dom.getAttribute('data-mention-id');
-                        const label = dom.innerText.split(this.options.matcher.char).join('');
-                        return { id, label };
-                    },
+    group: 'inline*',
+    inline: true,
+    atom: false,
+    selectable: false,
+
+    parseHTML() {
+        return [
+            {
+                tag: '[data-mention-id]',
+                getAttrs: (dom) => {
+                    const id = dom.getAttribute('data-mention-id');
+                    const label = dom.innerText.split(this.options.matcher.char).join('');
+                    return { id, label };
                 },
-            ],
-        };
-    }
+            },
+        ]
+    },
 
-    get plugins() {
+    addProseMirrorPlugins() {
         const self = this;
 
         return [
@@ -251,4 +239,6 @@ export default class Warning extends Node {
             }),
         ];
     }
-}
+})
+
+export default Warning
