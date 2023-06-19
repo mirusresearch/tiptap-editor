@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="tiptap-editor" tabindex="0">
-            <div v-if="showMenu" class="menubar" tabindex="0" role="toolbar" :aria-controls="id || null">
+            <div v-if="showMenu" class="menubar" role="toolbar" :aria-controls="id || null">
                 <button
                     :aria-pressed="`${editor.isActive('bold') ? 'true' : 'false'}`"
                     :class="{ 'is-active': editor.isActive('bold') }"
@@ -60,15 +60,15 @@
                 aria-label="text area"
                 tabindex="-1"
             />
-        </div>
-        <div
-            v-if="maxCharacterCount"
-            :class="{ over: maxCharacterCountExceeded }"
-            class="character-count"
-            aria-live="polite"
-        >
-            {{ maxCharacterCount - editor.storage.characterCount.characters() }} characters
-            remaining
+            <div
+                v-if="maxCharacterCount"
+                :class="{ over: maxCharacterCountExceeded }"
+                class="character-count"
+                aria-live="polite"
+            >
+                {{ maxCharacterCount - editor.storage.characterCount.characters() }} characters
+                remaining
+            </div>
         </div>
         <div class="error-list" :v-show="false" ref="errors">
             <template v-if="currentWarning">
@@ -359,7 +359,8 @@ export default {
     }
 
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
+    padding: 4px;
 
     p.is-empty:first-child::before {
         content: attr(data-placeholder);
@@ -370,9 +371,10 @@ export default {
     }
 
     .menubar {
-        border-bottom: 1px solid #e5e7eb;
+        // border-bottom: 1px solid #e5e7eb;
         padding: 4px;
-        border-radius: 7px;
+        border-radius: 4px;
+        background-color: #f4f4f5;
 
         &:focus {
             outline: 2px solid #3b82f6;
@@ -387,7 +389,7 @@ export default {
             outline: 50;
             width: 35px;
             vertical-align: bottom;
-            border-radius: 7px;
+            border-radius: 4px;
             margin-right: 3px;
 
             &.is-active {
@@ -452,9 +454,13 @@ export default {
 }
 
 .character-count {
-    margin-top: 1rem;
-    color: #868e96;
-    float: right;
+
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #fafafa;
+    color: #71717a;
+    text-align: right;
+    padding-right: 15px;
 
     &.over {
         color: red;
