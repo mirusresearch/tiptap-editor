@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="tiptap-editor" tabindex="0">
-            <div v-if="showMenu" class="menubar" role="toolbar" :aria-controls="id || null">
+            <div v-if="showMenu" class="menubar" tabindex="0" role="toolbar" :aria-controls="id || null">
                 <button
                     :aria-pressed="`${editor.isActive('bold') ? 'true' : 'false'}`"
                     :class="{ 'is-active': editor.isActive('bold') }"
@@ -58,6 +58,7 @@
                 role="textbox"
                 class="editor__content"
                 aria-label="text area"
+                tabindex="-1"
             />
         </div>
         <div
@@ -371,6 +372,11 @@ export default {
     .menubar {
         border-bottom: 1px solid #e5e7eb;
         padding: 4px;
+        border-radius: 7px;
+
+        &:focus {
+            outline: 2px solid #3b82f6;
+        }
 
         button {
             font-size: 14px;
@@ -388,8 +394,15 @@ export default {
                 background-color: #d3e3fd;
             }
 
-            &:focus,
+            &.is-active:focus {
+                background-color: #BFD2F9;
+            }
+
             &:not(.is-active):hover {
+                background-color: #e5e7eb;
+            }
+
+            &:not(.is-active):focus {
                 background-color: #e5e7eb;
             }
 
@@ -419,7 +432,7 @@ export default {
         }
 
         .underline-blue {
-            border-bottom: 3px blue solid;
+            border-bottom: 3px #3b82f6 solid;
         }
 
         ul {
@@ -429,6 +442,11 @@ export default {
         .ProseMirror {
             height: 100%;
             padding: 2px;
+            border-radius: 7px;
+
+            &:focus {
+                outline: 2px solid #3b82f6;
+            }
         }
     }
 }
