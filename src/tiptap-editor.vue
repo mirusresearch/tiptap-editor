@@ -1,7 +1,12 @@
 <template>
     <div>
         <div class="tiptap-editor" tabindex="0">
-            <div v-if="showMenu" class="menubar" role="toolbar" :aria-controls="id || null">
+            <div
+                v-if="showMenu && editor"
+                class="menubar"
+                role="toolbar"
+                :aria-controls="id || null"
+            >
                 <button
                     :aria-pressed="`${editor.isActive('bold') ? 'true' : 'false'}`"
                     :class="{ 'is-active': editor.isActive('bold') }"
@@ -60,14 +65,38 @@
                 aria-label="text area"
                 tabindex="-1"
             />
-            <div
-                v-if="maxCharacterCount"
-                :class="{ over: maxCharacterCountExceeded }"
-                class="character-count"
-                aria-live="polite"
-            >
-                {{ maxCharacterCount - editor.storage.characterCount.characters() }} characters
-                remaining
+            <div class="character-count">
+                <svg
+                    height="20"
+                    width="20"
+                    viewBox="0 0 20 20"
+                    :class="
+                        maxCharacterCountExceeded
+                            ? 'character-count__graph--warning'
+                            : 'character-count__graph'
+                    "
+                >
+                    <circle r="10" cx="10" cy="10" fill="#e9ecef" />
+                    <circle
+                        r="5"
+                        cx="10"
+                        cy="10"
+                        fill="transparent"
+                        stroke="currentColor"
+                        stroke-width="10"
+                        :stroke-dasharray="`calc(${characterCountPercentage} * 31.4 / 100) 31.4`"
+                        transform="rotate(-90) translate(-20)"
+                    />
+                    <circle r="6" cx="10" cy="10" fill="white" />
+                </svg>
+                <div
+                    v-if="maxCharacterCount && editor"
+                    class="character-count__text"
+                    aria-live="polite"
+                >
+                    {{ editor.storage.characterCount.characters() }} /
+                    {{ maxCharacterCount }} characters
+                </div>
             </div>
         </div>
         <div class="error-list" :v-show="false" ref="errors">
@@ -157,7 +186,16 @@ export default {
             });
         },
         maxCharacterCountExceeded() {
-            return this.editor.storage.characterCount.characters() >= this.maxCharacterCount;
+            if (this.editor) {
+                return this.editor.storage.characterCount.characters() >= this.maxCharacterCount;
+            }
+        },
+        characterCountPercentage() {
+            if (this.editor) {
+                return Math.round(
+                    (100 / this.maxCharacterCount) * this.editor.storage.characterCount.characters()
+                );
+            }
         },
     },
     mounted() {
@@ -182,57 +220,55 @@ export default {
                     placeholder: this.placeholder,
                 }),
                 Text,
-                Warning.configure(
-                    {
-                        getErrorWords: this.getErrorWords,
-                        onEnter: ({ range, command, virtualNode, text }) => {
-                            this.currentWarning = this.errors.find((err) => err.value === text);
-                            this.currentOptions = this.currentWarning.options || [];
-                            this.navigatedOptionIndex = 0;
-                            this.optionRange = range;
-                            this.renderPopup(virtualNode);
-                            this.insertOption = command;
-                        },
-                        onChange: ({ range, virtualNode, text }) => {
-                            this.currentWarning = this.errors.find((err) => err.value === text);
-                            this.currentOptions = this.currentWarning.options || [];
-                            this.navigatedOptionIndex = 0;
-                            this.optionRange = range;
-                            this.renderPopup(virtualNode);
-                        },
-                        onExit: () => {
-                            this.navigatedOptionIndex = 0;
-                            this.currentOptions = null;
-                            this.optionRange = null;
-                            this.destroyPopup();
-                        },
-                        onKeyDown: ({ event }) => {
-                            // pressing up arrow
-                            if (event.keyCode === 38 && this.currentOptions !== null) {
-                                this.upHandler();
-                                return true;
-                            }
-                            // pressing down arrow
-                            if (event.keyCode === 40 && this.currentOptions !== null) {
-                                this.downHandler();
-                                return true;
-                            }
-                            // pressing enter
-                            if (event.keyCode === 13) {
-                                return this.enterHandler();
-                            }
-                            // pressing escape
-                            if (event.keyCode === 27) {
-                                this.navigatedOptionIndex = 0;
-                                this.optionRange = null;
-                                this.currentOptions = null;
-                                this.destroyPopup();
-                                return true;
-                            }
-                            return false;
+                Warning.configure({
+                    getErrorWords: this.getErrorWords,
+                    onEnter: ({ range, command, virtualNode, text }) => {
+                        this.currentWarning = this.errors.find((err) => err.value === text);
+                        this.currentOptions = this.currentWarning.options || [];
+                        this.navigatedOptionIndex = 0;
+                        this.optionRange = range;
+                        this.renderPopup(virtualNode);
+                        this.insertOption = command;
+                    },
+                    onChange: ({ range, virtualNode, text }) => {
+                        this.currentWarning = this.errors.find((err) => err.value === text);
+                        this.currentOptions = this.currentWarning.options || [];
+                        this.navigatedOptionIndex = 0;
+                        this.optionRange = range;
+                        this.renderPopup(virtualNode);
+                    },
+                    onExit: () => {
+                        this.navigatedOptionIndex = 0;
+                        this.currentOptions = null;
+                        this.optionRange = null;
+                        this.destroyPopup();
+                    },
+                    onKeyDown: ({ event }) => {
+                        // pressing up arrow
+                        if (event.keyCode === 38 && this.currentOptions !== null) {
+                            this.upHandler();
+                            return true;
                         }
-                    }
-                ),
+                        // pressing down arrow
+                        if (event.keyCode === 40 && this.currentOptions !== null) {
+                            this.downHandler();
+                            return true;
+                        }
+                        // pressing enter
+                        if (event.keyCode === 13) {
+                            return this.enterHandler();
+                        }
+                        // pressing escape
+                        if (event.keyCode === 27) {
+                            this.navigatedOptionIndex = 0;
+                            this.optionRange = null;
+                            this.currentOptions = null;
+                            this.destroyPopup();
+                            return true;
+                        }
+                        return false;
+                    },
+                }),
             ],
         });
         tippy.setDefaults({
@@ -326,7 +362,7 @@ export default {
         },
     },
     watch: {
-        warnings: function(n, o) {
+        warnings: function (n, o) {
             if (this.editor) {
                 // preserve selection after updating warnings
                 const oldSelection = this.editor.selection;
@@ -397,7 +433,7 @@ export default {
             }
 
             &.is-active:focus {
-                background-color: #BFD2F9;
+                background-color: #bfd2f9;
             }
 
             &:not(.is-active):hover {
@@ -409,7 +445,6 @@ export default {
             }
 
             svg {
-                padding-top: 4px;
                 width: 12px;
             }
         }
@@ -454,16 +489,22 @@ export default {
 }
 
 .character-count {
-
     padding: 4px;
     border-radius: 4px;
     background-color: #fafafa;
-    color: #71717a;
     text-align: right;
     padding-right: 15px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    color: #71717a;
 
-    &.over {
-        color: red;
+    &__graph {
+        color: #a8c2f7;
+
+        &--warning {
+            color: #fb7373;
+        }
     }
 }
 </style>

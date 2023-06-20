@@ -83,7 +83,7 @@ const Warning = Node.create({
             onExit: () => {},
             onKeyDown: () => {},
             defaultClass: 'underline-red',
-        }
+        };
     },
 
     group: 'inline*',
@@ -101,7 +101,7 @@ const Warning = Node.create({
                     return { id, label };
                 },
             },
-        ]
+        ];
     },
 
     addProseMirrorPlugins() {
@@ -166,7 +166,7 @@ const Warning = Node.create({
                                 text: state.text,
                                 decorationNode,
                                 virtualNode,
-                                command: function({ range, attrs }) {
+                                command: function ({ range, attrs }) {
                                     const tr = view.state.tr.replaceWith(
                                         range.from,
                                         range.to,
@@ -238,7 +238,7 @@ const Warning = Node.create({
                 },
             }),
         ];
-    }
-})
+    },
+});
 
-export default Warning
+export default Warning;
