@@ -166,7 +166,7 @@ export default {
             content: this.value,
             parseOptions: { preserveWhitespace: 'full' },
             onUpdate: ({ getJSON, getHTML }) => {
-                this.currentValue = getHTML();
+                this.currentValue = getHTML();  // getting getHTML() error
                 this.$emit('update:value', this.currentValue);
             },
             extensions: [
