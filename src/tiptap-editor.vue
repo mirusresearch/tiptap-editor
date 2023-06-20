@@ -65,7 +65,7 @@
                 aria-label="text area"
                 tabindex="-1"
             />
-            <div class="character-count">
+            <div class="character-count" v-if="maxCharacterCount && editor">
                 <svg
                     height="20"
                     width="20"
@@ -90,7 +90,6 @@
                     <circle r="6" cx="10" cy="10" fill="white" />
                 </svg>
                 <div
-                    v-if="maxCharacterCount && editor"
                     class="character-count__text"
                     aria-live="polite"
                 >
