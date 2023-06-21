@@ -21,9 +21,9 @@
         "*.js"
     ],
     "scripts": {
-        "dev": "vite",
+        "serve": "vite",
         "build": "vite build",
-        "serve": "vite preview",
+        "preview": "vite preview",
         "format": "prettier --write \"src\"",
         "validate:format": "prettier --check \"src\""
     },
