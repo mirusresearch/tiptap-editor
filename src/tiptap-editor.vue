@@ -89,10 +89,7 @@
                     />
                     <circle r="6" cx="10" cy="10" fill="white" />
                 </svg>
-                <div
-                    class="character-count__text"
-                    aria-live="polite"
-                >
+                <div class="character-count__text" aria-live="polite">
                     {{ editor.storage.characterCount.characters() }} /
                     {{ maxCharacterCount }} characters
                 </div>

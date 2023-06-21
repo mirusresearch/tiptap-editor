@@ -39,7 +39,7 @@ export default {
 ```
 
 ## Props
------------
+
 
 - **value:** `String` - the text to edit
 
@@ -72,19 +72,19 @@ export default {
 - **id:** `String` - give the editor a unique id. Also adds aria tags to link the editor menu to the text area
 
 ## Events
------------
+
 - **update:value** - emitted whenever the core text value changes
 
 - **new-character-count** - the new internal character count of the value. This is useful since the synced value may have formatting, which internal is ignored when counting characters.
 
 ## Setup
------------
+
 - clone this repo
 - `cd` into the repo directory and run `yarn install`
 - run `yarn serve`
 
 ## Available Scripts
------------
+
 - `yarn serve` - start the dev server
 - `yarn build` - build for production
 - `yarn preview` - locally preview production build
