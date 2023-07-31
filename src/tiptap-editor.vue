@@ -381,15 +381,6 @@ export default {
 }
 
 .tiptap-editor {
-    textarea:focus,
-    input:focus {
-        outline: none;
-    }
-
-    *:focus {
-        outline: none;
-    }
-
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     padding: 4px;
@@ -408,10 +399,6 @@ export default {
         border-radius: 4px;
         background-color: #f4f4f5;
 
-        &:focus {
-            outline: 2px solid #3b82f6;
-        }
-
         button {
             font-size: 14px;
             background-color: transparent;
@@ -423,6 +410,11 @@ export default {
             vertical-align: bottom;
             border-radius: 4px;
             margin-right: 3px;
+
+            &:focus {
+                outline: 2px solid #3b82f6;
+                transition: all 0.08s ease-in-out;
+            }
 
             &.is-active {
                 background-color: #d3e3fd;
@@ -479,6 +471,7 @@ export default {
 
             &:focus {
                 outline: 2px solid #3b82f6;
+                transition: all 0.08s ease-in-out;
             }
         }
     }
