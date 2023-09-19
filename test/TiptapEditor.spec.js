@@ -78,7 +78,6 @@ describe('tiptap-editor.vue', () => {
         const wrapper = await mount(TiptapEditor, {
             propsData: propsData,
         });
-        console.log(wrapper.html());
         const characterCount = wrapper.find('.character-count__text');
         expect(characterCount.text()).toBe('32 / 100 characters');
     });
