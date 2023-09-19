@@ -3,24 +3,28 @@ import flushPromises from 'flush-promises';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import TiptapEditor from '../src/tiptap-editor.vue';
 
-let propsData = {
-    maxCharacterCount: 200,
-    height: '200px',
-    showMenu: true,
-    warnings: [
-        {
-            value: 'red',
-            message: 'did you mean...',
-            options: ['read', 'reed'],
-        },
-        {
-            value: 'blue',
-            message: 'blue messsage',
-            overrideClass: 'underline-blue',
-        },
-    ],
-    value: 'Roses are red. Violets are blue.',
-};
+let propsData;
+
+beforeEach(async () => {
+    propsData = {
+        maxCharacterCount: 200,
+        height: '200px',
+        showMenu: true,
+        warnings: [
+            {
+                value: 'red',
+                message: 'did you mean...',
+                options: ['read', 'reed'],
+            },
+            {
+                value: 'blue',
+                message: 'blue messsage',
+                overrideClass: 'underline-blue',
+            },
+        ],
+        value: 'Roses are red. Violets are blue.',
+    };
+});
 
 describe('tiptap-editor.vue', () => {
     it('should show menu', async () => {
@@ -69,7 +73,13 @@ describe('tiptap-editor.vue', () => {
         expect(receivedHtml).toEqual(expectedHtml);
     });
 
-    it('should replace word', async () => {
-        // TODO: test word replacement
+    it('should display correct word count', async () => {
+        propsData.maxCharacterCount = 100;
+        const wrapper = await mount(TiptapEditor, {
+            propsData: propsData,
+        });
+        console.log(wrapper.html());
+        const characterCount = wrapper.find('.character-count__text');
+        expect(characterCount.text()).toBe('32 / 100 characters');
     });
 });
