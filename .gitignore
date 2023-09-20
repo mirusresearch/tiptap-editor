@@ -13,7 +13,6 @@ flymd.html
 flymd.md
 coverage/
 .markdown-preview.html
-package-lock.json
 .tern-port
 telepresence.log
 .nyc_output/
