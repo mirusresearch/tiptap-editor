@@ -11,8 +11,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - run: npm install
-      - run: npm ci
-      - run: npm publish
+      - run: yarn
+      - run: yarn build
+      - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
