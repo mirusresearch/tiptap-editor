@@ -55,6 +55,35 @@
                         ></path>
                     </svg>
                 </button>
+                <div class="character-count" v-if="maxCharacterCount && editor">
+                    <svg
+                        height="20"
+                        width="20"
+                        viewBox="0 0 20 20"
+                        :class="
+                            maxCharacterCountExceeded
+                                ? 'character-count__graph--warning'
+                                : 'character-count__graph'
+                        "
+                    >
+                        <circle r="10" cx="10" cy="10" fill="#e9ecef" />
+                        <circle
+                            r="5"
+                            cx="10"
+                            cy="10"
+                            fill="transparent"
+                            stroke="currentColor"
+                            stroke-width="10"
+                            :stroke-dasharray="`calc(${characterCountPercentage}px * 31.4 / 100) 31.4`"
+                            transform="rotate(-90) translate(-20)"
+                        />
+                        <circle r="6" cx="10" cy="10" fill="white" />
+                    </svg>
+                    <div class="character-count__text" aria-live="polite">
+                        {{ editor.storage.characterCount.characters() }} /
+                        {{ maxCharacterCount }} characters
+                    </div>
+                </div>
             </div>
             <editor-content
                 :editor="editor"
@@ -65,35 +94,6 @@
                 aria-label="text area"
                 tabindex="-1"
             />
-            <div class="character-count" v-if="maxCharacterCount && editor">
-                <svg
-                    height="20"
-                    width="20"
-                    viewBox="0 0 20 20"
-                    :class="
-                        maxCharacterCountExceeded
-                            ? 'character-count__graph--warning'
-                            : 'character-count__graph'
-                    "
-                >
-                    <circle r="10" cx="10" cy="10" fill="#e9ecef" />
-                    <circle
-                        r="5"
-                        cx="10"
-                        cy="10"
-                        fill="transparent"
-                        stroke="currentColor"
-                        stroke-width="10"
-                        :stroke-dasharray="`calc(${characterCountPercentage} * 31.4 / 100) 31.4`"
-                        transform="rotate(-90) translate(-20)"
-                    />
-                    <circle r="6" cx="10" cy="10" fill="white" />
-                </svg>
-                <div class="character-count__text" aria-live="polite">
-                    {{ editor.storage.characterCount.characters() }} /
-                    {{ maxCharacterCount }} characters
-                </div>
-            </div>
         </div>
         <div class="error-list" :v-show="false" ref="errors">
             <template v-if="currentWarning">
@@ -398,6 +398,7 @@ export default {
         padding: 4px;
         border-radius: 4px;
         background-color: #f4f4f5;
+        display: flex;
 
         button {
             font-size: 14px;
@@ -480,13 +481,14 @@ export default {
 .character-count {
     padding: 4px;
     border-radius: 4px;
-    background-color: #fafafa;
+    /* background-color: #fafafa; */
     text-align: right;
     padding-right: 15px;
     display: flex;
     gap: 8px;
     justify-content: flex-end;
-    color: #71717a;
+    /* color: #71717a; */
+    flex-grow: 2;
 
     &__graph {
         color: #a8c2f7;
