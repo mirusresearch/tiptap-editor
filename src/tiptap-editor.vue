@@ -481,13 +481,11 @@ export default {
 .character-count {
     padding: 4px;
     border-radius: 4px;
-    /* background-color: #fafafa; */
     text-align: right;
     padding-right: 15px;
     display: flex;
     gap: 8px;
     justify-content: flex-end;
-    /* color: #71717a; */
     flex-grow: 2;
 
     &__graph {
