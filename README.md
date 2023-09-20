@@ -1,6 +1,6 @@
 # tiptap-editor
 
-Vue component that contains our custom setup for the tiptap editor. Able to highlihght phrases and give reasons/fixes to the warnings
+Vue component that contains our custom setup for the tiptap editor. Able to highlight phrases and give reasons/fixes to the warnings
 
 ```bash
 npm i tiptap-editor
@@ -12,13 +12,13 @@ yarn add tiptap-editor
 ```js
 <template>
   <TextEditor
-    :value.sync="localtext"
-    :warnings="warnings"
-    :showMenu="true"
-    :maxCharacterCount="200"
-    height="500px"
-    placeholder="write something will-ya!"
-    id="some_unique_id"
+	:value.sync="localtext"
+	:warnings="warnings"
+	:showMenu="true"
+	:maxCharacterCount="200"
+	height="500px"
+	placeholder="write something will-ya!"
+	id="some_unique_id"
   />
 </template
 
@@ -26,13 +26,13 @@ yarn add tiptap-editor
 import tiptapEditor from './tiptap-editor.vue';
 
 export default {
-    components: { tiptapEditor },
-    data() {
-        return {
-            warnings: [],
-            value: 'this is the initial value'
-        }
-    }
+	components: { tiptapEditor },
+	data() {
+		return {
+			warnings: [],
+			value: 'this is the initial value'
+		}
+	}
 }
 
 </script>
@@ -47,21 +47,21 @@ export default {
 
 - **warnings:** `[ Objects ]` - an array of text that should be warned about
 
-    - example:
-        ```js
-        [
-            {
-                value: 'the',
-                message: 'did you mean...',
-                options: ['too', 'pizza'], // optional
-            },
-            {
-                value: 'test text',
-                message: 'cannot say that, sorry',
-                overrideClass: 'underlined-green', // optional
-            },
-        ]
-        ```
+	- example:
+		```js
+		[
+			{
+				value: 'the',
+				message: 'did you mean...',
+				options: ['too', 'pizza'], // optional
+			},
+			{
+				value: 'test text',
+				message: 'cannot say that, sorry',
+				overrideClass: 'underlined-green', // optional
+			},
+		]
+		```
 
 - **maxCharacterCount:** `Number` - Show a count of the current number of characters. If over the max the count will show red
 
