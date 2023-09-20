@@ -1,4 +1,6 @@
-vue component that contains our custom setup for the tiptap editor. Able to highlihght phrases and give reasons/fixes to the warnings
+# tiptap-editor
+
+Vue component that contains our custom setup for the tiptap editor. Able to highlight phrases and give reasons/fixes to the warnings
 
 ```bash
 npm i tiptap-editor
@@ -10,83 +12,82 @@ yarn add tiptap-editor
 ```js
 <template>
   <TextEditor
-    :value.sync="localtext"
-    :warnings="warnings"
-    :showMenu="true"
-    :maxCharacterCount="200"
-    height="500px"
-    placeholder="write something will-ya!"
-    id="some_unique_id"
+	:value.sync="localtext"
+	:warnings="warnings"
+	:showMenu="true"
+	:maxCharacterCount="200"
+	height="500px"
+	placeholder="write something will-ya!"
+	id="some_unique_id"
   />
 </template
 
 <script>
-import TextEditor from 'tiptap-editor'
+import tiptapEditor from './tiptap-editor.vue';
 
 export default {
-    components: { TextEditor },
-    data() {
-        return {
-            warnings: [],
-            value: 'this is the initial value'
-        }
-    }
+	components: { tiptapEditor },
+	data() {
+		return {
+			warnings: [],
+			value: 'this is the initial value'
+		}
+	}
 }
 
 </script>
 ```
 
+## Props
 
-### Props:
 
-#### value: String
-the text to edit
+- **value:** `String` - the text to edit
 
-#### placeholder: String
-Text to display when there is nothing in the editor
+- **placeholder:** `String` - the text to display when there is nothing in the editor
 
-#### warnings: [ Objects ]
-array of text that should be warned about
-```js
-[
-    {
-        value: 'the',
-        message: 'did you mean...',
-        options: ['too', 'pizza'], // optional
-    },
-    {
-        value: 'test text',
-        message: 'cannot say that, sorry',
-        overrideClass: 'underlined-green', // optional
-    },
-]
-```
+- **warnings:** `[ Objects ]` - an array of text that should be warned about
 
-#### maxCharacterCount: Number
-Show a count of the current number of characters. If over the max the count will show red
+	- example:
+		```js
+		[
+			{
+				value: 'the',
+				message: 'did you mean...',
+				options: ['too', 'pizza'], // optional
+			},
+			{
+				value: 'test text',
+				message: 'cannot say that, sorry',
+				overrideClass: 'underlined-green', // optional
+			},
+		]
+		```
 
-#### height: String
-height of the text editor, default is `300px`
+- **maxCharacterCount:** `Number` - Show a count of the current number of characters. If over the max the count will show red
 
-#### showMenu: Boolean
-if false, hide the format menu
+- **height:** `String` - height of the text editor, default is `300px`
 
-#### id: String
-give the editor a unique id, also adds aria tags to link the editor menu to the text area
+- **showMenu:** `Boolean` - if false, hide the format menu
 
-### Events:
+- **id:** `String` - give the editor a unique id. Also adds aria tags to link the editor menu to the text area
 
-### update:value
-emitted whenever the core text value changes
+## Events
 
-### new-character-count
-the new internal character count of the value. This is useful since the synced value may have formatting, which internal is ignored when counting characters.
+- **update:value** - emitted whenever the core text value changes
 
-## Dev
-start the dev server with
+- **new-character-count** - the new internal character count of the value. This is useful since the synced value may have formatting, which internal is ignored when counting characters.
 
-```bash
-yarn serve
-```
+## Setup
 
-tests: TODO
+- clone this repo
+- `cd` into the repo directory and run `yarn install`
+- run `yarn serve`
+
+## Available Scripts
+
+- `yarn serve` - start the dev server
+- `yarn build` - build for production
+- `yarn preview` - locally preview production build
+- `yarn format` - run Prettier to format code
+- `yarn validate:format` - run Prettier with `--check` flag
+- `yarn test` - run tests using vitest

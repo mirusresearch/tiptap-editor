@@ -1,70 +1,90 @@
 <template>
     <div>
         <div class="tiptap-editor" tabindex="0">
-            <editor-menu-bar :editor="editor">
-                <div
-                    v-if="showMenu"
-                    class="menubar"
-                    slot-scope="{ commands, isActive }"
-                    tabindex="0"
-                    role="toolbar"
-                    :aria-controls="id || null"
+            <div
+                v-if="showMenu && editor"
+                class="menubar"
+                role="toolbar"
+                :aria-controls="id || null"
+            >
+                <button
+                    :aria-pressed="`${editor.isActive('bold') ? 'true' : 'false'}`"
+                    :class="{ 'is-active': editor.isActive('bold') }"
+                    @keyup.left="toolbarGoLeft"
+                    @keyup.right="toolbarGoRight"
+                    @click="editor.chain().focus().toggleBold().run()"
+                    aria-label="bold"
+                    value="bold"
+                    type="button"
                 >
-                    <button
-                        :aria-pressed="`${isActive.bold() ? 'true' : 'false'}`"
-                        :class="{ 'is-active': isActive.bold() }"
-                        @keyup.left="toolbarGoLeft"
-                        @keyup.right="toolbarGoRight"
-                        @click="commands.bold"
-                        aria-label="bold"
-                        class="menubar__button"
-                        value="bold"
-                        type="button"
+                    <b>B</b>
+                </button>
+                <button
+                    :aria-pressed="`${editor.isActive('italic') ? 'true' : 'false'}`"
+                    :class="{ 'is-active': editor.isActive('italic') }"
+                    @click="editor.chain().focus().toggleItalic().run()"
+                    @keyup.left="toolbarGoLeft"
+                    @keyup.right="toolbarGoRight"
+                    value="italic"
+                    type="button"
+                >
+                    <i>I</i>
+                </button>
+                <button
+                    @click="editor.chain().focus().toggleBulletList().run()"
+                    :class="{ 'is-active': editor.isActive('bulletList') }"
+                    @keyup.left="toolbarGoLeft"
+                    @keyup.right="toolbarGoRight"
+                    aria-label="bullet list"
+                    value="bulletlist"
+                    type="button"
+                >
+                    <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="list-ul"
+                        class="svg-inline--fa fa-list-ul fa-w-16"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512"
                     >
-                        <b>B</b>
-                    </button>
-                    <button
-                        :aria-pressed="`${isActive.italic() ? 'true' : 'false'}`"
-                        :class="{ 'is-active': isActive.italic() }"
-                        @click="commands.italic"
-                        @keyup.left="toolbarGoLeft"
-                        @keyup.right="toolbarGoRight"
-                        aria-label="italic"
-                        class="menubar__button"
-                        value="italic"
-                        type="button"
+                        <path
+                            fill="currentColor"
+                            d="M96 96c0 26.51-21.49 48-48 48S0 122.51 0 96s21.49-48 48-48 48 21.49 48 48zM48 208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm0 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm96-236h352c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+                        ></path>
+                    </svg>
+                </button>
+                <div class="character-count" v-if="maxCharacterCount && editor">
+                    <svg
+                        height="20"
+                        width="20"
+                        viewBox="0 0 20 20"
+                        :class="
+                            maxCharacterCountExceeded
+                                ? 'character-count__graph--warning'
+                                : 'character-count__graph'
+                        "
                     >
-                        <i>I</i>
-                    </button>
-                    <button
-                        :aria-pressed="`${isActive.bullet_list() ? 'true' : 'false'}`"
-                        :class="{ 'is-active': isActive.bullet_list() }"
-                        @click="commands.bullet_list"
-                        @keyup.left="toolbarGoLeft"
-                        @keyup.right="toolbarGoRight"
-                        aria-label="bullet list"
-                        class="menubar__button"
-                        value="bulletlist"
-                        type="button"
-                    >
-                        <svg
-                            aria-hidden="true"
-                            focusable="false"
-                            data-prefix="fas"
-                            data-icon="list-ul"
-                            class="svg-inline--fa fa-list-ul fa-w-16"
-                            role="img"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                        >
-                            <path
-                                fill="currentColor"
-                                d="M96 96c0 26.51-21.49 48-48 48S0 122.51 0 96s21.49-48 48-48 48 21.49 48 48zM48 208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm0 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm96-236h352c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h352c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H144c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
-                            ></path>
-                        </svg>
-                    </button>
+                        <circle r="10" cx="10" cy="10" fill="#e9ecef" />
+                        <circle
+                            r="5"
+                            cx="10"
+                            cy="10"
+                            fill="transparent"
+                            stroke="currentColor"
+                            stroke-width="10"
+                            :stroke-dasharray="`calc(${characterCountPercentage}px * 31.4 / 100) 31.4`"
+                            transform="rotate(-90) translate(-20)"
+                        />
+                        <circle r="6" cx="10" cy="10" fill="white" />
+                    </svg>
+                    <div class="character-count__text" aria-live="polite">
+                        {{ editor.storage.characterCount.characters() }} /
+                        {{ maxCharacterCount }} characters
+                    </div>
                 </div>
-            </editor-menu-bar>
+            </div>
             <editor-content
                 :editor="editor"
                 :style="{ height: height }"
@@ -72,15 +92,8 @@
                 role="textbox"
                 class="editor__content"
                 aria-label="text area"
+                tabindex="-1"
             />
-        </div>
-        <div
-            v-if="maxCharacterCount"
-            :class="{ over: maxCharacterCountExceeded }"
-            class="character-count"
-            aria-live="polite"
-        >
-            {{ charactersRemaining }} characters remaining
         </div>
         <div class="error-list" :v-show="false" ref="errors">
             <template v-if="currentWarning">
@@ -101,45 +114,45 @@
 
 <script>
 import 'current-script-polyfill';
-import unescape from 'lodash.unescape';
+import { Editor, EditorContent } from '@tiptap/vue-2';
+import Bold from '@tiptap/extension-bold';
+import BulletList from '@tiptap/extension-bullet-list';
+import CharacterCount from '@tiptap/extension-character-count';
+import Document from '@tiptap/extension-document';
+import Italic from '@tiptap/extension-italic';
+import History from '@tiptap/extension-history';
+import ListItem from '@tiptap/extension-list-item';
+import Paragraph from '@tiptap/extension-paragraph';
+import Placeholder from '@tiptap/extension-placeholder';
+import Text from '@tiptap/extension-text';
 import tippy from 'tippy.js';
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
-import {
-    Blockquote,
-    BulletList,
-    ListItem,
-    Bold,
-    Italic,
-    Placeholder,
-    History,
-} from 'tiptap-extensions';
-import Warning from './warnings.js';
-import MaxCharacterCount from './max-character-count.js';
+import Warning from './warnings';
+import unescape from 'lodash.unescape';
 
 export default {
     name: 'tiptapEditor',
     props: {
+        height: {
+            type: String,
+            default: '300px',
+        },
         id: { type: String, default: null },
         value: { type: String, default: '' },
         warnings: {
             type: Array,
             default: () => [],
         },
+        maxCharacterCount: {
+            type: Number,
+            default: null,
+        },
         placeholder: { type: String, default: 'write your content here...' },
         showMenu: {
             type: Boolean,
             default: true,
         },
-        maxCharacterCount: {
-            type: Number,
-            default: null,
-        },
-        height: {
-            type: String,
-            default: '300px',
-        },
     },
-    components: { EditorContent, EditorMenuBar },
+    components: { EditorContent },
     data() {
         return {
             editor: null,
@@ -168,11 +181,17 @@ export default {
                 };
             });
         },
-        charactersRemaining() {
-            return this.maxCharacterCount - this.currentCharacterCount;
-        },
         maxCharacterCountExceeded() {
-            return this.currentCharacterCount >= this.maxCharacterCount;
+            if (this.editor) {
+                return this.editor.storage.characterCount.characters() >= this.maxCharacterCount;
+            }
+        },
+        characterCountPercentage() {
+            if (this.editor) {
+                return Math.round(
+                    (100 / this.maxCharacterCount) * this.editor.storage.characterCount.characters()
+                );
+            }
         },
     },
     mounted() {
@@ -181,29 +200,23 @@ export default {
             content: this.value,
             parseOptions: { preserveWhitespace: 'full' },
             onUpdate: ({ getJSON, getHTML }) => {
-                this.currentValue = getHTML();
-
+                this.currentValue = this.editor.getHTML();
                 this.$emit('update:value', this.currentValue);
             },
             extensions: [
-                new History(),
-                new Blockquote(),
-                new BulletList(),
-                new ListItem(),
-                new Bold(),
-                new Italic(),
-                new Placeholder({
-                    emptyClass: 'is-empty',
-                    emptyNodeText: this.placeholder,
+                Bold,
+                BulletList,
+                CharacterCount.configure({ limit: this.maxCharacterCount }),
+                Document,
+                History,
+                Italic,
+                ListItem,
+                Paragraph,
+                Placeholder.configure({
+                    placeholder: this.placeholder,
                 }),
-                new MaxCharacterCount({
-                    maxCharacterCount: this.maxCharacterCount,
-                    onChange: (currentCharacterCount) => {
-                        this.currentCharacterCount = currentCharacterCount;
-                        this.$emit('new-character-count', currentCharacterCount);
-                    },
-                }),
-                new Warning({
+                Text,
+                Warning.configure({
                     getErrorWords: this.getErrorWords,
                     onEnter: ({ range, command, virtualNode, text }) => {
                         this.currentWarning = this.errors.find((err) => err.value === text);
@@ -241,7 +254,6 @@ export default {
                         if (event.keyCode === 13) {
                             return this.enterHandler();
                         }
-
                         // pressing escape
                         if (event.keyCode === 27) {
                             this.navigatedOptionIndex = 0;
@@ -250,7 +262,6 @@ export default {
                             this.destroyPopup();
                             return true;
                         }
-
                         return false;
                     },
                 }),
@@ -316,7 +327,7 @@ export default {
                     label: option.value,
                 },
             });
-            this.editor.focus();
+            this.editor.commands.focus();
         },
         renderPopup(node) {
             if (!this.popup) {
@@ -347,7 +358,7 @@ export default {
         },
     },
     watch: {
-        warnings: function(n, o) {
+        warnings: function (n, o) {
             if (this.editor) {
                 // preserve selection after updating warnings
                 const oldSelection = this.editor.selection;
@@ -370,24 +381,24 @@ export default {
 }
 
 .tiptap-editor {
-    textarea:focus,
-    input:focus {
-        outline: none;
-    }
-
-    border: 1px solid hsla(0, 0%, 4%, 0.1);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 4px;
 
     p.is-empty:first-child::before {
-        content: attr(data-empty-text);
+        content: attr(data-placeholder);
         float: left;
         color: #aaa;
         pointer-events: none;
         height: 0;
-        font-style: italic;
     }
 
     .menubar {
-        border-bottom: 1px solid hsla(0, 0%, 4%, 0.1);
+        // border-bottom: 1px solid #e5e7eb;
+        padding: 4px;
+        border-radius: 4px;
+        background-color: #f4f4f5;
+        display: flex;
 
         button {
             font-size: 14px;
@@ -398,20 +409,31 @@ export default {
             outline: 50;
             width: 35px;
             vertical-align: bottom;
+            border-radius: 4px;
+            margin-right: 3px;
 
-            &.is-active {
-                background-color: #f0f0f0;
-                outline: 1px solid black;
+            &:focus {
+                outline: 2px solid #3b82f6;
+                transition: all 0.08s ease-in-out;
             }
 
-            &:focus,
-            &:hover {
-                background-color: #f0f0f0;
-                outline: 2px solid #0078d0;
+            &.is-active {
+                background-color: #d3e3fd;
+            }
+
+            &.is-active:focus {
+                background-color: #bfd2f9;
+            }
+
+            &:not(.is-active):hover {
+                background-color: #e5e7eb;
+            }
+
+            &:not(.is-active):focus {
+                background-color: #e5e7eb;
             }
 
             svg {
-                padding-top: 4px;
                 width: 12px;
             }
         }
@@ -436,7 +458,7 @@ export default {
         }
 
         .underline-blue {
-            border-bottom: 3px blue solid;
+            border-bottom: 3px #3b82f6 solid;
         }
 
         ul {
@@ -446,18 +468,32 @@ export default {
         .ProseMirror {
             height: 100%;
             padding: 2px;
+            border-radius: 7px;
+
+            &:focus {
+                outline: 2px solid #3b82f6;
+                transition: all 0.08s ease-in-out;
+            }
         }
     }
 }
 
 .character-count {
-    margin-right: 5px;
-    margin-top: 5px;
-    color: #0a6800;
-    float: right;
+    padding: 4px;
+    border-radius: 4px;
+    text-align: right;
+    padding-right: 15px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-grow: 2;
 
-    &.over {
-        color: red;
+    &__graph {
+        color: #a8c2f7;
+
+        &--warning {
+            color: #fb7373;
+        }
     }
 }
 </style>
