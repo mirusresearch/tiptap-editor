@@ -40,54 +40,60 @@ export default {
 
 ## Props
 
+-   **value:** `String` - the text to edit
 
-- **value:** `String` - the text to edit
+-   **placeholder:** `String` - the text to display when there is nothing in the editor
 
-- **placeholder:** `String` - the text to display when there is nothing in the editor
+-   **warnings:** `[ Objects ]` - an array of text that should be warned about
 
-- **warnings:** `[ Objects ]` - an array of text that should be warned about
+    -   example:
 
-	- example:
-		```js
-		[
-			{
-				value: 'the',
-				message: 'did you mean...',
-				options: ['too', 'pizza'], // optional
-			},
-			{
-				value: 'test text',
-				message: 'cannot say that, sorry',
-				overrideClass: 'underlined-green', // optional
-			},
-		]
-		```
+        ```js
+        [
+            {
+                value: 'the',
+                message: 'did you mean...',
+                options: ['too', 'pizza'], // optional
+            },
+            {
+                value: 'test text',
+                message: 'cannot say that, sorry',
+                overrideClass: 'underlined-green', // optional
+                offset: 32, // optional
+                length: 9, // optional
+            },
+        ];
+        ```
 
-- **maxCharacterCount:** `Number` - Show a count of the current number of characters. If over the max the count will show red
+    -   Optional `offset` and `length` values can be specified to highlight a specific instance of an error.
+        -   **offset:** `Number` - character distance from beginning of the text to the index of the error
+        -   **length:** `Number` - character length of the error
 
-- **height:** `String` - height of the text editor, default is `300px`
+-   **maxCharacterCount:** `Number` - Show a count of the current number of characters. If over the max the count will show red
 
-- **showMenu:** `Boolean` - if false, hide the format menu
+-   **height:** `String` - height of the text editor, default is `300px`
 
-- **id:** `String` - give the editor a unique id. Also adds aria tags to link the editor menu to the text area
+-   **showMenu:** `Boolean` - if false, hide the format menu
+
+-   **id:** `String` - give the editor a unique id. Also adds aria tags to link the editor menu to the text area
 
 ## Events
 
-- **update:value** - emitted whenever the core text value changes
+-   **update:value** - emitted whenever the core text value changes
 
-- **new-character-count** - the new internal character count of the value. This is useful since the synced value may have formatting, which internal is ignored when counting characters.
+-   **new-character-count** - the new internal character count of the value. This is useful since the synced value may have formatting, which internal is ignored when counting characters.
 
 ## Setup
 
-- clone this repo
-- `cd` into the repo directory and run `yarn install`
-- run `yarn serve`
+-   clone this repo
+-   `cd` into the repo directory and run `yarn install`
+-   run `yarn serve`
 
 ## Available Scripts
 
-- `yarn serve` - start the dev server
-- `yarn build` - build for production
-- `yarn preview` - locally preview production build
-- `yarn format` - run Prettier to format code
-- `yarn validate:format` - run Prettier with `--check` flag
-- `yarn test` - run tests using vitest
+-   `yarn serve` - start the dev server
+-   `yarn build` - build for production
+-   `yarn preview` - locally preview production build
+-   `yarn format` - run Prettier to format code
+-   `yarn validate:format` - run Prettier with `--check` flag
+-   `yarn test` - run tests using vitest
