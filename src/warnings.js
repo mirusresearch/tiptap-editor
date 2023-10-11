@@ -69,11 +69,7 @@ function lint(doc, position, prev, getErrorWords, getInitialCharacterCount) {
                 // highlight specific instance if the error has offset data
                 const indexOfMatchedWord = pos + m.index;
                 if (originalErrorWord.offset && originalErrorWord.length) {
-                    const charDistanceFromOriginalErrorWord = Math.abs(
-                        indexOfMatchedWord - originalErrorWord.offset
-                    );
-                    const numCharsChanged = Math.abs(node.text.length - getInitialCharacterCount());
-                    if (charDistanceFromOriginalErrorWord <= numCharsChanged) {
+                    if (indexOfMatchedWord == originalErrorWord.offset) {
                         record(indexOfMatchedWord, indexOfMatchedWord + m[0].length, m[0]);
                     }
                 } else {

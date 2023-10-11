@@ -162,6 +162,7 @@ export default {
             insertOption: () => {},
             optionsRange: null,
             initialCharacterCount: 0,
+            previousCharacterCount: 0,
         };
     },
     computed: {
@@ -285,6 +286,20 @@ export default {
             hideOnClick: false,
         });
         this.initialCharacterCount = this.currentCharacterCount;
+        this.previousCharacterCount = this.currentCharacterCount;
+        this.editor.on('update', ({ editor }) => {
+            this.warnings.forEach((warning) => {
+                if (warning.length && warning.offset) {
+                    if (editor.state.selection.head - 1 <= warning.offset) {
+                        const charCountDif =
+                            this.currentCharacterCount - this.previousCharacterCount;
+                        warning.offset += charCountDif;
+                    }
+                }
+            });
+            this.previousCharacterCount = this.currentCharacterCount;
+            this.editor.commands.focus();
+        });
     },
     destroyed() {
         this.editor.destroy();
