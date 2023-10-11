@@ -80,8 +80,7 @@
                         <circle r="6" cx="10" cy="10" fill="white" />
                     </svg>
                     <div class="character-count__text" aria-live="polite">
-                        {{ editor.storage.characterCount.characters() }} /
-                        {{ maxCharacterCount }} characters
+                        {{ currentCharacterCount }} / {{ maxCharacterCount }} characters
                     </div>
                 </div>
             </div>
@@ -162,7 +161,7 @@ export default {
             navigatedOptionIndex: 0,
             insertOption: () => {},
             optionsRange: null,
-            currentCharacterCount: 0,
+            initialCharacterCount: 0,
         };
     },
     computed: {
@@ -177,20 +176,23 @@ export default {
                     isWord: isWord,
                     value: isWord ? mistake.value : unescape(mistake.value),
                     message: mistake.message,
+                    offset: mistake.offset,
+                    length: mistake.length,
                     options: (mistake.options || []).map((value, id) => ({ value, id })),
                 };
             });
         },
+        currentCharacterCount() {
+            return this.editor.storage.characterCount.characters();
+        },
         maxCharacterCountExceeded() {
             if (this.editor) {
-                return this.editor.storage.characterCount.characters() >= this.maxCharacterCount;
+                return this.currentCharacterCount >= this.maxCharacterCount;
             }
         },
         characterCountPercentage() {
             if (this.editor) {
-                return Math.round(
-                    (100 / this.maxCharacterCount) * this.editor.storage.characterCount.characters()
-                );
+                return Math.round((100 / this.maxCharacterCount) * this.currentCharacterCount);
             }
         },
     },
@@ -218,6 +220,7 @@ export default {
                 Text,
                 Warning.configure({
                     getErrorWords: this.getErrorWords,
+                    getInitialCharacterCount: this.getInitialCharacterCount,
                     onEnter: ({ range, command, virtualNode, text }) => {
                         this.currentWarning = this.errors.find((err) => err.value === text);
                         this.currentOptions = this.currentWarning.options || [];
@@ -281,6 +284,7 @@ export default {
             arrowType: 'round',
             hideOnClick: false,
         });
+        this.initialCharacterCount = this.currentCharacterCount;
     },
     destroyed() {
         this.editor.destroy();
@@ -297,7 +301,12 @@ export default {
                 value: err.value,
                 overrideClass: err.overrideClass,
                 isWord: err.isWord,
+                offset: err.offset,
+                length: err.length,
             }));
+        },
+        getInitialCharacterCount() {
+            return this.initialCharacterCount;
         },
         upHandler() {
             this.navigatedOptionIndex =
@@ -362,8 +371,11 @@ export default {
             if (this.editor) {
                 // preserve selection after updating warnings
                 const oldSelection = this.editor.selection;
-                this.editor.setContent(this.currentValue);
-                this.editor.setSelection(oldSelection.from, oldSelection.to);
+                this.editor.commands.setContent(this.currentValue);
+                this.editor.commands.setSelection(oldSelection.from, oldSelection.to);
+
+                // record length of text that was used to generate the list of warnings
+                this.initialCharacterCount = this.currentCharacterCount;
             }
         },
     },

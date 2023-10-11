@@ -20,7 +20,7 @@ function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-function lint(doc, position, prev, getErrorWords) {
+function lint(doc, position, prev, getErrorWords, getInitialCharacterCount) {
     const words = getErrorWords();
     const regexString = words
         .map((w) => (isWord(w) ? `\\b(${escapeRegExp(w.value)})\\b` : `(${escapeRegExp(w.value)})`))
@@ -64,7 +64,21 @@ function lint(doc, position, prev, getErrorWords) {
             // Scan text nodes for bad words
             let m;
             while ((m = badWordsRegex.exec(node.text))) {
-                record(pos + m.index, pos + m.index + m[0].length, m[0]);
+                const originalErrorWord = words.find((word) => word.value === m[0]);
+
+                // highlight specific instance if the error has offset data
+                const indexOfMatchedWord = pos + m.index;
+                if (originalErrorWord.offset && originalErrorWord.length) {
+                    const charDistanceFromOriginalErrorWord = Math.abs(
+                        indexOfMatchedWord - originalErrorWord.offset
+                    );
+                    const numCharsChanged = Math.abs(node.text.length - getInitialCharacterCount());
+                    if (charDistanceFromOriginalErrorWord <= numCharsChanged) {
+                        record(indexOfMatchedWord, indexOfMatchedWord + m[0].length, m[0]);
+                    }
+                } else {
+                    record(indexOfMatchedWord, indexOfMatchedWord + m[0].length, m[0]);
+                }
             }
         }
     });
@@ -82,6 +96,7 @@ const Warning = Node.create({
             onEnter: () => {},
             onExit: () => {},
             onKeyDown: () => {},
+            getInitialCharacterCount: () => 0,
             defaultClass: 'underline-red',
         };
     },
@@ -202,13 +217,25 @@ const Warning = Node.create({
                 },
                 state: {
                     init(_, { doc }) {
-                        return lint(doc, null, {}, self.options.getErrorWords);
+                        return lint(
+                            doc,
+                            null,
+                            {},
+                            self.options.getErrorWords,
+                            self.options.getInitialCharacterCount
+                        );
                     },
                     apply(tr, prev) {
                         const { selection } = tr;
                         const next = Object.assign({}, prev);
                         const position = selection.$from;
-                        return lint(tr.doc, position, prev, self.options.getErrorWords);
+                        return lint(
+                            tr.doc,
+                            position,
+                            prev,
+                            self.options.getErrorWords,
+                            self.options.getInitialCharacterCount
+                        );
                     },
                 },
                 props: {
