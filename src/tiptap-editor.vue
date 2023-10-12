@@ -409,6 +409,7 @@ export default {
 
 .tiptap-editor {
     border: 1px solid #e5e7eb;
+    background: white;
     border-radius: 8px;
     padding: 4px;
 
