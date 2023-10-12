@@ -9,7 +9,7 @@
     "homepage": "https://github.com/mirusresearch/tiptap-editor",
     "author": "alec@mirusresearch.com",
     "license": "MIT",
-    "main": "dist/tiptap-editor.umd.js",
+    "main": "dist/tiptap-editor.mjs",
     "browser": {
         "./sfc": "src/tiptap-editor.vue"
     },
@@ -75,6 +75,7 @@
         "ie >= 9"
     ],
     "dependencies": {
+        "vite-plugin-css-injected-by-js": "^3.3.0",
         "vue-template-compiler": "^2.7.14"
     }
 }
