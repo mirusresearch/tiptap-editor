@@ -21963,7 +21963,7 @@ function Ow(t, e, n, r, i) {
       let d;
       for (; d = a.exec(f.text); ) {
         const h = o.find((v) => v.value === d[0]), m = p + d.index;
-        h.offset && h.length ? m == h.offset && u(m, m + d[0].length, d[0]) : u(m, m + d[0].length, d[0]);
+        h.offset && h.length ? m - 1 == h.offset && u(m, m + d[0].length, d[0]) : u(m, m + d[0].length, d[0]);
       }
     }
   }), { highlights: l, on: c };
