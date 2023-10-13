@@ -64,15 +64,18 @@ function lint(doc, position, prev, getErrorWords, getInitialCharacterCount) {
             // Scan text nodes for bad words
             let m;
             while ((m = badWordsRegex.exec(node.text))) {
-                const originalErrorWord = words.find((word) => word.value === m[0]);
-
-                // highlight specific instance if the error has offset data
+                const matchingErrorWords = words.filter((word) => word.value === m[0]);
                 const indexOfMatchedWord = pos + m.index;
-                if (originalErrorWord.offset && originalErrorWord.length) {
-                    if (indexOfMatchedWord - 1 == originalErrorWord.offset) {
-                        record(indexOfMatchedWord, indexOfMatchedWord + m[0].length, m[0]);
+                let errorHasOffsetData = false;
+                matchingErrorWords.forEach((word) => {
+                    if (word.offset && word.length) {
+                        errorHasOffsetData = true;
+                        if (indexOfMatchedWord - 1 === word.offset) {
+                            record(indexOfMatchedWord, indexOfMatchedWord + m[0].length, m[0]);
+                        }
                     }
-                } else {
+                });
+                if (!errorHasOffsetData) {
                     record(indexOfMatchedWord, indexOfMatchedWord + m[0].length, m[0]);
                 }
             }
