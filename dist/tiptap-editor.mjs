@@ -21973,7 +21973,7 @@ function Cw(t, e, n, r, i) {
         const h = o.filter((y) => y.value === d[0]), m = p + d.index;
         let v = !1;
         h.forEach((y) => {
-          y.offset && y.length && (v = !0, m - 1 === y.offset && u(m, m + d[0].length, d[0]));
+          y.length && y.offset >= 0 && (v = !0, m - 1 === y.offset && u(m, m + d[0].length, d[0]));
         }), v || u(m, m + d[0].length, d[0]);
       }
     }

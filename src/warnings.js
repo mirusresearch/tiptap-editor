@@ -68,7 +68,7 @@ function lint(doc, position, prev, getErrorWords, getInitialCharacterCount) {
                 const indexOfMatchedWord = pos + m.index;
                 let errorHasOffsetData = false;
                 matchingErrorWords.forEach((word) => {
-                    if (word.offset && word.length) {
+                    if (word.length && word.offset >= 0) {
                         errorHasOffsetData = true;
                         if (indexOfMatchedWord - 1 === word.offset) {
                             record(indexOfMatchedWord, indexOfMatchedWord + m[0].length, m[0]);
