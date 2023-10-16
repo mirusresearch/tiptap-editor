@@ -319,9 +319,6 @@ export default {
                 length: err.length,
             }));
         },
-        getInitialCharacterCount() {
-            return this.initialCharacterCount;
-        },
         upHandler() {
             this.navigatedOptionIndex =
                 (this.navigatedOptionIndex + this.currentOptions.length - 1) %
@@ -385,8 +382,10 @@ export default {
             if (this.editor) {
                 // preserve selection after updating warnings
                 const oldSelection = this.editor.view.state.selection;
-                this.editor.commands.setContent(this.currentValue);
-                this.editor.commands.setTextSelection(oldSelection.from, oldSelection.to);
+                this.editor.commands.setTextSelection({
+                    from: oldSelection.from,
+                    to: oldSelection.to,
+                });
 
                 // record length of text that was used to generate the list of warnings
                 this.initialCharacterCount = this.currentCharacterCount;
