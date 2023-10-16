@@ -221,7 +221,6 @@ export default {
                 Text,
                 Warning.configure({
                     getErrorWords: this.getErrorWords,
-                    getInitialCharacterCount: this.getInitialCharacterCount,
                     onEnter: ({ range, command, virtualNode, text }) => {
                         this.currentWarning = this.errors.find((err) => err.value === text);
                         this.currentOptions = this.currentWarning.options || [];
@@ -385,9 +384,9 @@ export default {
         warnings: function (n, o) {
             if (this.editor) {
                 // preserve selection after updating warnings
-                const oldSelection = this.editor.selection;
+                const oldSelection = this.editor.view.state.selection;
                 this.editor.commands.setContent(this.currentValue);
-                this.editor.commands.setSelection(oldSelection.from, oldSelection.to);
+                this.editor.commands.setTextSelection(oldSelection.from, oldSelection.to);
 
                 // record length of text that was used to generate the list of warnings
                 this.initialCharacterCount = this.currentCharacterCount;
