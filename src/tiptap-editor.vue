@@ -382,6 +382,7 @@ export default {
             if (this.editor) {
                 // preserve selection after updating warnings
                 const oldSelection = this.editor.view.state.selection;
+                // this.editor.commands.setContent(this.currentValue);
                 this.editor.commands.setTextSelection({
                     from: oldSelection.from,
                     to: oldSelection.to,
