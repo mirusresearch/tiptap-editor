@@ -22185,9 +22185,7 @@ const Z6 = {
       navigatedOptionIndex: 0,
       insertOption: () => {
       },
-      optionsRange: null,
-      initialCharacterCount: 0,
-      previousCharacterCount: 0
+      previousStrippedHTML: ""
     };
   },
   computed: {
@@ -22207,6 +22205,9 @@ const Z6 = {
     },
     currentCharacterCount() {
       return this.editor.storage.characterCount.characters();
+    },
+    currentStrippedHTML() {
+      return this.stripHTML(this.editor.getHTML());
     },
     maxCharacterCountExceeded() {
       if (this.editor)
@@ -22264,19 +22265,24 @@ const Z6 = {
       arrow: !0,
       arrowType: "round",
       hideOnClick: !1
-    }), this.initialCharacterCount = this.currentCharacterCount, this.previousCharacterCount = this.currentCharacterCount, this.editor.on("update", ({ editor: t }) => {
+    }), this.previousStrippedHTML = this.currentStrippedHTML, this.editor.on("update", ({ editor: t }) => {
       this.warnings.forEach((e) => {
-        if (e.length && e.offset && t.state.selection.head - 1 <= e.offset) {
-          const n = this.currentCharacterCount - this.previousCharacterCount;
-          e.offset += n;
+        if (e.length && e.offset >= 0) {
+          const n = this.currentStrippedHTML.length - this.previousStrippedHTML.length;
+          this.editor.state.selection.head - 1 - n <= e.offset && (e.offset += n);
         }
-      }), this.previousCharacterCount = this.currentCharacterCount, this.editor.commands.focus();
-    });
+      }), this.previousStrippedHTML = this.stripHTML(this.editor.getHTML()), this.editor.commands.focus();
+    }), this.adjustWarningOffsets();
   },
   destroyed() {
     this.editor.destroy(), this.popup && this.popup.destroy();
   },
   methods: {
+    adjustWarningOffsets() {
+      this.warnings.forEach((t) => {
+        t.offset = this.adjustOffset(t.offset);
+      });
+    },
     getErrorWords() {
       return this.errors.length < 1 ? [] : this.errors.map((t) => ({
         value: t.value,
@@ -22322,16 +22328,24 @@ const Z6 = {
       t.preventDefault();
       const e = t.target.nextSibling;
       e && e.focus !== void 0 && e.focus();
+    },
+    stripHTML(t) {
+      return t.replace(/<\/p><p>/g, "  ").replace(/<\/?[^>]+(>|$)/g, "");
+    },
+    adjustOffset(t) {
+      const e = this.editor.getHTML().substr(0, t);
+      return this.stripHTML(e).length;
     }
   },
   watch: {
     warnings: function(t, e) {
       if (this.editor) {
+        this.adjustWarningOffsets();
         const n = this.editor.view.state.selection;
         this.editor.commands.setTextSelection({
           from: n.from,
           to: n.to
-        }), this.initialCharacterCount = this.currentCharacterCount;
+        });
       }
     }
   }

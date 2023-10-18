@@ -160,9 +160,7 @@ export default {
             currentValue: '',
             navigatedOptionIndex: 0,
             insertOption: () => {},
-            optionsRange: null,
-            initialCharacterCount: 0,
-            previousCharacterCount: 0,
+            previousStrippedHTML: '',
         };
     },
     computed: {
@@ -185,6 +183,9 @@ export default {
         },
         currentCharacterCount() {
             return this.editor.storage.characterCount.characters();
+        },
+        currentStrippedHTML() {
+            return this.stripHTML(this.editor.getHTML());
         },
         maxCharacterCountExceeded() {
             if (this.editor) {
@@ -284,21 +285,21 @@ export default {
             arrowType: 'round',
             hideOnClick: false,
         });
-        this.initialCharacterCount = this.currentCharacterCount;
-        this.previousCharacterCount = this.currentCharacterCount;
+        this.previousStrippedHTML = this.currentStrippedHTML;
         this.editor.on('update', ({ editor }) => {
             this.warnings.forEach((warning) => {
-                if (warning.length && warning.offset) {
-                    if (editor.state.selection.head - 1 <= warning.offset) {
-                        const charCountDif =
-                            this.currentCharacterCount - this.previousCharacterCount;
+                if (warning.length && warning.offset >= 0) {
+                    const charCountDif =
+                        this.currentStrippedHTML.length - this.previousStrippedHTML.length;
+                    if (this.editor.state.selection.head - 1 - charCountDif <= warning.offset) {
                         warning.offset += charCountDif;
                     }
                 }
             });
-            this.previousCharacterCount = this.currentCharacterCount;
+            this.previousStrippedHTML = this.stripHTML(this.editor.getHTML());
             this.editor.commands.focus();
         });
+        this.adjustWarningOffsets();
     },
     destroyed() {
         this.editor.destroy();
@@ -307,6 +308,11 @@ export default {
         }
     },
     methods: {
+        adjustWarningOffsets() {
+            this.warnings.forEach((warning) => {
+                warning.offset = this.adjustOffset(warning.offset);
+            });
+        },
         getErrorWords() {
             if (this.errors.length < 1) {
                 return [];
@@ -376,10 +382,18 @@ export default {
                 nextSibling.focus();
             }
         },
+        stripHTML(html) {
+            return html.replace(/<\/p><p>/g, '  ').replace(/<\/?[^>]+(>|$)/g, '');
+        },
+        adjustOffset(offset) {
+            const substr = this.editor.getHTML().substr(0, offset);
+            return this.stripHTML(substr).length;
+        },
     },
     watch: {
         warnings: function (n, o) {
             if (this.editor) {
+                this.adjustWarningOffsets();
                 // preserve selection after updating warnings
                 const oldSelection = this.editor.view.state.selection;
                 // this.editor.commands.setContent(this.currentValue);
@@ -387,9 +401,6 @@ export default {
                     from: oldSelection.from,
                     to: oldSelection.to,
                 });
-
-                // record length of text that was used to generate the list of warnings
-                this.initialCharacterCount = this.currentCharacterCount;
             }
         },
     },
