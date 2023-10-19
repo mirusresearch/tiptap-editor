@@ -161,6 +161,29 @@ export default {
             navigatedOptionIndex: 0,
             insertOption: () => {},
             previousStrippedHTML: '',
+            htmlEntitiesRegex: [
+                /&amp;/g,
+                /&asymp;/g,
+                /&cent;/g,
+                /&copy;/g,
+                /&deg;/g,
+                /&divide;/g,
+                /&euro;/g,
+                /&gt;/g,
+                /&iexcl;/g,
+                /&infin;/g,
+                /&iquest;/g,
+                /&lt;/g,
+                /&mdash;/g,
+                /&nbsp;/g,
+                /&ndash;/g,
+                /&ne;/g,
+                /&pound;/g,
+                /&quot;/g,
+                /&reg;/g,
+                /&times;/g,
+                /&trade;/g,
+            ],
         };
     },
     computed: {
@@ -184,6 +207,9 @@ export default {
         currentCharacterCount() {
             return this.editor.storage.characterCount.characters();
         },
+        currentHTML() {
+            return this.editor.getHTML();
+        },
         currentStrippedHTML() {
             return this.stripHTML(this.editor.getHTML());
         },
@@ -204,7 +230,7 @@ export default {
             content: this.value,
             parseOptions: { preserveWhitespace: 'full' },
             onUpdate: ({ getJSON, getHTML }) => {
-                this.currentValue = this.editor.getHTML();
+                this.currentValue = this.currentHTML;
                 this.$emit('update:value', this.currentValue);
             },
             extensions: [
@@ -289,14 +315,15 @@ export default {
         this.editor.on('update', ({ editor }) => {
             this.warnings.forEach((warning) => {
                 if (warning.length && warning.offset >= 0) {
-                    const charCountDif =
+                    let charCountDiff =
                         this.currentStrippedHTML.length - this.previousStrippedHTML.length;
-                    if (this.editor.state.selection.head - 1 - charCountDif <= warning.offset) {
-                        warning.offset += charCountDif;
+                    charCountDiff = this.adjustCountForSpecialChars(charCountDiff);
+                    if (this.editor.state.selection.head - 1 - charCountDiff <= warning.offset) {
+                        warning.offset += charCountDiff;
                     }
                 }
             });
-            this.previousStrippedHTML = this.stripHTML(this.editor.getHTML());
+            this.previousStrippedHTML = this.currentStrippedHTML;
             this.editor.commands.focus();
         });
         this.adjustWarningOffsets();
@@ -308,9 +335,42 @@ export default {
         }
     },
     methods: {
+        getNumOccurances(regex, string) {
+            const matches = string.match(regex);
+            return matches ? matches.length : 0;
+        },
+        getSpecialCharAdjustment(regex) {
+            const previousCount = this.getNumOccurances(regex, this.previousStrippedHTML);
+            const currentCount = this.getNumOccurances(regex, this.currentStrippedHTML);
+            const countDiff = currentCount - previousCount;
+            return countDiff * (regex.toString().length - 4);
+        },
+        adjustCountForSpecialChars(charCountDiff) {
+            this.htmlEntitiesRegex.forEach((regex) => {
+                charCountDiff -= this.getSpecialCharAdjustment(regex);
+            });
+            return charCountDiff;
+        },
+        getCharDistanceToWarning(warning) {
+            for (let i = 0; i < this.currentHTML.length - warning.offset; i++) {
+                if (this.currentHTML.substr(warning.offset + i, warning.length) === warning.value) {
+                    return i;
+                }
+            }
+        },
+        adjustOffset(warning) {
+            const numAdditionalChars = this.getCharDistanceToWarning(warning);
+            const substr = this.currentHTML.substr(0, warning.offset + numAdditionalChars);
+            let adjustedOffset = this.stripHTML(substr).length;
+            this.htmlEntitiesRegex.forEach((regex) => {
+                const count = this.getNumOccurances(regex, substr);
+                adjustedOffset -= count * (regex.toString().length - 4);
+            });
+            return adjustedOffset;
+        },
         adjustWarningOffsets() {
             this.warnings.forEach((warning) => {
-                warning.offset = this.adjustOffset(warning.offset);
+                warning.offset = this.adjustOffset(warning);
             });
         },
         getErrorWords() {
@@ -384,10 +444,6 @@ export default {
         },
         stripHTML(html) {
             return html.replace(/<\/p><p>/g, '  ').replace(/<\/?[^>]+(>|$)/g, '');
-        },
-        adjustOffset(offset) {
-            const substr = this.editor.getHTML().substr(0, offset);
-            return this.stripHTML(substr).length;
         },
     },
     watch: {
