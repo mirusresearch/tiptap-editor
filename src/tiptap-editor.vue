@@ -161,29 +161,6 @@ export default {
             navigatedOptionIndex: 0,
             insertOption: () => {},
             previousStrippedHTML: '',
-            htmlEntitiesRegex: [
-                /&amp;/g,
-                /&asymp;/g,
-                /&cent;/g,
-                /&copy;/g,
-                /&deg;/g,
-                /&divide;/g,
-                /&euro;/g,
-                /&gt;/g,
-                /&iexcl;/g,
-                /&infin;/g,
-                /&iquest;/g,
-                /&lt;/g,
-                /&mdash;/g,
-                /&nbsp;/g,
-                /&ndash;/g,
-                /&ne;/g,
-                /&pound;/g,
-                /&quot;/g,
-                /&reg;/g,
-                /&times;/g,
-                /&trade;/g,
-            ],
         };
     },
     computed: {
@@ -335,19 +312,49 @@ export default {
         }
     },
     methods: {
-        getNumOccurances(regex, string) {
-            const matches = string.match(regex);
-            return matches ? matches.length : 0;
+        getEntityOccurances(string) {
+            const entityRegex = /&[a-zA-Z0-9]+;/g;
+            const matches = string.match(entityRegex);
+            const counts = new Map();
+            if (matches) {
+                for (const match of matches) {
+                    counts.set(match, (counts.get(match) || 0) + 1);
+                }
+            }
+            return counts;
         },
-        getSpecialCharAdjustment(regex) {
-            const previousCount = this.getNumOccurances(regex, this.previousStrippedHTML);
-            const currentCount = this.getNumOccurances(regex, this.currentStrippedHTML);
-            const countDiff = currentCount - previousCount;
-            return countDiff * (regex.toString().length - 4);
+        getEntityCountDiffs() {
+            const currentCounts = this.getEntityOccurances(this.currentStrippedHTML);
+            const previousCounts = this.getEntityOccurances(this.previousStrippedHTML);
+            let longerMap;
+            let shorterMap;
+            if (currentCounts.size >= previousCounts.size) {
+                longerMap = currentCounts;
+                shorterMap = previousCounts;
+            } else {
+                longerMap = previousCounts;
+                shorterMap = currentCounts;
+            }
+            const entityCountDiffs = [];
+            for (const [entity, longerMapCount] of longerMap) {
+                const shorterMapCount = shorterMap.get(entity) || 0;
+                let diff;
+                if (longerMap === currentCounts) {
+                    diff = longerMapCount - shorterMapCount;
+                } else {
+                    diff = shorterMapCount - longerMapCount;
+                }
+                entityCountDiffs.push({ entity: entity, diff });
+            }
+
+            return entityCountDiffs;
         },
         adjustCountForSpecialChars(charCountDiff) {
-            this.htmlEntitiesRegex.forEach((regex) => {
-                charCountDiff -= this.getSpecialCharAdjustment(regex);
+            const entityCountDiffs = this.getEntityCountDiffs();
+            entityCountDiffs.forEach((obj) => {
+                if (obj.diff !== 0) {
+                    charCountDiff -= obj.diff * (obj.entity.length - 1);
+                }
             });
             return charCountDiff;
         },
@@ -362,10 +369,10 @@ export default {
             const numAdditionalChars = this.getCharDistanceToWarning(warning);
             const substr = this.currentHTML.substr(0, warning.offset + numAdditionalChars);
             let adjustedOffset = this.stripHTML(substr).length;
-            this.htmlEntitiesRegex.forEach((regex) => {
-                const count = this.getNumOccurances(regex, substr);
-                adjustedOffset -= count * (regex.toString().length - 4);
-            });
+            const entityOccurances = this.getEntityOccurances(substr);
+            for (const [entity, count] of entityOccurances) {
+                adjustedOffset -= count * (entity.length - 1);
+            }
             return adjustedOffset;
         },
         adjustWarningOffsets() {
