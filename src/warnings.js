@@ -70,7 +70,8 @@ function lint(doc, position, prev, getErrorWords) {
                 matchingErrorWords.forEach((word) => {
                     if (word.length && word.offset >= 0) {
                         errorHasOffsetData = true;
-                        if (indexOfMatchedWord - 1 === word.offset) {
+                        console.log(indexOfMatchedWord, word.offset);
+                        if (indexOfMatchedWord === word.offset) {
                             record(indexOfMatchedWord, indexOfMatchedWord + m[0].length, m[0]);
                         }
                     }
