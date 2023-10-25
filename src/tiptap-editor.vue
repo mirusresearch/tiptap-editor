@@ -333,7 +333,7 @@ export default {
             let substr = this.value.substr(0, warning.offset);
 
             // these tags count as one token, so we replace them with a single space
-            substr = substr.replace(/<p>|<\/p>|<li>|<ul>|<\/ul>|<\/li>/g, ' ');
+            substr = substr.replace(/<p>|<\/p>|<li>|<ul>|<\/ul>|<\/li>|<div>|<\/div>/g, ' ');
 
             // these tags don't count as a token, so we remove them
             const knownTagRegex = /<strong>|<\/strong>|<em>|<\/em>/g;
