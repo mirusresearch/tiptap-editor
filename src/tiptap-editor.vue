@@ -163,6 +163,7 @@ export default {
             optionsRange: null,
             initialCharacterCount: 0,
             previousCharacterCount: 0,
+            previousHTML: '',
         };
     },
     computed: {
@@ -290,14 +291,21 @@ export default {
             this.warnings.forEach((warning) => {
                 if (warning.length && warning.offset) {
                     if (editor.state.selection.head - 1 <= warning.offset) {
-                        const charCountDif =
+                        let charCountDiff =
                             this.currentCharacterCount - this.previousCharacterCount;
-                        warning.offset += charCountDif;
+                        charCountDiff += this.adjustForNewlines();
+                        warning.offset += charCountDiff;
                     }
                 }
             });
             this.previousCharacterCount = this.currentCharacterCount;
+            this.previousHTML = this.editor.getHTML();
             this.editor.commands.focus();
+        });
+        this.warnings.forEach((warning) => {
+            if (warning.length && warning.offset >= 0) {
+                warning.offset += this.getOffsetAdjustment(warning);
+            }
         });
     },
     destroyed() {
@@ -307,6 +315,42 @@ export default {
         }
     },
     methods: {
+        // compliance checks base offset data off the HTML value of the text
+        // ProseMirror uses a unique token sequence indexing system - see https://prosemirror.net/docs/guide/#doc.indexing
+        // we need to convert warning offsets to the index values ProseMirror expects
+        getOffsetAdjustment(warning) {
+            // compliance check offsets count all HTML entities as one character, whereas the editor value does not. compensate for
+            // this by adding to the offset until it matches (or equals the length of the editor text as a failsafe break from the loop)
+            while (
+                this.value.substr(warning.offset, warning.value.length) !== warning.value &&
+                warning.offset <= this.value.length
+            ) {
+                warning.offset++;
+            }
+
+            // obtain the substring up until the beginning of the warning
+            const originalLength = warning.offset;
+            let substr = this.value.substr(0, warning.offset);
+
+            // these tags count as one token, so we replace them with a single space
+            substr = substr.replace(/<p>|<\/p>|<li>|<ul>|<\/ul>|<\/li>|<div>|<\/div>/g, ' ');
+
+            // these tags don't count as a token, so we remove them
+            const knownTagRegex = /<strong>|<\/strong>|<em>|<\/em>/g;
+            substr = substr.replace(knownTagRegex, '');
+
+            // return the number of chars the offset should be adjusted by
+            return substr.length - originalLength;
+        },
+        // when the user adds a newline to the text of the editor, the character count stays the same, but ProseMirror's token
+        // sequence indexing system adds 2 tokens to the content. We need to adjust warning offsets to account for that
+        adjustForNewlines() {
+            const regex = /<\/p><p>/g;
+            const previousNewlines = (this.previousHTML.match(regex) || []).length;
+            const newlines = (this.editor.getHTML().match(regex) || []).length;
+            // multiply the difference in newlines by 2 since each instance counts as 2 tokens
+            return (newlines - previousNewlines) * 2;
+        },
         getErrorWords() {
             if (this.errors.length < 1) {
                 return [];
@@ -380,6 +424,12 @@ export default {
     watch: {
         warnings: function (n, o) {
             if (this.editor) {
+                this.warnings.forEach((warning) => {
+                    if (warning.length && warning.offset >= 0) {
+                        warning.offset += this.getOffsetAdjustment(warning);
+                    }
+                });
+
                 // preserve selection after updating warnings
                 const oldSelection = this.editor.view.state.selection;
                 // this.editor.commands.setContent(this.currentValue);

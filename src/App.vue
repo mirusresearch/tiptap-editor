@@ -27,7 +27,7 @@ export default {
                     value: 'red',
                     message: 'did you mean...',
                     options: ['read', 'reed'], // optional
-                    offset: 54, // identifies which instance of the word is problematic
+                    offset: 55, // identifies which instance of the word is problematic
                     length: 3, // length of the word
                 },
                 {
@@ -40,7 +40,7 @@ export default {
                     isWord: false,
                     message: 'you sure you wanted a tag?',
                     overrideClass: 'underline-blue', // optional
-                    offset: 9,
+                    offset: 11,
                     length: 8,
                 },
                 {
