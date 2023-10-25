@@ -24,13 +24,38 @@ export default {
             showMenu: true, // false to hide
             warnings: [
                 {
-                    value: "Chairman's Circle",
-                    message: 'term not allowed',
-                    offset: 7, // identifies which instance of the word is problematic
-                    length: 17, // length of the word
+                    value: 'red',
+                    message: 'did you mean...',
+                    options: ['read', 'reed'], // optional
+                    offset: 55, // identifies which instance of the word is problematic
+                    length: 3, // length of the word
+                },
+                {
+                    value: 'prob|emati(', // avoid regexs that go bump in the night
+                    isWord: false,
+                    message: 'What even is this?',
+                },
+                {
+                    value: '<script&gt;', // can use the real thing, or escape it
+                    isWord: false,
+                    message: 'you sure you wanted a tag?',
+                    overrideClass: 'underline-blue', // optional
+                    offset: 11,
+                    length: 8,
+                },
+                {
+                    value: 'green',
+                    message: 'I really like this!',
+                    overrideClass: 'underline-green', // optional
+                },
+                {
+                    value: 'orange',
+                    message: 'this is a bad idea!',
+                    overrideClass: 'underline-orange', // optional
                 },
             ],
-            localtext: "<p>test </p><p>Chairman's Circle</p>",
+            localtext:
+                'Hi! 👋🏻 &lt;script&gt; welcome to tiptap editor, here is a red mark blue with suggestions. Even prob|emati( strings. You can highlight with other colors, e.g blue, orange, and green!! This &lt;script&gt should not have any highlight.',
             localcount: null,
         };
     },
