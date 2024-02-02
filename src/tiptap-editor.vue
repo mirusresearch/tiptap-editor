@@ -321,9 +321,10 @@ export default {
         getOffsetAdjustment(warning) {
             // compliance check offsets count all HTML entities as one character, whereas the editor value does not. compensate for
             // this by adding to the offset until it matches (or equals the length of the editor text as a failsafe break from the loop)
+            const normalizedString = this.value.normalize('NFKC').replace(/&nbsp;/g, ' ');
             while (
-                this.value.substr(warning.offset, warning.value.length) !== warning.value &&
-                warning.offset <= this.value.length
+                normalizedString.substr(warning.offset, warning.value.length) !== warning.value &&
+                warning.offset <= normalizedString.length
             ) {
                 warning.offset++;
             }

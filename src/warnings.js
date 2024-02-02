@@ -62,8 +62,9 @@ function lint(doc, position, prev, getErrorWords) {
     doc.descendants((node, pos) => {
         if (node.isText) {
             // Scan text nodes for bad words
+            const normalizedText = node.text.normalize('NFKC').replace(/&nbsp;/g, ' ');
             let m;
-            while ((m = badWordsRegex.exec(node.text))) {
+            while ((m = badWordsRegex.exec(normalizedText))) {
                 const matchingErrorWords = words.filter((word) => word.value === m[0]);
                 const indexOfMatchedWord = pos + m.index;
                 let errorHasOffsetData = false;
