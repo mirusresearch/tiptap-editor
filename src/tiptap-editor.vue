@@ -521,7 +521,7 @@ export default {
         font-size: 16px;
         outline: 0;
         overflow-y: auto;
-        padding: 10px;
+        padding: 6px 2px 4px 2px;
 
         .underline-red {
             border-bottom: 3px red solid;
@@ -545,8 +545,8 @@ export default {
 
         .ProseMirror {
             height: 100%;
-            padding: 2px;
-            border-radius: 7px;
+            padding: 2px 8px 2px 8px;
+            border-radius: 4px;
 
             &:focus {
                 outline: 2px solid #3b82f6;
