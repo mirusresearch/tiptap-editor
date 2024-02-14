@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="dev-controls">
-            <button @click="toggleLightMode">
+            <button class="light-dark-button" @click="toggleLightMode">
                 <div v-if="isLightMode" class="button-content">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -115,18 +115,18 @@ export default {
 </script>
 
 <style>
-svg {
-    height: 1rem;
-    width: 1rem;
-}
-
-button {
+.light-dark-button {
     background: #f4f4f5;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     border-radius: 8px;
     border: 0;
     padding: 8px 12px 8px 12px;
     cursor: pointer;
+
+    svg {
+        height: 1rem;
+        width: 1rem;
+    }
 }
 
 .button-content {
