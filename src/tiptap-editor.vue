@@ -66,7 +66,7 @@
                                 : 'character-count__graph'
                         "
                     >
-                        <circle r="10" cx="10" cy="10" fill="#e9ecef" />
+                        <circle r="10" cx="10" cy="10" class="character-count__outer-circle" />
                         <circle
                             r="5"
                             cx="10"
@@ -77,7 +77,7 @@
                             :stroke-dasharray="`calc(${characterCountPercentage}px * 31.4 / 100) 31.4`"
                             transform="rotate(-90) translate(-20)"
                         />
-                        <circle r="6" cx="10" cy="10" fill="white" />
+                        <circle r="6" cx="10" cy="10" class="character-count__inner-circle" />
                     </svg>
                     <div class="character-count__text" aria-live="polite">
                         {{ currentCharacterCount }} / {{ maxCharacterCount }} characters
@@ -475,7 +475,7 @@ export default {
         // border-bottom: 1px solid #e5e7eb;
         padding: 4px;
         border-radius: 4px;
-        background-color: #f4f4f5;
+        background: #f4f4f5;
         display: flex;
 
         button {
@@ -571,6 +571,74 @@ export default {
 
         &--warning {
             color: #fb7373;
+        }
+    }
+
+    &__inner-circle {
+        fill: #f4f4f5;
+    }
+
+    &__outer-circle {
+        fill: #ffffff;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .tiptap-editor {
+        border: 2px solid #374151;
+        background: #111827;
+        color: #d1d5db;
+
+        .menubar {
+            background: #1f2937;
+            color: #d1d5db;
+
+            button {
+                color: #d1d5db;
+
+                &:focus {
+                    outline: 2px solid #3b82f6;
+                    transition: all 0.08s ease-in-out;
+                }
+
+                &.is-active {
+                    background-color: #374151;
+                }
+
+                &.is-active:focus {
+                    background-color: #4b5563;
+                }
+
+                &:not(.is-active):hover {
+                    background-color: #374151;
+                }
+
+                &:not(.is-active):focus {
+                    background-color: #374151;
+                }
+
+                svg {
+                    width: 12px;
+                }
+            }
+        }
+    }
+
+    .character-count {
+        &__graph {
+            color: #a8c2f7;
+
+            &--warning {
+                color: #fb7373;
+            }
+        }
+
+        &__inner-circle {
+            fill: #1f2937;
+        }
+
+        &__outer-circle {
+            fill: #111827;
         }
     }
 }
