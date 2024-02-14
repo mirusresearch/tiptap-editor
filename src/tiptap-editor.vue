@@ -583,7 +583,7 @@ export default {
     }
 }
 
-@media (prefers-color-scheme: dark) {
+html[color-scheme='dark'] {
     .tiptap-editor {
         border: 2px solid #374151;
         background: #111827;
