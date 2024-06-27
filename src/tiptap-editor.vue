@@ -112,8 +112,8 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, onDeactivated, onMounted, defineEmits } from 'vue';
-import { Editor, EditorContent } from '@tiptap/vue-3';
+import { computed, ref, watch, onBeforeUnmount, onMounted, defineEmits } from 'vue';
+import { useEditor, EditorContent } from '@tiptap/vue-3';
 import Bold from '@tiptap/extension-bold';
 import BulletList from '@tiptap/extension-bullet-list';
 import CharacterCount from '@tiptap/extension-character-count';
@@ -151,19 +151,148 @@ const props = defineProps({
 	},
 });
 
-const editor = ref(null);
+const currentValue = ref(props.value);
+const editor = useEditor({
+	content: props.value,
+	parseOptions: { preserveWhitespace: 'full' },
+	onCreate: ({ editor }) => {
+		currentCharacterCount.value = editor.storage.characterCount.characters();
+	},
+	onUpdate: ({ getJSON, getHTML, editor }) => {
+		currentCharacterCount.value = editor.storage.characterCount.characters();
+
+		currentValue.value = editor.getHTML();
+		emit('update:value', currentValue.value);
+
+		props.warnings.forEach((warning) => {
+			if (warning.length && warning.offset) {
+				if (editor.state.selection.head - 1 <= warning.offset) {
+					let charCountDiff = currentCharacterCount.value - previousCharacterCount.value;
+					charCountDiff += adjustForNewlines(editor);
+					warning.offset += charCountDiff;
+				}
+			}
+		});
+		previousCharacterCount.value = currentCharacterCount.value;
+		previousHTML.value = editor.getHTML();
+		editor.commands.focus();
+	},
+	extensions: [
+		Bold,
+		BulletList,
+		CharacterCount.configure({ limit: props.maxCharacterCount }),
+		Document,
+		History,
+		Italic,
+		ListItem,
+		Paragraph,
+		Placeholder.configure({ placeholder: props.placeholder }),
+		Text,
+		Warning.configure({
+			getErrorWords: getErrorWords,
+			onEnter: ({ range, command, virtualNode, text }) => {
+				currentWarning.value = errors.value.find((err) => err.value === text);
+				currentOptions.value = currentWarning.value.options || [];
+				navigatedOptionIndex.value = 0;
+				optionRange.value = range;
+				renderPopup(virtualNode);
+				insertOption.value = command;
+			},
+			onChange: ({ range, virtualNode, text }) => {
+				currentWarning.value = errors.value.find((err) => err.value === text);
+				currentOptions.value = currentWarning.value.options || [];
+				navigatedOptionIndex.value = 0;
+				optionRange.value = range;
+				renderPopup(virtualNode);
+			},
+			onExit: () => {
+				navigatedOptionIndex.value = 0;
+				currentOptions.value = null;
+				optionRange.value = null;
+				destroyPopup();
+			},
+			onKeyDown: ({ event }) => {
+				// pressing up arrow
+				if (event.keyCode === 38 && currentOptions.value !== null) {
+					upHandler();
+					return true;
+				}
+				// pressing down arrow
+				if (event.keyCode === 40 && currentOptions !== null) {
+					downHandler();
+					return true;
+				}
+				// pressing enter
+				if (event.keyCode === 13) {
+					return enterHandler();
+				}
+				// pressing escape
+				if (event.keyCode === 27) {
+					navigatedOptionIndex.value = 0;
+					optionRange.value = null;
+					currentOptions.value = null;
+					destroyPopup();
+					return true;
+				}
+				return false;
+			},
+		}),
+	],
+});
+
+// Warnings & errors popup
 const currentWarning = ref(null);
 const currentOptions = ref(null);
-const currentValue = ref('');
 const navigatedOptionIndex = ref(0);
 const insertOption = ref(() => {});
 const optionRange = ref(null);
-const initialCharacterCount = ref(0);
-const previousCharacterCount = ref(0);
-const previousHTML = ref('');
 const popup = ref(null);
-
 const renderedErrors = ref(null);
+
+watch(
+	() => props.warnings,
+	(n, o) => {
+		if (editor) {
+			props.warnings.forEach((warning) => {
+				if (warning.length && warning.offset >= 0) {
+					warning.offset += getOffsetAdjustment(warning);
+				}
+			});
+
+			// preserve selection after updating warnings
+			const oldSelection = editor.view.state.selection;
+
+			editor.commands.setTextSelection({
+				from: oldSelection.from,
+				to: oldSelection.to,
+			});
+
+			// record length of text that was used to generate the list of warnings
+			initialCharacterCount.value = currentCharacterCount.value;
+		}
+	}
+);
+
+tippy.setDefaults({
+	content: renderedErrors.value,
+	trigger: 'mouseenter',
+	interactive: true,
+	theme: 'dark',
+	placement: 'top-start',
+	performance: true,
+	inertia: true,
+	duration: [400, 200],
+	showOnInit: true,
+	arrow: true,
+	arrowType: 'round',
+	hideOnClick: false,
+});
+
+props.warnings.forEach((warning) => {
+	if (warning.length && warning.offset >= 0) {
+		warning.offset += getOffsetAdjustment(warning);
+	}
+});
 
 const errors = computed(() => {
 	if (props.warnings.length < 1) {
@@ -183,129 +312,18 @@ const errors = computed(() => {
 	});
 });
 
-const currentCharacterCount = computed(() => editor.value?.storage.characterCount.characters());
+// character counting
+const currentCharacterCount = ref(0);
+const initialCharacterCount = ref(currentCharacterCount.value);
+const previousCharacterCount = ref(currentCharacterCount.value);
+const previousHTML = ref('');
+
 const maxCharacterCountExceeded = computed(
 	() => currentCharacterCount.value >= props.maxCharacterCount
 );
 const characterCountPercentage = computed(() =>
 	Math.round((100 / props.maxCharacterCount) * currentCharacterCount.value)
 );
-
-onMounted(() => {
-	currentValue.value = props.value;
-	editor.value = new Editor({
-		content: props.value,
-		parseOptions: { preserveWhitespace: 'full' },
-		onUpdate: ({ getJSON, getHTML }) => {
-			currentValue.value = editor.value.getHTML();
-			emit('update:value', currentValue.value);
-		},
-		extensions: [
-			Bold,
-			BulletList,
-			CharacterCount.configure({ limit: props.maxCharacterCount }),
-			Document,
-			History,
-			Italic,
-			ListItem,
-			Paragraph,
-			Placeholder.configure({ placeholder: props.placeholder }),
-			Text,
-			Warning.configure({
-				getErrorWords: getErrorWords,
-				onEnter: ({ range, command, virtualNode, text }) => {
-					currentWarning.value = errors.value.find((err) => err.value === text);
-					currentOptions.value = currentWarning.value.options || [];
-					navigatedOptionIndex.value = 0;
-					optionRange.value = range;
-					renderPopup(virtualNode);
-					insertOption.value = command;
-				},
-				onChange: ({ range, virtualNode, text }) => {
-					currentWarning.value = errors.value.find((err) => err.value === text);
-					currentOptions.value = currentWarning.value.options || [];
-					navigatedOptionIndex.value = 0;
-					optionRange.value = range;
-					renderPopup(virtualNode);
-				},
-				onExit: () => {
-					navigatedOptionIndex.value = 0;
-					currentOptions.value = null;
-					optionRange.value = null;
-					destroyPopup();
-				},
-				onKeyDown: ({ event }) => {
-					// pressing up arrow
-					if (event.keyCode === 38 && currentOptions.value !== null) {
-						upHandler();
-						return true;
-					}
-					// pressing down arrow
-					if (event.keyCode === 40 && currentOptions !== null) {
-						downHandler();
-						return true;
-					}
-					// pressing enter
-					if (event.keyCode === 13) {
-						return enterHandler();
-					}
-					// pressing escape
-					if (event.keyCode === 27) {
-						navigatedOptionIndex.value = 0;
-						optionRange.value = null;
-						currentOptions.value = null;
-						destroyPopup();
-						return true;
-					}
-					return false;
-				},
-			}),
-		],
-	});
-	tippy.setDefaults({
-		content: renderedErrors.value,
-		trigger: 'mouseenter',
-		interactive: true,
-		theme: 'dark',
-		placement: 'top-start',
-		performance: true,
-		inertia: true,
-		duration: [400, 200],
-		showOnInit: true,
-		arrow: true,
-		arrowType: 'round',
-		hideOnClick: false,
-	});
-	initialCharacterCount.value = currentCharacterCount.value;
-	previousCharacterCount.value = currentCharacterCount.value;
-	editor.value.on('update', ({ editor }) => {
-		props.warnings.forEach((warning) => {
-			if (warning.length && warning.offset) {
-				if (editor.state.selection.head - 1 <= warning.offset) {
-					let charCountDiff = currentCharacterCount.value - previousCharacterCount.value;
-					charCountDiff += adjustForNewlines();
-					warning.offset += charCountDiff;
-				}
-			}
-		});
-		previousCharacterCount.value = currentCharacterCount.value;
-		console.log(editor.value);
-		previousHTML.value = editor.value.getHTML();
-		editor.value.commands.focus();
-	});
-	props.warnings.forEach((warning) => {
-		if (warning.length && warning.offset >= 0) {
-			warning.offset += getOffsetAdjustment(warning);
-		}
-	});
-});
-
-onDeactivated(() => {
-	editor.value.destroy();
-	if (popup.value) {
-		popup.value.destroy();
-	}
-});
 
 // compliance checks base offset data off the HTML value of the text
 // ProseMirror uses a unique token sequence indexing system - see https://prosemirror.net/docs/guide/#doc.indexing
@@ -338,10 +356,10 @@ function getOffsetAdjustment(warning) {
 
 // when the user adds a newline to the text of the editor, the character count stays the same, but ProseMirror's token
 // sequence indexing system adds 2 tokens to the content. We need to adjust warning offsets to account for that
-function adjustForNewlines() {
+function adjustForNewlines(editor) {
 	const regex = /<\/p><p>/g;
 	const previousNewlines = (previousHTML.value.match(regex) || []).length;
-	const newlines = (editor.value.getHTML().match(regex) || []).length;
+	const newlines = (editor.getHTML().match(regex) || []).length;
 
 	// multiply the difference in newlines by 2 since each instance counts as 2 tokens
 	return (newlines - previousNewlines) * 2;
@@ -386,7 +404,6 @@ function selectOption(option) {
 		range: optionRange.value,
 		attrs: { id: option.id, label: option.value },
 	});
-	editor.value.commands.focus();
 }
 
 function renderPopup(node) {
@@ -420,29 +437,11 @@ function toolbarGoRight(evt) {
 	}
 }
 
-watch(
-	() => props.warnings,
-	(n, o) => {
-		if (editor.value) {
-			props.warnings.forEach((warning) => {
-				if (warning.length && warning.offset >= 0) {
-					warning.offset += getOffsetAdjustment(warning);
-				}
-			});
-
-			// preserve selection after updating warnings
-			const oldSelection = editor.value.view.state.selection;
-
-			editor.value.commands.setTextSelection({
-				from: oldSelection.from,
-				to: oldSelection.to,
-			});
-
-			// record length of text that was used to generate the list of warnings
-			initialCharacterCount.value = currentCharacterCount.value;
-		}
+onBeforeUnmount(() => {
+	if (popup.value) {
+		popup.value.destroy();
 	}
-);
+});
 </script>
 
 <style lang="scss">
