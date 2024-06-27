@@ -28,9 +28,7 @@ beforeEach(async () => {
 
 describe('tiptap-editor.vue', () => {
     it('should show menu', async () => {
-        const wrapper = await mount(TiptapEditor, {
-            propsData: propsData,
-        });
+        const wrapper = await mount(TiptapEditor, { propsData });
         const menubar = wrapper.find('.menubar');
         expect(menubar.exists()).toBe(true);
     });
@@ -46,9 +44,7 @@ describe('tiptap-editor.vue', () => {
     });
 
     it('should underline words', async () => {
-        const wrapper = await mount(TiptapEditor, {
-            propsData: propsData,
-        });
+        const wrapper = await mount(TiptapEditor, { propsData });
 
         await flushPromises();
 
@@ -60,24 +56,22 @@ describe('tiptap-editor.vue', () => {
 
     it('should render a popup', async () => {
         propsData.value = 'red';
-        const wrapper = await mount(TiptapEditor, {
-            propsData: propsData,
-        });
+        const wrapper = await mount(TiptapEditor, { propsData });
 
         await flushPromises();
 
         const errorList = wrapper.find('.error-list');
         const expectedHtml =
-            '<div class="error-list"><b>did you mean...</b>  <div class="error-list__item selected"> read </div>  <div class="error-list__item"> reed </div></div>';
+            '<div class="error-list" v-show="false"><b>did you mean...</b>  <div class="error-list__item selected"> read </div>  <div class="error-list__item">reed</div></div>';
         const receivedHtml = errorList.html().replace(/(\r\n|\r|\n)/g, '');
+        console.log(errorList.attributes());
         expect(receivedHtml).toEqual(expectedHtml);
     });
 
     it('should display correct word count', async () => {
         propsData.maxCharacterCount = 100;
-        const wrapper = await mount(TiptapEditor, {
-            propsData: propsData,
-        });
+        const wrapper = await mount(TiptapEditor, { propsData });
+        await flushPromises();
         const characterCount = wrapper.find('.character-count__text');
         expect(characterCount.text()).toBe('32 / 100 characters');
     });

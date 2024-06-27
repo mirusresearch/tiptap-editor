@@ -125,6 +125,7 @@ import Paragraph from '@tiptap/extension-paragraph';
 import Placeholder from '@tiptap/extension-placeholder';
 import Text from '@tiptap/extension-text';
 import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 import Warning from './warnings';
 import unescape from 'lodash.unescape';
 
@@ -273,18 +274,16 @@ watch(
 	}
 );
 
-tippy.setDefaults({
+tippy.setDefaultProps({
 	content: renderedErrors.value,
 	trigger: 'mouseenter',
 	interactive: true,
-	theme: 'dark',
+	theme: 'tiptap',
 	placement: 'top-start',
-	performance: true,
 	inertia: true,
 	duration: [400, 200],
-	showOnInit: true,
+	showOnCreate: true,
 	arrow: true,
-	arrowType: 'round',
 	hideOnClick: false,
 });
 
@@ -406,13 +405,25 @@ function selectOption(option) {
 	});
 }
 
-function renderPopup(node) {
+function renderPopup(virtualNode) {
 	if (!popup.value) {
-		popup.value = tippy(node, { content: renderedErrors.value });
+		const rect = virtualNode.getBoundingClientRect();
+		popup.value = tippy(document.body, {
+			content: renderedErrors.value,
+			getReferenceClientRect: () => ({
+				width: rect.width,
+				height: rect.height,
+				left: rect.left,
+				right: rect.right,
+				top: rect.top,
+				bottom: rect.bottom,
+			}),
+		});
 	}
 }
 
 function destroyPopup() {
+	console.log(popup.value);
 	if (popup.value) {
 		popup.value.destroy();
 		popup.value = null;
@@ -447,6 +458,9 @@ onBeforeUnmount(() => {
 <style lang="scss">
 .error-list {
 	.error-list__item {
+		padding: 3px;
+		border-radius: 2px;
+
 		&.selected,
 		&:hover {
 			background-color: rgba(white, 0.2);
@@ -580,6 +594,36 @@ onBeforeUnmount(() => {
 	}
 }
 
+.tippy-box[data-theme~='tiptap'] {
+	background-color: #0a0a0a;
+}
+.tippy-box[data-theme~='tiptap'] > .tippy-arrow {
+	width: 14px;
+	height: 14px;
+}
+.tippy-box[data-theme~='tiptap'][data-placement^='top'] > .tippy-arrow:before {
+	border-width: 7px 7px 0;
+	border-top-color: #0a0a0a;
+}
+.tippy-box[data-theme~='tiptap'][data-placement^='bottom'] > .tippy-arrow:before {
+	border-width: 0 7px 7px;
+	border-bottom-color: #0a0a0a;
+}
+.tippy-box[data-theme~='tiptap'][data-placement^='left'] > .tippy-arrow:before {
+	border-width: 7px 0 7px 7px;
+	border-left-color: #0a0a0a;
+}
+.tippy-box[data-theme~='tiptap'][data-placement^='right'] > .tippy-arrow:before {
+	border-width: 7px 7px 7px 0;
+	border-right-color: #0a0a0a;
+}
+.tippy-box[data-theme~='tiptap'] > .tippy-backdrop {
+	background-color: #0a0a0a;
+}
+.tippy-box[data-theme~='tiptap'] > .tippy-svg-arrow {
+	fill: #0a0a0a;
+}
+
 html[color-scheme='dark'] {
 	.tiptap-editor {
 		border: 2px solid #374151;
@@ -636,6 +680,37 @@ html[color-scheme='dark'] {
 
 		&__outer-circle {
 			fill: #111827;
+		}
+	}
+
+	.tippy-box[data-theme~='tiptap'] {
+		background-color: #d1d5db;
+		color: #111827;
+	}
+	.tippy-box[data-theme~='tiptap'][data-placement^='top'] > .tippy-arrow:before {
+		border-top-color: #d1d5db;
+	}
+	.tippy-box[data-theme~='tiptap'][data-placement^='bottom'] > .tippy-arrow:before {
+		border-bottom-color: #d1d5db;
+	}
+	.tippy-box[data-theme~='tiptap'][data-placement^='left'] > .tippy-arrow:before {
+		border-left-color: #d1d5db;
+	}
+	.tippy-box[data-theme~='tiptap'][data-placement^='right'] > .tippy-arrow:before {
+		border-right-color: #d1d5db;
+	}
+	.tippy-box[data-theme~='tiptap'] > .tippy-backdrop {
+		background-color: #d1d5db;
+	}
+	.tippy-box[data-theme~='tiptap'] > .tippy-svg-arrow {
+		fill: #d1d5db;
+	}
+	.error-list {
+		.error-list__item {
+			&.selected,
+			&:hover {
+				background-color: rgba(black, 0.15);
+			}
 		}
 	}
 }
