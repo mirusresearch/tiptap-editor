@@ -406,7 +406,7 @@ function selectOption(option) {
 }
 
 function renderPopup(virtualNode) {
-	if (!popup.value) {
+	if (!popup.value && virtualNode) {
 		const rect = virtualNode.getBoundingClientRect();
 		popup.value = tippy(document.body, {
 			content: renderedErrors.value,
@@ -423,7 +423,6 @@ function renderPopup(virtualNode) {
 }
 
 function destroyPopup() {
-	console.log(popup.value);
 	if (popup.value) {
 		popup.value.destroy();
 		popup.value = null;

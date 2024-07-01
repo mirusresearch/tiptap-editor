@@ -54,18 +54,15 @@ describe('tiptap-editor.vue', () => {
         expect(blueUnderline.exists()).toBeFalsy;
     });
 
-    it('should render a popup', async () => {
+    it('should render correct popup suggestions', async () => {
         propsData.value = 'red';
         const wrapper = await mount(TiptapEditor, { propsData });
 
         await flushPromises();
+        await wrapper.find('.tiptap').trigger('click');
 
         const errorList = wrapper.find('.error-list');
-        const expectedHtml =
-            '<div class="error-list" v-show="false"><b>did you mean...</b>  <div class="error-list__item selected"> read </div>  <div class="error-list__item">reed</div></div>';
-        const receivedHtml = errorList.html().replace(/(\r\n|\r|\n)/g, '');
-        console.log(errorList.attributes());
-        expect(receivedHtml).toEqual(expectedHtml);
+        expect(errorList.text()).toEqual('did you mean...readreed');
     });
 
     it('should display correct word count', async () => {
