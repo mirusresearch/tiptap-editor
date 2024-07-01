@@ -10,11 +10,17 @@
 	"homepage": "https://github.com/mirusresearch/tiptap-editor",
 	"author": "alec@mirusresearch.com",
 	"license": "MIT",
-	"main": "dist/tiptap-editor.mjs",
+	"main": "dist/tiptap-editor.js",
 	"browser": {
 		"./sfc": "src/tiptap-editor.vue"
 	},
 	"files": ["dist/*", "src/*", "public/*", "*.json", "*.js"],
+	"exports": {
+		".": {
+			"import": "./dist/tiptap-editor.js",
+			"require": "./dist/tiptap-editor.umd.cjs"
+		}
+	},
 	"scripts": {
 		"serve": "vite",
 		"build": "vite build",
