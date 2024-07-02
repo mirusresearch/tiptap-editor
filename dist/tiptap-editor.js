@@ -3503,7 +3503,7 @@ class Ap {
   }
 }
 const Ys = /* @__PURE__ */ Object.create(null);
-class B {
+class z {
   /**
   Initialize a selection with the head and anchor and ranges. If no
   ranges are given, constructs a single range across `$anchor` and
@@ -3667,7 +3667,7 @@ class B {
     return P.between(this.$anchor, this.$head).getBookmark();
   }
 }
-B.prototype.visible = !0;
+z.prototype.visible = !0;
 class Ip {
   /**
   Create a range.
@@ -3680,7 +3680,7 @@ let ua = !1;
 function fa(n) {
   !ua && !n.parent.inlineContent && (ua = !0, console.warn("TextSelection endpoint not pointing into a node with inline content (" + n.parent.type.name + ")"));
 }
-class P extends B {
+class P extends z {
   /**
   Construct a text selection between the given points.
   */
@@ -3697,7 +3697,7 @@ class P extends B {
   map(e, t) {
     let r = e.resolve(t.map(this.head));
     if (!r.parent.inlineContent)
-      return B.near(r);
+      return z.near(r);
     let i = e.resolve(t.map(this.anchor));
     return new P(i.parent.inlineContent ? i : r, r);
   }
@@ -3742,16 +3742,16 @@ class P extends B {
   static between(e, t, r) {
     let i = e.pos - t.pos;
     if ((!r || i) && (r = i >= 0 ? 1 : -1), !t.parent.inlineContent) {
-      let s = B.findFrom(t, r, !0) || B.findFrom(t, -r, !0);
+      let s = z.findFrom(t, r, !0) || z.findFrom(t, -r, !0);
       if (s)
         t = s.$head;
       else
-        return B.near(t, r);
+        return z.near(t, r);
     }
-    return e.parent.inlineContent || (i == 0 ? e = t : (e = (B.findFrom(e, -r, !0) || B.findFrom(e, r, !0)).$anchor, e.pos < t.pos != i < 0 && (e = t))), new P(e, t);
+    return e.parent.inlineContent || (i == 0 ? e = t : (e = (z.findFrom(e, -r, !0) || z.findFrom(e, r, !0)).$anchor, e.pos < t.pos != i < 0 && (e = t))), new P(e, t);
   }
 }
-B.jsonID("text", P);
+z.jsonID("text", P);
 class Ms {
   constructor(e, t) {
     this.anchor = e, this.head = t;
@@ -3763,7 +3763,7 @@ class Ms {
     return P.between(e.resolve(this.anchor), e.resolve(this.head));
   }
 }
-class w extends B {
+class w extends z {
   /**
   Create a node selection. Does not verify the validity of its
   argument.
@@ -3774,7 +3774,7 @@ class w extends B {
   }
   map(e, t) {
     let { deleted: r, pos: i } = t.mapResult(this.anchor), s = e.resolve(i);
-    return r ? B.near(s) : new w(s);
+    return r ? z.near(s) : new w(s);
   }
   content() {
     return new T(M.from(this.node), 0, 0);
@@ -3811,7 +3811,7 @@ class w extends B {
   }
 }
 w.prototype.visible = !1;
-B.jsonID("node", w);
+z.jsonID("node", w);
 class ml {
   constructor(e) {
     this.anchor = e;
@@ -3822,10 +3822,10 @@ class ml {
   }
   resolve(e) {
     let t = e.resolve(this.anchor), r = t.nodeAfter;
-    return r && w.isSelectable(r) ? new w(t) : B.near(t);
+    return r && w.isSelectable(r) ? new w(t) : z.near(t);
   }
 }
-class Be extends B {
+class Be extends z {
   /**
   Create an all-selection over the given document.
   */
@@ -3835,7 +3835,7 @@ class Be extends B {
   replace(e, t = T.empty) {
     if (t == T.empty) {
       e.delete(0, e.doc.content.size);
-      let r = B.atStart(e.doc);
+      let r = z.atStart(e.doc);
       r.eq(e.selection) || e.setSelection(r);
     } else
       super.replace(e, t);
@@ -3859,7 +3859,7 @@ class Be extends B {
     return Rp;
   }
 }
-B.jsonID("all", Be);
+z.jsonID("all", Be);
 const Rp = {
   map() {
     return this;
@@ -3895,7 +3895,7 @@ function da(n, e, t) {
   let s = n.mapping.maps[r], o;
   s.forEach((l, a, c, u) => {
     o == null && (o = u);
-  }), n.setSelection(B.near(n.doc.resolve(o), t));
+  }), n.setSelection(z.near(n.doc.resolve(o), t));
 }
 const ha = 1, Di = 2, pa = 4;
 class Pp extends Ap {
@@ -4010,7 +4010,7 @@ class Pp extends Ap {
         let o = this.doc.resolve(t);
         s = r == t ? o.marks() : o.marksAcross(this.doc.resolve(r));
       }
-      return this.replaceRangeWith(t, r, i.text(e, s)), this.selection.empty || this.setSelection(B.near(this.selection.$to)), this;
+      return this.replaceRangeWith(t, r, i.text(e, s)), this.selection.empty || this.setSelection(z.near(this.selection.$to)), this;
     }
   }
   /**
@@ -4068,7 +4068,7 @@ const $p = [
   }),
   new Mr("selection", {
     init(n, e) {
-      return n.selection || B.atStart(e.doc);
+      return n.selection || z.atStart(e.doc);
     },
     apply(n) {
       return n.selection;
@@ -4248,7 +4248,7 @@ class qn {
       if (o.name == "doc")
         s.doc = Su.fromJSON(e.schema, t.doc);
       else if (o.name == "selection")
-        s.selection = B.fromJSON(s.doc, t.selection);
+        s.selection = z.fromJSON(s.doc, t.selection);
       else if (o.name == "storedMarks")
         t.storedMarks && (s.storedMarks = t.storedMarks.map(e.schema.markFromJSON));
       else {
@@ -9533,7 +9533,7 @@ function Gm(n) {
 }
 function Wo(n, e) {
   let { $anchor: t, $head: r } = n.selection, i = e > 0 ? t.max(r) : t.min(r), s = i.parent.inlineContent ? i.depth ? n.doc.resolve(e > 0 ? i.after() : i.before()) : null : i;
-  return s && B.findFrom(s, e);
+  return s && z.findFrom(s, e);
 }
 function Ct(n, e) {
   return n.dispatch(n.state.tr.setSelection(e).scrollIntoView()), !0;
@@ -9718,7 +9718,7 @@ function ja(n, e, t) {
       return Ct(n, o);
   }
   if (!i.parent.inlineContent) {
-    let o = e < 0 ? i : s, l = r instanceof Be ? B.near(o, e) : B.findFrom(o, e);
+    let o = e < 0 ? i : s, l = r instanceof Be ? z.near(o, e) : z.findFrom(o, e);
     return l ? Ct(n, l) : !1;
   }
   return !1;
@@ -10158,7 +10158,7 @@ let xg = class {
     // (hidden) cursor is doesn't change the selection, and
     // thus doesn't get a reaction from ProseMirror. This
     // works around that.
-    pe && !this.view.state.selection.visible && Math.min(Math.abs(t.pos - this.view.state.selection.from), Math.abs(t.pos - this.view.state.selection.to)) <= 2) ? (Gn(this.view, B.near(this.view.state.doc.resolve(t.pos))), e.preventDefault()) : Ot(this.view, "pointer");
+    pe && !this.view.state.selection.visible && Math.min(Math.abs(t.pos - this.view.state.selection.from), Math.abs(t.pos - this.view.state.selection.to)) <= 2) ? (Gn(this.view, z.near(this.view.state.doc.resolve(t.pos))), e.preventDefault()) : Ot(this.view, "pointer");
   }
   move(e) {
     this.updateAllowDefault(e), Ot(this.view, "pointer"), e.buttons == 0 && this.done();
@@ -11014,7 +11014,7 @@ class Pg {
       }
     }
     let c = null;
-    s < 0 && i && e.input.lastFocus > Date.now() - 200 && Math.max(e.input.lastTouch, e.input.lastClick.time) < Date.now() - 300 && Os(r) && (c = Sl(e)) && c.eq(B.near(e.state.doc.resolve(0), 1)) ? (e.input.lastFocus = 0, bt(e), this.currentSelection.set(r), e.scrollToSelection()) : (s > -1 || i) && (s > -1 && (e.docView.markDirty(s, o), $g(e)), this.handleDOMChange(s, o, l, a), e.docView && e.docView.dirty ? e.updateState(e.state) : this.currentSelection.eq(r) || bt(e), this.currentSelection.set(r));
+    s < 0 && i && e.input.lastFocus > Date.now() - 200 && Math.max(e.input.lastTouch, e.input.lastClick.time) < Date.now() - 300 && Os(r) && (c = Sl(e)) && c.eq(z.near(e.state.doc.resolve(0), 1)) ? (e.input.lastFocus = 0, bt(e), this.currentSelection.set(r), e.scrollToSelection()) : (s > -1 || i) && (s > -1 && (e.docView.markDirty(s, o), $g(e)), this.handleDOMChange(s, o, l, a), e.docView && e.docView.dirty ? e.updateState(e.state) : this.currentSelection.eq(r) || bt(e), this.currentSelection.set(r));
   }
   registerMutation(e, t) {
     if (t.indexOf(e.target) > -1)
@@ -11161,7 +11161,7 @@ function Jg(n, e, t, r, i) {
     }
   n.input.domChangeCount++, n.state.selection.from < n.state.selection.to && p.start == p.endB && n.state.selection instanceof P && (p.start > n.state.selection.from && p.start <= n.state.selection.from + 2 && n.state.selection.from >= c.from ? p.start = n.state.selection.from : p.endA < n.state.selection.to && p.endA >= n.state.selection.to - 2 && n.state.selection.to <= c.to && (p.endB += n.state.selection.to - p.endA, p.endA = n.state.selection.to)), xe && Nt <= 11 && p.endB == p.start + 1 && p.endA == p.start && p.start > c.from && c.doc.textBetween(p.start - c.from - 1, p.start - c.from + 1) == "  " && (p.start--, p.endA--, p.endB--);
   let m = c.doc.resolveNoCache(p.start - c.from), g = c.doc.resolveNoCache(p.endB - c.from), b = u.resolve(p.start), x = m.sameParent(g) && m.parent.inlineContent && b.end() >= p.endA, C;
-  if ((nr && n.input.lastIOSEnter > Date.now() - 225 && (!x || i.some((D) => D.nodeName == "DIV" || D.nodeName == "P")) || !x && m.pos < c.doc.content.size && !m.sameParent(g) && (C = B.findFrom(c.doc.resolve(m.pos + 1), 1, !0)) && C.head == g.pos) && n.someProp("handleKeyDown", (D) => D(n, _t(13, "Enter")))) {
+  if ((nr && n.input.lastIOSEnter > Date.now() - 225 && (!x || i.some((D) => D.nodeName == "DIV" || D.nodeName == "P")) || !x && m.pos < c.doc.content.size && !m.sameParent(g) && (C = z.findFrom(c.doc.resolve(m.pos + 1), 1, !0)) && C.head == g.pos) && n.someProp("handleKeyDown", (D) => D(n, _t(13, "Enter")))) {
     n.input.lastIOSEnter = 0;
     return;
   }
@@ -12473,7 +12473,7 @@ const uy = (n, e, t) => {
     if (o && o.slice.size < o.to - o.from) {
       if (e) {
         let l = n.tr.step(o);
-        l.setSelection(rr(s, "end") ? B.findFrom(l.doc.resolve(l.mapping.map(i.pos, -1)), -1) : w.create(l.doc, i.pos - s.nodeSize)), e(l.scrollIntoView());
+        l.setSelection(rr(s, "end") ? z.findFrom(l.doc.resolve(l.mapping.map(i.pos, -1)), -1) : w.create(l.doc, i.pos - s.nodeSize)), e(l.scrollIntoView());
       }
       return !0;
     }
@@ -12570,7 +12570,7 @@ const py = (n, e, t) => {
     if (o && o.slice.size < o.to - o.from) {
       if (e) {
         let l = n.tr.step(o);
-        l.setSelection(rr(s, "start") ? B.findFrom(l.doc.resolve(l.mapping.map(i.pos)), 1) : w.create(l.doc, l.mapping.map(i.pos))), e(l.scrollIntoView());
+        l.setSelection(rr(s, "start") ? z.findFrom(l.doc.resolve(l.mapping.map(i.pos)), 1) : w.create(l.doc, l.mapping.map(i.pos))), e(l.scrollIntoView());
       }
       return !0;
     }
@@ -12646,7 +12646,7 @@ const ky = (n, e) => {
     return !1;
   if (e) {
     let l = t.after(), a = n.tr.replaceWith(l, l, o.createAndFill());
-    a.setSelection(B.near(a.doc.resolve(l), 1)), e(a.scrollIntoView());
+    a.setSelection(z.near(a.doc.resolve(l), 1)), e(a.scrollIntoView());
   }
   return !0;
 }, xy = (n, e) => {
@@ -12698,7 +12698,7 @@ function cd(n, e, t) {
     }
     return !0;
   }
-  let a = B.findFrom(e, 1), c = a && a.$from.blockRange(a.$to), u = c && li(c);
+  let a = z.findFrom(e, 1), c = a && a.$from.blockRange(a.$to), u = c && li(c);
   if (u != null && u >= e.depth)
     return t && t(n.tr.lift(c, u).scrollIntoView()), !0;
   if (l && rr(i, "start", !0) && rr(r, "end")) {
@@ -13802,7 +13802,7 @@ function yt(n = 0, e = 0, t = 0) {
 function gd(n, e = null) {
   if (!e)
     return null;
-  const t = B.atStart(n), r = B.atEnd(n);
+  const t = z.atStart(n), r = z.atEnd(n);
   if (e === "start" || e === !0)
     return t;
   if (e === "end")
@@ -13878,7 +13878,7 @@ function p0(n, e, t) {
   let o = 0;
   s.forEach((l, a, c, u) => {
     o === 0 && (o = u);
-  }), n.setSelection(B.near(n.doc.resolve(o), t));
+  }), n.setSelection(z.near(n.doc.resolve(o), t));
 }
 const m0 = (n) => n.toString().startsWith("<"), g0 = (n, e, t) => ({ tr: r, dispatch: i, editor: s }) => {
   if (i) {
@@ -14519,7 +14519,7 @@ const mb = Ce.create({
       () => o.undoInputRule(),
       // maybe convert first text block node to default node
       () => o.command(({ tr: l }) => {
-        const { selection: a, doc: c } = l, { empty: u, $anchor: f } = a, { pos: d, parent: h } = f, p = f.parent.isTextblock && d > 0 ? l.doc.resolve(d - 1) : f, m = p.parent.type.spec.isolating, g = f.pos - f.parentOffset, b = m && p.parent.childCount === 1 ? g === f.pos : B.atStart(c).from === d;
+        const { selection: a, doc: c } = l, { empty: u, $anchor: f } = a, { pos: d, parent: h } = f, p = f.parent.isTextblock && d > 0 ? l.doc.resolve(d - 1) : f, m = p.parent.type.spec.isolating, g = f.pos - f.parentOffset, b = m && p.parent.childCount === 1 ? g === f.pos : z.atStart(c).from === d;
         return !u || !h.type.isTextblock || h.textContent.length || !b || b && f.parent.type.name === "paragraph" ? !1 : o.clearNodes();
       }),
       () => o.deleteSelection(),
@@ -14571,7 +14571,7 @@ const mb = Ce.create({
         appendTransaction: (n, e, t) => {
           if (!(n.some((p) => p.docChanged) && !e.doc.eq(t.doc)))
             return;
-          const { empty: i, from: s, to: o } = e.selection, l = B.atStart(e.doc).from, a = B.atEnd(e.doc).to;
+          const { empty: i, from: s, to: o } = e.selection, l = z.atStart(e.doc).from, a = z.atEnd(e.doc).to;
           if (i || !(s === l && o === a) || !(t.doc.textBetween(0, t.doc.content.size, " ", " ").length === 0))
             return;
           const f = t.tr, d = Ns({
@@ -15795,8 +15795,8 @@ function s1(n) {
         padding: c
       }), $ = re ? K ? Je : we : K ? Ve : ve;
       N[v] > k[v] && ($ = Ki($));
-      var z = Ki($), Q = [];
-      if (s && Q.push(A[q] <= 0), l && Q.push(A[$] <= 0, A[z] <= 0), Q.every(function(ct) {
+      var B = Ki($), Q = [];
+      if (s && Q.push(A[q] <= 0), l && Q.push(A[$] <= 0, A[B] <= 0), Q.every(function(ct) {
         return ct;
       })) {
         D = j, H = !1;
@@ -15935,10 +15935,10 @@ function m1(n) {
   };
   if (k) {
     if (s) {
-      var K, re = y === "y" ? ve : we, v = y === "y" ? Ve : Je, A = y === "y" ? "height" : "width", $ = k[y], z = $ + g[re], Q = $ - g[v], Ge = h ? -H[A] / 2 : 0, Lt = x === ir ? I[A] : H[A], Ye = x === ir ? -H[A] : -I[A], Vt = e.elements.arrow, ct = h && Vt ? Bl(Vt) : {
+      var K, re = y === "y" ? ve : we, v = y === "y" ? Ve : Je, A = y === "y" ? "height" : "width", $ = k[y], B = $ + g[re], Q = $ - g[v], Ge = h ? -H[A] / 2 : 0, Lt = x === ir ? I[A] : H[A], Ye = x === ir ? -H[A] : -I[A], Vt = e.elements.arrow, ct = h && Vt ? Bl(Vt) : {
         width: 0,
         height: 0
-      }, We = e.modifiersData["arrow#persistent"] ? e.modifiersData["arrow#persistent"].padding : Td(), ut = We[re], On = We[v], ft = Lr(0, I[A], ct[A]), Tn = C ? I[A] / 2 - Ge - ft - ut - V.mainAxis : Lt - ft - ut - V.mainAxis, kt = C ? -I[A] / 2 + Ge + ft + On + V.mainAxis : Ye + ft + On + V.mainAxis, En = e.elements.arrow && hi(e.elements.arrow), gi = En ? y === "y" ? En.clientTop || 0 : En.clientLeft || 0 : 0, ur = (K = j == null ? void 0 : j[y]) != null ? K : 0, yi = $ + Tn - ur - gi, bi = $ + kt - ur, fr = Lr(h ? gs(z, yi) : z, $, h ? fn(Q, bi) : Q);
+      }, We = e.modifiersData["arrow#persistent"] ? e.modifiersData["arrow#persistent"].padding : Td(), ut = We[re], On = We[v], ft = Lr(0, I[A], ct[A]), Tn = C ? I[A] / 2 - Ge - ft - ut - V.mainAxis : Lt - ft - ut - V.mainAxis, kt = C ? -I[A] / 2 + Ge + ft + On + V.mainAxis : Ye + ft + On + V.mainAxis, En = e.elements.arrow && hi(e.elements.arrow), gi = En ? y === "y" ? En.clientTop || 0 : En.clientLeft || 0 : 0, ur = (K = j == null ? void 0 : j[y]) != null ? K : 0, yi = $ + Tn - ur - gi, bi = $ + kt - ur, fr = Lr(h ? gs(B, yi) : B, $, h ? fn(Q, bi) : Q);
       k[y] = fr, q[y] = fr - $;
     }
     if (l) {
@@ -16549,7 +16549,7 @@ function tS(n, e) {
   var H = x.map(function(S) {
     return S.fn(y);
   }), D = n.hasAttribute("aria-expanded");
-  return En(), Ge(), $(), z("onCreate", [y]), t.showOnCreate && hr(), k.addEventListener("mouseenter", function() {
+  return En(), Ge(), $(), B("onCreate", [y]), t.showOnCreate && hr(), k.addEventListener("mouseenter", function() {
     y.props.interactive && y.state.isVisible && y.clearDelayTimeouts();
   }), k.addEventListener("mouseleave", function() {
     y.props.interactive && y.props.trigger.indexOf("mouseenter") >= 0 && re().addEventListener("mousemove", p);
@@ -16581,7 +16581,7 @@ function tS(n, e) {
   function $(S) {
     S === void 0 && (S = !1), k.style.pointerEvents = y.props.interactive && !S ? "" : "none", k.style.zIndex = "" + y.props.zIndex;
   }
-  function z(S, E, R) {
+  function B(S, E, R) {
     if (R === void 0 && (R = !0), H.forEach(function(J) {
       J[S] && J[S].apply(J, E);
     }), R) {
@@ -16627,7 +16627,7 @@ function tS(n, e) {
           if (Ze.isTouch || y.state.isVisible && y.props.trigger.indexOf("click") >= 0)
             return;
         } else
-          z("onClickOutside", [y, S]);
+          B("onClickOutside", [y, S]);
         y.props.hideOnClick === !0 && (y.clearDelayTimeouts(), y.hide(), l = !0, setTimeout(function() {
           l = !1;
         }), y.state.isMounted || ut());
@@ -16816,14 +16816,14 @@ function tS(n, e) {
     return ys(k.querySelectorAll("[data-tippy-root]"));
   }
   function hr(S) {
-    y.clearDelayTimeouts(), S && z("onTrigger", [y, S]), We();
+    y.clearDelayTimeouts(), S && B("onTrigger", [y, S]), We();
     var E = A(!0), R = V(), W = R[0], J = R[1];
     Ze.isTouch && W === "hold" && J && (E = J), E ? r = setTimeout(function() {
       y.show();
     }, E) : y.show();
   }
   function Jt(S) {
-    if (y.clearDelayTimeouts(), z("onUntrigger", [y, S]), !y.state.isVisible) {
+    if (y.clearDelayTimeouts(), B("onUntrigger", [y, S]), !y.state.isVisible) {
       ut();
       return;
     }
@@ -16847,7 +16847,7 @@ function tS(n, e) {
   }
   function wi(S) {
     if (process.env.NODE_ENV !== "production" && mt(y.state.isDestroyed, Pn("setProps")), !y.state.isDestroyed) {
-      z("onBeforeUpdate", [y, S]), gi();
+      B("onBeforeUpdate", [y, S]), gi();
       var E = y.props, R = $c(n, Object.assign({}, E, Dc(S), {
         ignoreAttributes: !0
       }));
@@ -16855,7 +16855,7 @@ function tS(n, e) {
         W.removeAttribute("aria-expanded");
       }) : R.triggerTarget && n.removeAttribute("aria-expanded"), Ge(), $(), I && I(E, R), y.popperInstance && (Si(), xt().forEach(function(W) {
         requestAnimationFrame(W._tippy.popperInstance.forceUpdate);
-      })), z("onAfterUpdate", [y, S]);
+      })), B("onAfterUpdate", [y, S]);
     }
   }
   function Ci(S) {
@@ -16866,7 +16866,7 @@ function tS(n, e) {
   function Th() {
     process.env.NODE_ENV !== "production" && mt(y.state.isDestroyed, Pn("show"));
     var S = y.state.isVisible, E = y.state.isDestroyed, R = !y.state.isEnabled, W = Ze.isTouch && !y.props.touch, J = mo(y.props.duration, 0, De.duration);
-    if (!(S || E || R || W) && !K().hasAttribute("disabled") && (z("onShow", [y], !1), y.props.onShow(y) !== !1)) {
+    if (!(S || E || R || W) && !K().hasAttribute("disabled") && (B("onShow", [y], !1), y.props.onShow(y) !== !1)) {
       if (y.state.isVisible = !0, q() && (k.style.visibility = "visible"), $(), We(), y.state.isMounted || (k.style.transition = "none"), q()) {
         var ce = v(), Pe = ce.box, Nn = ce.content;
         go([Pe, Nn], 0);
@@ -16878,8 +16878,8 @@ function tS(n, e) {
             var Ls = v(), Mi = Ls.box, Dn = Ls.content;
             go([Mi, Dn], J), Ac([Mi, Dn], "visible");
           }
-          Q(), Ge(), Nc(bo, y), (Ht = y.popperInstance) == null || Ht.forceUpdate(), z("onMount", [y]), y.props.animation && q() && ft(J, function() {
-            y.state.isShown = !0, z("onShown", [y]);
+          Q(), Ge(), Nc(bo, y), (Ht = y.popperInstance) == null || Ht.forceUpdate(), B("onMount", [y]), y.props.animation && q() && ft(J, function() {
+            y.state.isShown = !0, B("onShown", [y]);
           });
         }
       }, dt();
@@ -16888,7 +16888,7 @@ function tS(n, e) {
   function Eh() {
     process.env.NODE_ENV !== "production" && mt(y.state.isDestroyed, Pn("hide"));
     var S = !y.state.isVisible, E = y.state.isDestroyed, R = !y.state.isEnabled, W = mo(y.props.duration, 1, De.duration);
-    if (!(S || E || R) && (z("onHide", [y], !1), y.props.onHide(y) !== !1)) {
+    if (!(S || E || R) && (B("onHide", [y], !1), y.props.onHide(y) !== !1)) {
       if (y.state.isVisible = !1, y.state.isShown = !1, c = !1, o = !1, q() && (k.style.visibility = "hidden"), Lt(), ut(), $(!0), q()) {
         var J = v(), ce = J.box, Pe = J.content;
         y.props.animation && (go([ce, Pe], W), Ac([ce, Pe], "hidden"));
@@ -16904,10 +16904,10 @@ function tS(n, e) {
       S._tippy.unmount();
     }), k.parentNode && k.parentNode.removeChild(k), bo = bo.filter(function(S) {
       return S !== y;
-    }), y.state.isMounted = !1, z("onHidden", [y]));
+    }), y.state.isMounted = !1, B("onHidden", [y]));
   }
   function Ah() {
-    process.env.NODE_ENV !== "production" && mt(y.state.isDestroyed, Pn("destroy")), !y.state.isDestroyed && (y.clearDelayTimeouts(), y.unmount(), gi(), delete n._tippy, y.state.isDestroyed = !0, z("onDestroy", [y]));
+    process.env.NODE_ENV !== "production" && mt(y.state.isDestroyed, Pn("destroy")), !y.state.isDestroyed && (y.clearDelayTimeouts(), y.unmount(), gi(), delete n._tippy, y.state.isDestroyed = !0, B("onDestroy", [y]));
   }
 }
 function Rt(n, e) {
@@ -18292,7 +18292,7 @@ function jS(n) {
 }
 function ol(n, e) {
   let { $anchor: t, $head: r } = n.selection, i = e > 0 ? t.max(r) : t.min(r), s = i.parent.inlineContent ? i.depth ? n.doc.resolve(e > 0 ? i.after() : i.before()) : null : i;
-  return s && B.findFrom(s, e);
+  return s && z.findFrom(s, e);
 }
 function Yt(n, e) {
   return n.dispatch(n.state.tr.setSelection(e).scrollIntoView()), !0;
@@ -18473,7 +18473,7 @@ function Xc(n, e, t) {
       return Yt(n, o);
   }
   if (!i.parent.inlineContent) {
-    let o = e < 0 ? i : s, l = r instanceof Be ? B.near(o, e) : B.findFrom(o, e);
+    let o = e < 0 ? i : s, l = r instanceof Be ? z.near(o, e) : z.findFrom(o, e);
     return l ? Yt(n, l) : !1;
   }
   return !1;
@@ -18868,7 +18868,7 @@ class uk {
     // (hidden) cursor is doesn't change the selection, and
     // thus doesn't get a reaction from ProseMirror. This
     // works around that.
-    wn && !this.view.state.selection.visible && Math.min(Math.abs(t.pos - this.view.state.selection.from), Math.abs(t.pos - this.view.state.selection.to)) <= 2) ? (Xn(this.view, B.near(this.view.state.doc.resolve(t.pos))), e.preventDefault()) : Tt(this.view, "pointer");
+    wn && !this.view.state.selection.visible && Math.min(Math.abs(t.pos - this.view.state.selection.from), Math.abs(t.pos - this.view.state.selection.to)) <= 2) ? (Xn(this.view, z.near(this.view.state.doc.resolve(t.pos))), e.preventDefault()) : Tt(this.view, "pointer");
   }
   move(e) {
     this.updateAllowDefault(e), Tt(this.view, "pointer"), e.buttons == 0 && this.done();
@@ -19937,14 +19937,15 @@ const Sx = ot.create({
           },
           decorations(e) {
             let t = [];
-            return this.getState(e).highlights.forEach((r) => {
+            if (this.getState(e).highlights.forEach((r) => {
               t.push(
                 tt.inline(r.from, r.to, {
                   class: r.overrideClass ? r.overrideClass : n.options.defaultClass,
                   "data-decoration-id": r.decorationId ? r.decorationId : void 0
                 })
               );
-            }), ee.create(e.doc, t);
+            }), t.length > 0)
+              return ee.create(e.doc, t);
           }
         }
       })
@@ -20057,10 +20058,10 @@ const Bx = /* @__PURE__ */ yh(zx), Fx = {
         p.value = v.storage.characterCount.characters();
       },
       onUpdate: ({ getJSON: v, getHTML: A, editor: $ }) => {
-        p.value = $.storage.characterCount.characters(), i.value = $.getHTML(), t("update:value", i.value), r.warnings.forEach((z) => {
-          if (z.length && z.offset && $.state.selection.head - 1 <= z.offset) {
+        p.value = $.storage.characterCount.characters(), i.value = $.getHTML(), t("update:value", i.value), r.warnings.forEach((B) => {
+          if (B.length && B.offset && $.state.selection.head - 1 <= B.offset) {
             let Q = p.value - g.value;
-            Q += N($), z.offset += Q;
+            Q += N($), B.offset += Q;
           }
         }), g.value = p.value, b.value = $.getHTML(), $.commands.focus();
       },
@@ -20077,11 +20078,11 @@ const Bx = /* @__PURE__ */ yh(zx), Fx = {
         PS,
         Sx.configure({
           getErrorWords: k,
-          onEnter: ({ range: v, command: A, virtualNode: $, text: z }) => {
-            o.value = h.value.find((Q) => Q.value === z), l.value = o.value.options || [], a.value = 0, u.value = v, j($), c.value = A;
+          onEnter: ({ range: v, command: A, virtualNode: $, text: B }) => {
+            o.value = h.value.find((Q) => Q.value === B), l.value = o.value.options || [], a.value = 0, u.value = v, j($), c.value = A;
           },
           onChange: ({ range: v, virtualNode: A, text: $ }) => {
-            o.value = h.value.find((z) => z.value === $), l.value = o.value.options || [], a.value = 0, u.value = v, j(A);
+            o.value = h.value.find((B) => B.value === $), l.value = o.value.options || [], a.value = 0, u.value = v, j(A);
           },
           onExit: () => {
             a.value = 0, l.value = null, u.value = null, q();
@@ -20094,16 +20095,9 @@ const Bx = /* @__PURE__ */ yh(zx), Fx = {
     Jh(
       () => r.warnings,
       (v, A) => {
-        if (s) {
-          r.warnings.forEach((z) => {
-            z.length && z.offset >= 0 && (z.offset += y(z));
-          });
-          const $ = s.view.state.selection;
-          s.commands.setTextSelection({
-            from: $.from,
-            to: $.to
-          }), m.value = p.value;
-        }
+        s && (r.warnings.forEach(($) => {
+          $.length && $.offset >= 0 && ($.offset += y($));
+        }), m.value = p.value);
       }
     ), Rt.setDefaultProps({
       content: d.value,
@@ -20128,7 +20122,7 @@ const Bx = /* @__PURE__ */ yh(zx), Fx = {
         message: v.message,
         offset: v.offset,
         length: v.length,
-        options: (v.options || []).map(($, z) => ({ value: $, id: z }))
+        options: (v.options || []).map(($, B) => ({ value: $, id: B }))
       };
     })), p = de(0), m = de(p.value), g = de(p.value), b = de(""), x = Js(
       () => p.value >= r.maxCharacterCount
@@ -20140,10 +20134,10 @@ const Bx = /* @__PURE__ */ yh(zx), Fx = {
       for (; A.substr(v.offset, v.value.length) !== v.value && v.offset <= A.length; )
         v.offset++;
       const $ = v.offset;
-      let z = r.value.substr(0, v.offset);
-      z = z.replace(/<p>|<\/p>|<li>|<ul>|<\/ul>|<\/li>|<div>|<\/div>/g, " ");
+      let B = r.value.substr(0, v.offset);
+      B = B.replace(/<p>|<\/p>|<li>|<ul>|<\/ul>|<\/li>|<div>|<\/div>/g, " ");
       const Q = /<strong>|<\/strong>|<em>|<\/em>/g;
-      return z = z.replace(Q, ""), z.length - $;
+      return B = B.replace(Q, ""), B.length - $;
     }
     function N(v) {
       const A = /<\/p><p>/g, $ = (b.value.match(A) || []).length;
@@ -20292,9 +20286,9 @@ const Bx = /* @__PURE__ */ yh(zx), Fx = {
       }, [
         o.value ? (Wt(), jt(na, { key: 0 }, [
           be("b", null, Ti(o.value.message), 1),
-          (Wt(!0), jt(na, null, jh(l.value, ($, z) => (Wt(), jt("div", {
+          (Wt(!0), jt(na, null, jh(l.value, ($, B) => (Wt(), jt("div", {
             key: $.id,
-            class: mr(["error-list__item", { selected: a.value === z }]),
+            class: mr(["error-list__item", { selected: a.value === B }]),
             onClick: (Q) => V($)
           }, Ti($.value), 11, Qx))), 128))
         ], 64)) : Hs("", !0)
