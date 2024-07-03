@@ -20,6 +20,7 @@ yarn add tiptap-editor
 	:warnings="warnings"
 	:showMenu="true"
 	:maxCharacterCount="200"
+	:debounce="100"
 	height="500px"
 	placeholder="write something will-ya!"
 	id="some_unique_id"
@@ -80,6 +81,8 @@ export default {
 -   **showMenu:** `Boolean` - if false, hide the format menu
 
 -   **id:** `String` - give the editor a unique id. Also adds aria tags to link the editor menu to the text area
+
+-   **debounce** `Number` = debounce the emitted `update:value` events.
 
 ## Events
 
