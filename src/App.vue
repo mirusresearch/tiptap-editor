@@ -41,7 +41,6 @@
 		:showMenu="showMenu"
 		:maxCharacterCount="maxCharacterCount"
 		:height="height"
-		:debounce="1000"
 		v-on:new-character-count="localcount = $event"
 		id="unique_id"
 		placeholder="write something will-ya!"

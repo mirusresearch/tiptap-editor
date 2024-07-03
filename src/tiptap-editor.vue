@@ -128,7 +128,6 @@ import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import Warning from './warnings';
 import unescape from 'lodash.unescape';
-import debounce from 'lodash.debounce';
 
 const emit = defineEmits(['update:value', 'new-character-count']);
 const props = defineProps({
@@ -139,10 +138,8 @@ const props = defineProps({
 	maxCharacterCount: { type: Number, default: null },
 	placeholder: { type: String, default: 'write your content here...' },
 	showMenu: { type: Boolean, default: true },
-	debounce: { type: Number, default: null },
 });
 
-const debouncedEmit = debounce(emit, props.debounce);
 const currentValue = ref(props.value);
 const editor = useEditor({
 	content: props.value,
@@ -152,14 +149,9 @@ const editor = useEditor({
 	},
 	onUpdate: ({ getJSON, getHTML, editor }) => {
 		currentCharacterCount.value = editor.storage.characterCount.characters();
-
 		currentValue.value = editor.getHTML();
 
-		if (Number.isInteger(props.debounce)) {
-			debouncedEmit('update:value', currentValue.value);
-		} else {
-			emit('update:value', currentValue.value);
-		}
+		emit('update:value', currentValue.value);
 
 		props.warnings.forEach((warning) => {
 			if (warning.length && warning.offset) {
