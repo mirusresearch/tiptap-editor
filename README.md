@@ -1,3 +1,7 @@
+> For Vue.js 3.0 use version 3.X. All active development happens here.
+> For Vue 2 use version 2.X. This version will recieve no more updates.
+> How convenient!
+
 # tiptap-editor
 
 Vue component that contains our custom setup for the tiptap editor. Able to highlight phrases and give reasons/fixes to the warnings
@@ -76,6 +80,7 @@ export default {
 -   **showMenu:** `Boolean` - if false, hide the format menu
 
 -   **id:** `String` - give the editor a unique id. Also adds aria tags to link the editor menu to the text area
+
 
 ## Events
 

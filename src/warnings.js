@@ -247,7 +247,9 @@ const Warning = Node.create({
                                 })
                             );
                         });
-                        return DecorationSet.create(state.doc, decos);
+                        if (decos.length > 0) {
+                            return DecorationSet.create(state.doc, decos);
+                        }
                     },
                 },
             }),
