@@ -112,7 +112,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, onBeforeUnmount, onMounted, defineEmits } from 'vue';
+import { computed, ref, watch, onBeforeUnmount, onMounted } from 'vue';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import Bold from '@tiptap/extension-bold';
 import BulletList from '@tiptap/extension-bullet-list';
