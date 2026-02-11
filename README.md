@@ -16,7 +16,8 @@ yarn add tiptap-editor
 ```js
 <template>
   <TextEditor
-	:value.sync="localtext"
+  	:value="localtext"
+	@update:value="localtext = $event"
 	:warnings="warnings"
 	:showMenu="true"
 	:maxCharacterCount="200"

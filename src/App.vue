@@ -36,7 +36,8 @@
         </button>
     </div>
     <tiptapEditor
-        :value.sync="localtext"
+	:value="localtext"
+	@update:value="localtext = $event"
         :warnings="warnings"
         :showMenu="showMenu"
         :maxCharacterCount="maxCharacterCount"
