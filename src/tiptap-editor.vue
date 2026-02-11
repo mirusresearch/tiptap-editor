@@ -282,7 +282,6 @@ watch(
             });
             previousCharacterCount.value = currentCharacterCount.value;
             previousHTML.value = editor.value.getHTML();
-            editor.value.commands.focus();
         }
     }
 );
