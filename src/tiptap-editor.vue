@@ -262,6 +262,30 @@ watch(
     }
 );
 
+watch(
+    () => props.value,
+    (newValue, oldValue) => {
+        if (editor.value && newValue !== editor.value.getHTML()) {
+            editor.value.commands.setContent(newValue);
+            currentCharacterCount.value = editor.value.storage.characterCount.characters();
+            props.warnings.forEach((warning) => {
+                if (warning.length && warning.offset) {
+                    if (editor.value.state.selection.head - 1 <= warning.offset) {
+                        let charCountDiff =
+                            currentCharacterCount.value - previousCharacterCount.value;
+                        charCountDiff += adjustForNewlines(editor.value);
+                        warning.offset += charCountDiff;
+                    }
+                }
+            });
+            previousCharacterCount.value = currentCharacterCount.value;
+            previousHTML.value = editor.value.getHTML();
+            editor.value.commands.focus();
+        }
+    }
+);
+
+
 tippy.setDefaultProps({
     content: renderedErrors.value,
     trigger: 'mouseenter',
