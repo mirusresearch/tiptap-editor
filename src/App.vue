@@ -45,6 +45,8 @@
         id="unique_id"
         placeholder="write something will-ya!"
     />
+
+    <button @click="() => (localtext = '')">start from stratch</button>
 </template>
 
 <script setup>
