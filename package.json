@@ -2,7 +2,9 @@
 	"name": "@mirus/tiptap-editor",
 	"version": "3.0.4",
 	"description": "custom setup for the tiptap editor",
-	"repository": "https://github.com/mirusresearch/tiptap-editor",
+	"repository": {
+		"url": "git+https://github.com/mirusresearch/tiptap-editor.git"
+	},
 	"type": "module",
 	"bugs": {
 		"url": "https://github.com/mirusresearch/tiptap-editor"
