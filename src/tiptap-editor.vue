@@ -148,7 +148,6 @@ const editor = useEditor({
         currentCharacterCount.value = editor.storage.characterCount.characters();
     },
     onUpdate: ({ getJSON, getHTML, editor }) => {
-	console.log("here")
         currentCharacterCount.value = editor.storage.characterCount.characters();
         currentValue.value = editor.getHTML();
 
@@ -267,7 +266,6 @@ watch(
     () => props.value,
     (newValue, oldValue) => {
         if (editor.value && newValue !== editor.value.getHTML()) {
- 	    console.log("here")
             editor.value.commands.setContent(newValue);
             currentCharacterCount.value = editor.value.storage.characterCount.characters();
             props.warnings.forEach((warning) => {
@@ -285,7 +283,6 @@ watch(
         }
     }
 );
-
 
 tippy.setDefaultProps({
     content: renderedErrors.value,
@@ -575,6 +572,8 @@ onBeforeUnmount(() => {
                 outline: 2px solid #3b82f6;
                 transition: all 0.08s ease-in-out;
             }
+            height: 100%;
+            overflow: auto;
         }
     }
 }
